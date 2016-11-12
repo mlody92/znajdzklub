@@ -54,12 +54,25 @@
     </beans:property>
 </beans:bean>
 
+
 <!--<beans:bean id="appUsersDao" class="com.app.dao.AppUsersDaoImpl">-->
     <!--<beans:property name="sessionFactory" ref="hibernate4AnnotatedSessionFactory" />-->
 <!--</beans:bean>-->
 <!--<beans:bean id="appUsersService" class="com.app.service.AppUsersServiceImpl">-->
     <!--<beans:property name="appUsersDao" ref="appUsersDao"></beans:property>-->
 <!--</beans:bean>-->
+
+    <beans:bean id="loginDelegate" class="com.app.delegate.login.LoginDelegate">
+        <beans:property name="userService" ref="userService"></beans:property>
+    </beans:bean>
+
+    <beans:bean id="userService" class="com.app.service.UserServiceImpl">
+        <beans:property name="userDao" ref="userDao"></beans:property>
+    </beans:bean>
+
+    <beans:bean name="userDao" class="com.app.dao.UserDaoImpl">
+        <beans:property name="dataSource" ref="dataSource"></beans:property>
+    </beans:bean>
 
 
 <context:component-scan base-package="com.app" />
@@ -69,9 +82,5 @@
 <beans:bean id="transactionManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
     <beans:property name="sessionFactory" ref="hibernate4AnnotatedSessionFactory" />
 </beans:bean>
-
-
-    <!--<import resource="springBeanConfiguration.xml"/>-->
-
 
 </beans:beans>

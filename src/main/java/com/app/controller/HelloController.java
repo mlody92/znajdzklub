@@ -19,13 +19,13 @@ public class HelloController {
         return "home";
     }
 
-    @GetMapping("/login")
-    public String hello2(Model model) {
-
-        model.addAttribute("name", "John Doe");
-
-        return "login/login";
-    }
+//    @GetMapping("/login")
+//    public String hello2(Model model) {
+//
+//        model.addAttribute("name", "John Doe");
+//
+//        return "login/login";
+//    }
 
     @GetMapping("/register")
     public String hello3(Model model) {
