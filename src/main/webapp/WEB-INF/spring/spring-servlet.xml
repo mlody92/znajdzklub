@@ -8,9 +8,9 @@
        http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd">
 
 
-
-<!-- DispatcherServlet Context: defines this servlet's request-processing
-   infrastructure -->
+    <context:annotation-config/>
+    <!-- DispatcherServlet Context: defines this servlet's request-processing
+       infrastructure -->
 
 <!-- Enables the Spring MVC @Controller programming model -->
 <annotation-driven />
@@ -21,11 +21,11 @@
 
 <!-- Resolves views selected for rendering by @Controllers to .jsp resources
     in the /WEB-INF/views directory -->
-<beans:bean
-        class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-    <beans:property name="prefix" value="/app/" />
-    <beans:property name="suffix" value=".jsp" />
-</beans:bean>
+<!--<beans:bean-->
+        <!--class="org.springframework.web.servlet.view.InternalResourceViewResolver">-->
+    <!--<beans:property name="prefix" value="/app/" />-->
+    <!--<beans:property name="suffix" value=".jsp" />-->
+<!--</beans:bean>-->
 
 <beans:bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
             destroy-method="close">

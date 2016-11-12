@@ -1,21 +1,27 @@
-<section class="top">
-    <div class="wrapper content_header clearfix">
-        <div class="work_nav">
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 
-            <ul class="btn clearfix">
-                <li><a href="#" class="previous" data-title="Previous"></a></li>
-                <li><a href="index.html" class="grid" data-title="Portfolio"></a></li>
-                <li><a href="#" class="next" data-title="Next"></a></li>
-            </ul>
+<t:wrapper>
+    <section class="top">
+        <div class="wrapper content_header clearfix">
+            <div class="work_nav">
 
-        </div><!-- end work_nav -->
-        <h1 class="title">Rejestracja</h1>
-    </div>
-</section>
-<!-- end top -->
+                <ul class="btn clearfix">
+                    <li><a href="#" class="previous" data-title="Previous"></a></li>
+                    <li><a href="index.html" class="grid" data-title="Portfolio"></a></li>
+                    <li><a href="#" class="next" data-title="Next"></a></li>
+                </ul>
 
-<section class="wrapper">
-    <div class="content ">
+            </div><!-- end work_nav -->
+            <h1 class="title">Rejestracja</h1>
+        </div>
+    </section>
+    <!-- end top -->
+
+    <section class="wrapper">
+        <div class="content ">
+
+            <div class="col-md-6 col-md-offset-3">
             <form name="form" ng-submit="vm.register()" role="form">
                 <div class="form-group" ng-class="{ 'has-error': form.firstName.$dirty && form.firstName.$error.required }">
                     <label for="username">First name</label>
@@ -43,5 +49,9 @@
                     <a href="#/pages/login" class="btn btn-link">Cancel</a>
                 </div>
             </form>
-    </div><!-- end content -->
-</section>
+                </div>
+        </div><!-- end content -->
+    </section>
+
+</t:wrapper>
+
