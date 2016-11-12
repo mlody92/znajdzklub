@@ -9,21 +9,6 @@
 
 
 
-    <!--stary
-
-
-<?xml version="1.0" encoding="utf-8" ?>
-<beans xmlns="http://www.springframework.org/schema/beans"
-      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-      xmlns:context="http://www.springframework.org/schema/context"
-      xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
-http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
-   <context:component-scan base-package="com.app"/>
-</beans>
-       -->
-
-
-
 <!-- DispatcherServlet Context: defines this servlet's request-processing
    infrastructure -->
 
@@ -38,7 +23,7 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
     in the /WEB-INF/views directory -->
 <beans:bean
         class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-    <beans:property name="prefix" value="/WEB-INF/views/" />
+    <beans:property name="prefix" value="/app/" />
     <beans:property name="suffix" value=".jsp" />
 </beans:bean>
 
@@ -55,11 +40,11 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
 <beans:bean id="hibernate4AnnotatedSessionFactory"
             class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
     <beans:property name="dataSource" ref="dataSource" />
-    <beans:property name="annotatedClasses">
-        <beans:list>
-            <beans:value>com.app.model.AppUsers</beans:value>
-        </beans:list>
-    </beans:property>
+    <!--<beans:property name="annotatedClasses">-->
+        <!--<beans:list>-->
+            <!--<beans:value>com.app.model.AppUsers</beans:value>-->
+        <!--</beans:list>-->
+    <!--</beans:property>-->
     <beans:property name="hibernateProperties">
         <beans:props>
             <beans:prop key="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect
@@ -69,12 +54,27 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
     </beans:property>
 </beans:bean>
 
-<beans:bean id="appUsersDao" class="com.app.dao.AppUsersDaoImpl">
-    <beans:property name="sessionFactory" ref="hibernate4AnnotatedSessionFactory" />
-</beans:bean>
-<beans:bean id="appUsersService" class="com.app.service.AppUsersServiceImpl">
-    <beans:property name="appUsersDao" ref="appUsersDao"></beans:property>
-</beans:bean>
+<!--<beans:bean id="appUsersDao" class="com.app.dao.AppUsersDaoImpl">-->
+    <!--<beans:property name="sessionFactory" ref="hibernate4AnnotatedSessionFactory" />-->
+<!--</beans:bean>-->
+<!--<beans:bean id="appUsersService" class="com.app.service.AppUsersServiceImpl">-->
+    <!--<beans:property name="appUsersDao" ref="appUsersDao"></beans:property>-->
+<!--</beans:bean>-->
+
+    <beans:bean id="loginDelegate" class="com.app.controller.LoginDelegate">
+        <beans:property name="userService" ref="userService"></beans:property>
+    </beans:bean>
+
+    <beans:bean id="userService" class="com.app.service.UserServiceImpl">
+        <beans:property name="userDao" ref="userDao"></beans:property>
+    </beans:bean>
+
+    <beans:bean name="userDao" class="com.app.service.UserDaoImpl">
+        <beans:property name="dataSource" ref="dataSource"></beans:property>
+    </beans:bean>
+
+
+
 <context:component-scan base-package="com.app" />
 
 <tx:annotation-driven transaction-manager="transactionManager"/>
@@ -82,5 +82,9 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
 <beans:bean id="transactionManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
     <beans:property name="sessionFactory" ref="hibernate4AnnotatedSessionFactory" />
 </beans:bean>
+
+
+    <!--<import resource="springBeanConfiguration.xml"/>-->
+
 
 </beans:beans>

@@ -1,7 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <div class="work">
-    <a href="#pages/inner">
+    <a href="#inner/inner">
         <img src="<c:url value='/img/work1.jpg' />" class="media" alt=""/>
         <div class="caption">
             <div class="work_title">

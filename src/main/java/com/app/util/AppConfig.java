@@ -3,7 +3,6 @@
  * All rights reserved
  */
 package com.app.util;
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
