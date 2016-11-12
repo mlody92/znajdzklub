@@ -2,7 +2,7 @@
  * Copyright (c) Krakfin
  * All rights reserved
  */
-package com.app.util;
+package com.app.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
@@ -17,7 +17,7 @@ public class AppConfig extends WebMvcConfigurerAdapter {
     @Bean
     public InternalResourceViewResolver viewResolver() {
         InternalResourceViewResolver internalResourceViewResolver = new InternalResourceViewResolver();
-        internalResourceViewResolver.setPrefix("/");
+        internalResourceViewResolver.setPrefix("/app/");
         internalResourceViewResolver.setSuffix(".jsp");
         return internalResourceViewResolver;
     }
