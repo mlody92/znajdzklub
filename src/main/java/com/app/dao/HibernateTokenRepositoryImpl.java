@@ -1,9 +1,7 @@
 package com.app.dao;
 
-import com.app.dao.AbstractDao;
 import com.app.model.PersistentLogin;
 import java.util.Date;
-
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
 import org.slf4j.Logger;

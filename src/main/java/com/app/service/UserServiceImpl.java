@@ -2,7 +2,6 @@ package com.app.service;
 
 import com.app.dao.UserDao;
 import com.app.model.User;
-import java.sql.SQLException;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -48,7 +47,7 @@ public class UserServiceImpl implements UserService{
             entity.setFirstName(user.getFirstName());
             entity.setLastName(user.getLastName());
             entity.setEmail(user.getEmail());
-            entity.setUserProfiles(user.getUserProfiles());
+            entity.setRole(user.getRole());
         }
     }
 

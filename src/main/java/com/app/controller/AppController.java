@@ -1,16 +1,12 @@
 package com.app.controller;
 
 import com.app.model.User;
-import com.app.model.UserProfile;
-import com.app.service.UserProfileService;
 import com.app.service.UserService;
 import java.util.List;
 import java.util.Locale;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.security.authentication.AuthenticationTrustResolver;
@@ -37,9 +33,6 @@ public class AppController {
     UserService userService;
 
     @Autowired
-    UserProfileService userProfileService;
-
-    @Autowired
     MessageSource messageSource;
 
     @Autowired
@@ -48,11 +41,15 @@ public class AppController {
     @Autowired
     AuthenticationTrustResolver authenticationTrustResolver;
 
+    @RequestMapping(value = { "/"}, method = RequestMethod.GET)
+    public String home(ModelMap model) {
+        return "home";
+    }
 
     /**
      * This method will list all existing users.
      */
-    @RequestMapping(value = { "/", "/list" }, method = RequestMethod.GET)
+    @RequestMapping(value = {"/list" }, method = RequestMethod.GET)
     public String listUsers(ModelMap model) {
 
         List<User> users = userService.findAllUsers();
@@ -64,7 +61,7 @@ public class AppController {
     /**
      * This method will provide the medium to add a new user.
      */
-    @RequestMapping(value = { "/newuser" }, method = RequestMethod.GET)
+    @RequestMapping(value = { "/register" }, method = RequestMethod.GET)
     public String newUser(ModelMap model) {
         User user = new User();
         model.addAttribute("user", user);
@@ -77,7 +74,7 @@ public class AppController {
      * This method will be called on form submission, handling POST request for
      * saving user in database. It also validates the user input
      */
-    @RequestMapping(value = { "/newuser" }, method = RequestMethod.POST)
+    @RequestMapping(value = { "/register" }, method = RequestMethod.POST)
     public String saveUser(@Valid User user, BindingResult result,
                               ModelMap model) {
 
@@ -93,6 +90,7 @@ public class AppController {
          * framework as well while still using internationalized messages.
          * 
          */
+        user.setRole("USER");
         if(!userService.isUserSSOUnique(user.getId(), user.getSsoId())){
             FieldError ssoError =new FieldError("user","ssoId",messageSource.getMessage("non.unique.ssoId", new String[]{user.getSsoId()}, Locale.getDefault()));
             result.addError(ssoError);
@@ -162,8 +160,8 @@ public class AppController {
      * This method will provide UserProfile list to views
      */
     @ModelAttribute("roles")
-    public List<UserProfile> initializeProfiles() {
-        return userProfileService.findAll();
+    public List<User> initializeProfiles() {
+        return userService.findAllUsers();
     }
 
     /**
@@ -181,11 +179,12 @@ public class AppController {
      */
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String loginPage() {
-        if (isCurrentAuthenticationAnonymous()) {
-            return "login/login";
-        } else {
-            return "redirect:/list";
-        }
+//        if (isCurrentAuthenticationAnonymous()) {
+//            return "login/login";
+//        } else {
+//            return "redirect:/list";
+//        }
+        return "login/login";
     }
 
     /**
@@ -225,6 +224,4 @@ public class AppController {
         final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         return authenticationTrustResolver.isAnonymous(authentication);
     }
-
-
 }

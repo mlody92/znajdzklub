@@ -1,11 +1,8 @@
 package com.app.dao;
 
 import com.app.model.User;
-import java.sql.SQLException;
 import java.util.List;
-import javax.sql.DataSource;
 import org.hibernate.Criteria;
-import org.hibernate.Hibernate;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.slf4j.Logger;
@@ -19,9 +16,9 @@ public class UserDaoImpl extends AbstractDao<Integer, User> implements UserDao {
 
     public User findById(int id) {
         User user = getByKey(id);
-        if(user!=null){
-            Hibernate.initialize(user.getUserProfiles());
-        }
+//        if(user!=null){
+//            Hibernate.initialize(user.getUsers());
+//        }
         return user;
     }
 
@@ -30,9 +27,9 @@ public class UserDaoImpl extends AbstractDao<Integer, User> implements UserDao {
         Criteria crit = createEntityCriteria();
         crit.add(Restrictions.eq("ssoId", sso));
         User user = (User)crit.uniqueResult();
-        if(user!=null){
-            Hibernate.initialize(user.getUserProfiles());
-        }
+//        if(user!=null){
+//            Hibernate.initialize(user.getUsers());
+//        }
         return user;
     }
 

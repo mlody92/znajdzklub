@@ -18,9 +18,6 @@
                     <th>Lastname</th>
                     <th>Email</th>
                     <th>SSO ID</th>
-                    <sec:authorize access="hasRole('ADMIN') or hasRole('DBA')">
-                        <th width="100"></th>
-                    </sec:authorize>
                     <sec:authorize access="hasRole('ADMIN')">
                         <th width="100"></th>
                     </sec:authorize>
@@ -47,7 +44,7 @@
         </div>
         <sec:authorize access="hasRole('ADMIN')">
             <div class="well">
-                <a href="<c:url value='/newuser' />">Add New User</a>
+                <a href="<c:url value='/register' />">Add New User</a>
             </div>
         </sec:authorize>
     </div>
