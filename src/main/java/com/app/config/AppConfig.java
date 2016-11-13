@@ -1,7 +1,3 @@
-/*
- * Copyright (c) Krakfin
- * All rights reserved
- */
 package com.app.config;
 
 import org.springframework.context.annotation.Bean;

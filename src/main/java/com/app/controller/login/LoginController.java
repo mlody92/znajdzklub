@@ -1,7 +1,3 @@
-/*
- * Copyright (c) Krakfin
- * All rights reserved
- */
 package com.app.controller.login;
 
 import com.app.bean.LoginBean;

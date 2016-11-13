@@ -1,14 +1,15 @@
-/*
- * Copyright (c) Krakfin
- * All rights reserved
- */
 package com.app.dao;
 
+import com.app.test.UserDAO;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import javax.sql.DataSource;
+import org.springframework.beans.factory.BeanFactory;
+import org.springframework.beans.factory.xml.XmlBeanFactory;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 
 public class UserDaoImpl implements UserDao
 {
@@ -37,6 +38,9 @@ public class UserDaoImpl implements UserDao
 //            return (resultSet.getInt(1) > 0);
 //        else
 //            return false;
+
+
+
         return false;
     }
 
