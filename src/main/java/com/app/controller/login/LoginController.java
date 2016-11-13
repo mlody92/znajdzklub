@@ -13,47 +13,47 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 
-@Controller
+//@Controller
 public class LoginController
 {
-    @Autowired
-    private LoginDelegate loginDelegate;
-
-    @RequestMapping(value="/login",method=RequestMethod.GET)
-    public ModelAndView displayLogin(HttpServletRequest request, HttpServletResponse response)
-    {
-        ModelAndView model = new ModelAndView("login/login");
-        LoginBean loginBean = new LoginBean();
-        model.addObject("loginBean", loginBean);
-        return model;
-    }
-    @RequestMapping(value="/login",method=RequestMethod.POST)
-    public ModelAndView executeLogin(HttpServletRequest request, HttpServletResponse response, @ModelAttribute("loginBean")LoginBean loginBean)
-    {
-        ModelAndView model= null;
-        try
-        {
-            boolean isValidUser = loginDelegate.isValidUser(loginBean.getUsername(), loginBean.getPassword());
-            if(isValidUser)
-            {
-                System.out.println("User Login Successful");
-                request.setAttribute("loggedInUser", loginBean.getUsername());
-                model = new ModelAndView("home");
-            }
-            else
-            {
-                model = new ModelAndView("login/login");
-                model.addObject("loginBean", loginBean);
-                request.setAttribute("message", "Invalid credentials!!");
-            }
-
-        }
-        catch(Exception e)
-        {
-            e.printStackTrace();
-        }
-
-        return model;
-    }
+//    @Autowired
+//    private LoginDelegate loginDelegate;
+//
+//    @RequestMapping(value="/login",method=RequestMethod.GET)
+//    public ModelAndView displayLogin(HttpServletRequest request, HttpServletResponse response)
+//    {
+//        ModelAndView model = new ModelAndView("login/login");
+//        LoginBean loginBean = new LoginBean();
+//        model.addObject("loginBean", loginBean);
+//        return model;
+//    }
+//    @RequestMapping(value="/login",method=RequestMethod.POST)
+//    public ModelAndView executeLogin(HttpServletRequest request, HttpServletResponse response, @ModelAttribute("loginBean")LoginBean loginBean)
+//    {
+//        ModelAndView model= null;
+//        try
+//        {
+//            boolean isValidUser = loginDelegate.isValidUser(loginBean.getUsername(), loginBean.getPassword());
+//            if(isValidUser)
+//            {
+//                System.out.println("User Login Successful");
+//                request.setAttribute("loggedInUser", loginBean.getUsername());
+//                model = new ModelAndView("home");
+//            }
+//            else
+//            {
+//                model = new ModelAndView("login/login");
+//                model.addObject("loginBean", loginBean);
+//                request.setAttribute("message", "Invalid credentials!!");
+//            }
+//
+//        }
+//        catch(Exception e)
+//        {
+//            e.printStackTrace();
+//        }
+//
+//        return model;
+//    }
 }
 

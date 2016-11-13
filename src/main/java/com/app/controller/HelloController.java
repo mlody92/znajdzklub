@@ -4,38 +4,38 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
-@Controller
+//@Controller
 public class HelloController {
 
-    @GetMapping("/")
-    public String hello(Model model) {
-
-        model.addAttribute("name", "John Doe");
-
-        return "home";
-    }
-
-//    @GetMapping("/login")
-//    public String hello2(Model model) {
+//    @GetMapping("/")
+//    public String hello(Model model) {
 //
 //        model.addAttribute("name", "John Doe");
 //
-//        return "login/login";
+//        return "home";
 //    }
-
-    @GetMapping("/register")
-    public String hello3(Model model) {
-
-        model.addAttribute("name", "John Doe");
-
-        return "register/register";
-    }
-
-    @GetMapping("/inner")
-    public String hello4(Model model) {
-
-        model.addAttribute("name", "John Doe");
-
-        return "inner/inner";
-    }
+//
+////    @GetMapping("/login")
+////    public String hello2(Model model) {
+////
+////        model.addAttribute("name", "John Doe");
+////
+////        return "login/login";
+////    }
+//
+//    @GetMapping("/register")
+//    public String hello3(Model model) {
+//
+//        model.addAttribute("name", "John Doe");
+//
+//        return "register/register";
+//    }
+//
+//    @GetMapping("/inner")
+//    public String hello4(Model model) {
+//
+//        model.addAttribute("name", "John Doe");
+//
+//        return "inner/inner";
+//    }
 }
