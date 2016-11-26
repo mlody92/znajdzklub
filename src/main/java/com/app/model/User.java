@@ -7,8 +7,11 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.xml.bind.annotation.XmlRootElement;
 import org.hibernate.validator.constraints.NotEmpty;
 
+//@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@XmlRootElement
 @Entity
 @Table(name = "APP_USER")
 public class User implements Serializable {

@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
+import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationTrustResolver;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -41,7 +42,7 @@ public class AppController {
     @Autowired
     AuthenticationTrustResolver authenticationTrustResolver;
 
-    @RequestMapping(value = { "/"}, method = RequestMethod.GET)
+    @RequestMapping(value = {"/"}, method = RequestMethod.GET)
     public String home(ModelMap model) {
         return "home";
     }
@@ -49,7 +50,7 @@ public class AppController {
     /**
      * This method will list all existing users.
      */
-    @RequestMapping(value = {"/list" }, method = RequestMethod.GET)
+    @RequestMapping(value = {"/list"}, method = RequestMethod.GET)
     public String listUsers(ModelMap model) {
 
         List<User> users = userService.findAllUsers();
@@ -58,10 +59,15 @@ public class AppController {
         return "login/userlist";
     }
 
+//    @RequestMapping(value = {"/list2"}, method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+//    public String listUsers2(ModelMap model) {
+//        return userService.convertToJson();
+//    }
+
     /**
      * This method will provide the medium to add a new user.
      */
-    @RequestMapping(value = { "/register" }, method = RequestMethod.GET)
+    @RequestMapping(value = {"/register"}, method = RequestMethod.GET)
     public String newUser(ModelMap model) {
         User user = new User();
         model.addAttribute("user", user);
@@ -74,7 +80,7 @@ public class AppController {
      * This method will be called on form submission, handling POST request for
      * saving user in database. It also validates the user input
      */
-    @RequestMapping(value = { "/register" }, method = RequestMethod.POST)
+    @RequestMapping(value = {"/register"}, method = RequestMethod.POST)
     public String saveUser(@Valid User user, BindingResult result,
                               ModelMap model) {
 
@@ -91,25 +97,24 @@ public class AppController {
          * 
          */
         user.setRole("USER");
-        if(!userService.isUserSSOUnique(user.getId(), user.getSsoId())){
-            FieldError ssoError =new FieldError("user","ssoId",messageSource.getMessage("non.unique.ssoId", new String[]{user.getSsoId()}, Locale.getDefault()));
+        if (!userService.isUserSSOUnique(user.getId(), user.getSsoId())) {
+            FieldError ssoError = new FieldError("user", "ssoId", messageSource.getMessage("non.unique.ssoId", new String[]{user.getSsoId()}, Locale.getDefault()));
             result.addError(ssoError);
             return "register/register";
         }
 
         userService.saveUser(user);
 
-        model.addAttribute("success", "User " + user.getFirstName() + " "+ user.getLastName() + " registered successfully");
+        model.addAttribute("success", "User " + user.getFirstName() + " " + user.getLastName() + " registered successfully");
         model.addAttribute("loggedinuser", getPrincipal());
         //return "success";
         return "login/registrationsuccess";
     }
 
-
     /**
      * This method will provide the medium to update an existing user.
      */
-    @RequestMapping(value = { "/edit-user-{ssoId}" }, method = RequestMethod.GET)
+    @RequestMapping(value = {"/edit-user-{ssoId}"}, method = RequestMethod.GET)
     public String editUser(@PathVariable String ssoId, ModelMap model) {
         User user = userService.findBySSO(ssoId);
         model.addAttribute("user", user);
@@ -122,7 +127,7 @@ public class AppController {
      * This method will be called on form submission, handling POST request for
      * updating user in database. It also validates the user input
      */
-    @RequestMapping(value = { "/edit-user-{ssoId}" }, method = RequestMethod.POST)
+    @RequestMapping(value = {"/edit-user-{ssoId}"}, method = RequestMethod.POST)
     public String updateUser(@Valid User user, BindingResult result,
                                 ModelMap model, @PathVariable String ssoId) {
 
@@ -137,24 +142,21 @@ public class AppController {
             return "registration";
         }*/
 
-
         userService.updateUser(user);
 
-        model.addAttribute("success", "User " + user.getFirstName() + " "+ user.getLastName() + " updated successfully");
+        model.addAttribute("success", "User " + user.getFirstName() + " " + user.getLastName() + " updated successfully");
         model.addAttribute("loggedinuser", getPrincipal());
         return "login/registrationsuccess";
     }
 
-
     /**
      * This method will delete an user by it's SSOID value.
      */
-    @RequestMapping(value = { "/delete-user-{ssoId}" }, method = RequestMethod.GET)
+    @RequestMapping(value = {"/delete-user-{ssoId}"}, method = RequestMethod.GET)
     public String deleteUser(@PathVariable String ssoId) {
         userService.deleteUserBySSO(ssoId);
         return "redirect:/list";
     }
-
 
     /**
      * This method will provide UserProfile list to views
@@ -179,11 +181,11 @@ public class AppController {
      */
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String loginPage() {
-//        if (isCurrentAuthenticationAnonymous()) {
-//            return "login/login";
-//        } else {
-//            return "redirect:/list";
-//        }
+        //        if (isCurrentAuthenticationAnonymous()) {
+        //            return "login/login";
+        //        } else {
+        //            return "redirect:/list";
+        //        }
         return "login/login";
     }
 
@@ -191,10 +193,10 @@ public class AppController {
      * This method handles logout requests.
      * Toggle the handlers if you are RememberMe functionality is useless in your app.
      */
-    @RequestMapping(value="/logout", method = RequestMethod.GET)
-    public String logoutPage (HttpServletRequest request, HttpServletResponse response){
+    @RequestMapping(value = "/logout", method = RequestMethod.GET)
+    public String logoutPage(HttpServletRequest request, HttpServletResponse response) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if (auth != null){
+        if (auth != null) {
             //new SecurityContextLogoutHandler().logout(request, response, auth);
             persistentTokenBasedRememberMeServices.logout(request, response, auth);
             SecurityContextHolder.getContext().setAuthentication(null);
@@ -205,12 +207,12 @@ public class AppController {
     /**
      * This method returns the principal[user-name] of logged-in user.
      */
-    private String getPrincipal(){
+    private String getPrincipal() {
         String userName = null;
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         if (principal instanceof UserDetails) {
-            userName = ((UserDetails)principal).getUsername();
+            userName = ((UserDetails) principal).getUsername();
         } else {
             userName = principal.toString();
         }

@@ -38,7 +38,6 @@
             <artifactId>spring-orm</artifactId>
             <version>${org.springframework-version}</version>
         </dependency>
-
         <!-- Spring Security -->
         <dependency>
             <groupId>org.springframework.security</groupId>
@@ -65,23 +64,27 @@
             <artifactId>spring-security-taglibs</artifactId>
             <version>${springsecurity.version}</version>
         </dependency>
-        <!-- Need this for json to/from object -->
+        <!--Need this for json to/from object-->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-core</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-annotations</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
         <!--<dependency>-->
-            <!--<groupId>com.fasterxml.jackson.core</groupId>-->
-            <!--<artifactId>jackson-core</artifactId>-->
-            <!--<version>${jackson.version}</version>-->
+        <!--<groupId>com.auth0</groupId>-->
+        <!--<artifactId>java-jwt</artifactId>-->
+        <!--<version>2.2.1</version>-->
         <!--</dependency>-->
-        <!--<dependency>-->
-            <!--<groupId>com.fasterxml.jackson.core</groupId>-->
-            <!--<artifactId>jackson-databind</artifactId>-->
-            <!--<version>${jackson.version}</version>-->
-        <!--</dependency>-->
-        <!--<dependency>-->
-            <!--<groupId>com.auth0</groupId>-->
-            <!--<artifactId>java-jwt</artifactId>-->
-            <!--<version>2.2.1</version>-->
-        <!--</dependency>-->
-
         <!-- Hibernate -->
         <dependency>
             <groupId>org.hibernate</groupId>
@@ -93,7 +96,6 @@
             <artifactId>hibernate-entitymanager</artifactId>
             <version>${hibernate.version}</version>
         </dependency>
-
         <!-- jsr303 validation -->
         <dependency>
             <groupId>javax.validation</groupId>
@@ -107,12 +109,11 @@
         </dependency>
         <!-- Apache Commons DBCP -->
         <!--<dependency>-->
-            <!--<groupId>commons-dbcp</groupId>-->
-            <!--<artifactId>commons-dbcp</artifactId>-->
-            <!--<version>1.4</version>-->
+        <!--<groupId>commons-dbcp</groupId>-->
+        <!--<artifactId>commons-dbcp</artifactId>-->
+        <!--<version>1.4</version>-->
         <!--</dependency>-->
         <!-- Spring ORM -->
-
         <!-- Servlet -->
         <dependency>
             <groupId>javax.servlet</groupId>
@@ -129,14 +130,12 @@
             <artifactId>jstl</artifactId>
             <version>1.2</version>
         </dependency>
-
         <!-- SLF4J/Logback -->
         <!--<dependency>-->
-            <!--<groupId>ch.qos.logback</groupId>-->
-            <!--<artifactId>logback-classic</artifactId>-->
-            <!--<version>1.1.7</version>-->
+        <!--<groupId>ch.qos.logback</groupId>-->
+        <!--<artifactId>logback-classic</artifactId>-->
+        <!--<version>1.1.7</version>-->
         <!--</dependency>-->
-
         <!-- Logging -->
         <dependency>
             <groupId>org.slf4j</groupId>
@@ -156,9 +155,9 @@
             <scope>runtime</scope>
         </dependency>
         <!--<dependency>-->
-            <!--<groupId>org.aspectj</groupId>-->
-            <!--<artifactId>aspectjweaver</artifactId>-->
-            <!--<version>1.6.12</version>-->
+        <!--<groupId>org.aspectj</groupId>-->
+        <!--<artifactId>aspectjweaver</artifactId>-->
+        <!--<version>1.6.12</version>-->
         <!--</dependency>-->
         <!-- https://mvnrepository.com/artifact/com.fasterxml/classmate -->
         <dependency>

@@ -11,7 +11,7 @@ public interface UserService
 
     User findBySSO(String sso);
 
-    void saveUser(User user);
+    String saveUser(User user);
 
     void updateUser(User user);
 
@@ -20,4 +20,6 @@ public interface UserService
     List<User> findAllUsers();
 
     boolean isUserSSOUnique(Integer id, String sso);
+
+//    String convertToJson();
 }

@@ -1,5 +1,28 @@
 // (function () {
 //     'use strict';
+//     angular
+//         .module('app')
+//         .controller('LoginController', LoginController);
+//     function LoginController($scope, $http) {
+//         $scope.listOfCustomers = null;
+//
+//         $http.get('http://localhost:8080/application/list2')
+//             .success(function (data) {
+//                 $scope.listOfCustomers = data;
+//                 console.log("ok");
+//             })
+//             .error(function (data, status, headers, config) {
+//                 //  Do some error handling here
+//                 console.log("error");
+//             });
+//     }
+// })();
+
+
+
+
+// (function () {
+//     'use strict';
 //
 //     angular
 //         .module('app')

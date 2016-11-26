@@ -2,6 +2,8 @@ package com.app.service;
 
 import com.app.dao.UserDao;
 import com.app.model.User;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import java.io.IOException;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -27,9 +29,10 @@ public class UserServiceImpl implements UserService{
         return user;
     }
 
-    public void saveUser(User user) {
+    public String saveUser(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         dao.save(user);
+        return "success";
     }
 
     /*
@@ -64,6 +67,21 @@ public class UserServiceImpl implements UserService{
         User user = findBySSO(sso);
         return ( user == null || ((id != null) && (user.getId() == id)));
     }
+
+//    public String convertToJson(){
+//        User emp = new User();
+//        ObjectMapper mapperObj = new ObjectMapper();
+//        try {
+//            // get Employee object as a json string
+//            String jsonStr = mapperObj.writeValueAsString(emp);
+//            System.out.println(jsonStr);
+//            return jsonStr;
+//        } catch (IOException e) {
+//            // TODO Auto-generated catch block
+//            e.printStackTrace();
+//            return "failed";
+//        }
+//    }
 
 }
 //

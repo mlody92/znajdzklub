@@ -13,16 +13,15 @@
 <script src="<c:url value='/app/app.js' />"></script>
 <script src="<c:url value='/app/main.js' />"></script>
 <script src="<c:url value='/app/controllers.js' />"></script>
-<script src="<c:url value='/app/home/home.controller.js' />"></script>
 <script src="<c:url value='/app/login/login.controller.js' />"></script>
 <script src="<c:url value='/app/index.controller.js' />"></script>
 <script src="<c:url value='/app/register/register.controller.js' />"></script>
-<script src="<c:url value='/scripts/js/service/authentication.service.js' />"></script>
-<script src="<c:url value='/scripts/js/service/flash.service.js' />"></script>
-<script src="<c:url value='/scripts/js/service/user.service.js' />"></script>
-<script src="<c:url value='/scripts/js/service/user.service.local-storage.js' />"></script>
+<%--<script src="<c:url value='/scripts/js/service/authentication.service.js' />"></script>--%>
+<%--<script src="<c:url value='/scripts/js/service/flash.service.js' />"></script>--%>
+<%--<script src="<c:url value='/scripts/js/service/user.service.js' />"></script>--%>
+<%--<script src="<c:url value='/scripts/js/service/user.service.local-storage.js' />"></script>--%>
 <script src="//cdnjs.cloudflare.com/ajax/libs/ngStorage/0.3.6/ngStorage.min.js"></script>
-<script src="<c:url value='/scripts/js/service/fake-backend.js' />"></script>
+<%--<script src="<c:url value='/scripts/js/service/fake-backend.js' />"></script>--%>
 
 
 <!-- Real user service that uses an api -->

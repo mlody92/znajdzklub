@@ -11,6 +11,16 @@
         <div class="panel panel-default">
             <!-- Default panel contents -->
             <div class="panel-heading"><span class="lead">List of Users </span></div>
+
+            <div ng-app="app" ng-controller='customersCtrl'>
+                <tbody>
+                <tr ng-repeat="item in names | orderBy:sortingOrder:reverse">
+                    <td>{{item.id}}</td>
+                </tr>
+                </tbody>
+            </div>
+
+
             <table class="table table-hover">
                 <thead>
                 <tr>
@@ -49,4 +59,25 @@
         </sec:authorize>
     </div>
     </section>
+
+    <script>
+        var app = angular.module('app', [])
+                .config(function ($httpProvider) {
+                    delete $httpProvider.defaults.headers.common['X-Requested-With'];
+                });
+
+        app.controller('customersCtrl', function($scope, $http) {
+//            $http.get("list2")
+//                    .then(function (response) {$scope.names = response.data;});
+            delete $http.defaults.headers.common["X-Requested-With"];
+            $http.get('list2').success(function(response,status){
+                $scope.names = response.data;
+            }).error(function(){
+                alert("Failed to access");
+            })
+        });
+
+
+
+    </script>
 </t:wrapper>
