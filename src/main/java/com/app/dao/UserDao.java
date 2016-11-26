@@ -15,5 +15,4 @@ public interface UserDao
 
     List<User> findAllUsers();
 
-//    public boolean isValidUser(String username, String password) throws SQLException;
 }

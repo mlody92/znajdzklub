@@ -67,43 +67,4 @@ public class UserServiceImpl implements UserService{
         User user = findBySSO(sso);
         return ( user == null || ((id != null) && (user.getId() == id)));
     }
-
-//    public String convertToJson(){
-//        User emp = new User();
-//        ObjectMapper mapperObj = new ObjectMapper();
-//        try {
-//            // get Employee object as a json string
-//            String jsonStr = mapperObj.writeValueAsString(emp);
-//            System.out.println(jsonStr);
-//            return jsonStr;
-//        } catch (IOException e) {
-//            // TODO Auto-generated catch block
-//            e.printStackTrace();
-//            return "failed";
-//        }
-//    }
-
 }
-//
-//public class UserServiceImpl implements UserService
-//{
-//
-//    private UserDao userDao;
-//
-//    public UserDao getUserDao()
-//    {
-//        return this.userDao;
-//    }
-//
-//    public void setUserDao(UserDao userDao)
-//    {
-//        this.userDao = userDao;
-//    }
-//
-//    @Override
-//    public boolean isValidUser(String username, String password) throws SQLException
-//    {
-//        return userDao.isValidUser(username, password);
-//    }
-//
-//}

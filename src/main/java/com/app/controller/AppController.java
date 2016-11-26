@@ -59,11 +59,6 @@ public class AppController {
         return "login/userlist";
     }
 
-//    @RequestMapping(value = {"/list2"}, method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-//    public String listUsers2(ModelMap model) {
-//        return userService.convertToJson();
-//    }
-
     /**
      * This method will provide the medium to add a new user.
      */
