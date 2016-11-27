@@ -24,15 +24,15 @@ public class CustomUserDetailsService implements UserDetailsService{
     private UserService userService;
 
     @Transactional(readOnly=true)
-    public UserDetails loadUserByUsername(String ssoId)
+    public UserDetails loadUserByUsername(String login)
         throws UsernameNotFoundException {
-        User user = userService.findBySSO(ssoId);
+        User user = userService.findByLogin(login);
         logger.info("User : {}", user);
         if(user==null){
             logger.info("User not found");
             throw new UsernameNotFoundException("Username not found");
         }
-        return new org.springframework.security.core.userdetails.User(user.getSsoId(), user.getPassword(),
+        return new org.springframework.security.core.userdetails.User(user.getLogin(), user.getPassword(),
                                                                          true, true, true, true, getGrantedAuthorities(user));
     }
 

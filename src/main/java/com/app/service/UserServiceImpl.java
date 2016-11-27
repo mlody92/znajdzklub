@@ -2,8 +2,6 @@ package com.app.service;
 
 import com.app.dao.UserDao;
 import com.app.model.User;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import java.io.IOException;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -24,8 +22,8 @@ public class UserServiceImpl implements UserService{
         return dao.findById(id);
     }
 
-    public User findBySSO(String sso) {
-        User user = dao.findBySSO(sso);
+    public User findByLogin(String login) {
+        User user = dao.findByLogin(login);
         return user;
     }
 
@@ -43,7 +41,7 @@ public class UserServiceImpl implements UserService{
     public void updateUser(User user) {
         User entity = dao.findById(user.getId());
         if(entity!=null){
-            entity.setSsoId(user.getSsoId());
+            entity.setLogin(user.getLogin());
             if(!user.getPassword().equals(entity.getPassword())){
                 entity.setPassword(passwordEncoder.encode(user.getPassword()));
             }
@@ -55,16 +53,16 @@ public class UserServiceImpl implements UserService{
     }
 
 
-    public void deleteUserBySSO(String sso) {
-        dao.deleteBySSO(sso);
+    public void deleteUserByLogin(String login) {
+        dao.deleteByLogin(login);
     }
 
     public List<User> findAllUsers() {
         return dao.findAllUsers();
     }
 
-    public boolean isUserSSOUnique(Integer id, String sso) {
-        User user = findBySSO(sso);
+    public boolean isUserLoginUnique(Integer id, String login) {
+        User user = findByLogin(login);
         return ( user == null || ((id != null) && (user.getId() == id)));
     }
 }

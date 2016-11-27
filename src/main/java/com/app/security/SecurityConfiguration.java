@@ -40,10 +40,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.addFilterBefore(new SimpleCORSFilter(), ChannelProcessingFilter.class)
             .authorizeRequests()
-            .antMatchers("/list").access("hasRole('USER') or hasRole('ADMIN')")
+            .antMatchers("/userList").access("hasRole('ADMIN')")
 //            .antMatchers("/register/**", "/delete-user-*").access("hasRole('ADMIN')")
             .antMatchers("/edit-user-*").access("hasRole('ADMIN')").and().formLogin().loginPage("/login")
-            .loginProcessingUrl("/login").usernameParameter("ssoId").passwordParameter("password").and()
+            .loginProcessingUrl("/login").usernameParameter("login").passwordParameter("password").and()
             .rememberMe().rememberMeParameter("remember-me").tokenRepository(tokenRepository)
             .tokenValiditySeconds(86400).and().csrf().and().exceptionHandling().accessDeniedPage("/Access_Denied");
     }

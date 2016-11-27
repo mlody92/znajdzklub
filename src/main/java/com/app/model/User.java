@@ -20,8 +20,8 @@ public class User implements Serializable {
     private Integer id;
 
     @NotEmpty
-    @Column(name = "SSO_ID", unique = true, nullable = false)
-    private String ssoId;
+    @Column(name = "LOGIN", unique = true, nullable = false)
+    private String login;
 
     @NotEmpty
     @Column(name = "PASSWORD", nullable = false)
@@ -59,12 +59,12 @@ public class User implements Serializable {
         this.id = id;
     }
 
-    public String getSsoId() {
-        return ssoId;
+    public String getLogin() {
+        return login;
     }
 
-    public void setSsoId(String ssoId) {
-        this.ssoId = ssoId;
+    public void setLogin(String login) {
+        this.login = login;
     }
 
     public String getPassword() {
@@ -104,7 +104,7 @@ public class User implements Serializable {
         final int prime = 31;
         int result = 1;
         result = prime * result + ((id == null) ? 0 : id.hashCode());
-        result = prime * result + ((ssoId == null) ? 0 : ssoId.hashCode());
+        result = prime * result + ((login == null) ? 0 : login.hashCode());
         return result;
     }
 
@@ -122,10 +122,10 @@ public class User implements Serializable {
                 return false;
         } else if (!id.equals(other.id))
             return false;
-        if (ssoId == null) {
-            if (other.ssoId != null)
+        if (login == null) {
+            if (other.login != null)
                 return false;
-        } else if (!ssoId.equals(other.ssoId))
+        } else if (!login.equals(other.login))
             return false;
         return true;
     }
@@ -136,7 +136,7 @@ public class User implements Serializable {
      */
     @Override
     public String toString() {
-        return "User [id=" + id + ", ssoId=" + ssoId + ", password=" + password
+        return "User [id=" + id + ", login=" + login + ", password=" + password
                    + ", firstName=" + firstName + ", lastName=" + lastName
                    + ", email=" + email + "]";
     }

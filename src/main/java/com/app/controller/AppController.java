@@ -9,7 +9,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
-import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationTrustResolver;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -44,7 +43,13 @@ public class AppController {
 
     @RequestMapping(value = {"/"}, method = RequestMethod.GET)
     public String home(ModelMap model) {
+        model.addAttribute("loggedinuser", getPrincipal());
         return "home";
+    }
+
+    @RequestMapping(value = {"/home"}, method = RequestMethod.GET)
+    public String home2(ModelMap model) {
+        return "redirect:/";
     }
 
     /**
@@ -92,9 +97,9 @@ public class AppController {
          * 
          */
         user.setRole("USER");
-        if (!userService.isUserSSOUnique(user.getId(), user.getSsoId())) {
-            FieldError ssoError = new FieldError("user", "ssoId", messageSource.getMessage("non.unique.ssoId", new String[]{user.getSsoId()}, Locale.getDefault()));
-            result.addError(ssoError);
+        if (!userService.isUserLoginUnique(user.getId(), user.getLogin())) {
+            FieldError loginError = new FieldError("user", "login", messageSource.getMessage("non.unique.login", new String[]{user.getLogin()}, Locale.getDefault()));
+            result.addError(loginError);
             return "register/register";
         }
 
@@ -109,9 +114,9 @@ public class AppController {
     /**
      * This method will provide the medium to update an existing user.
      */
-    @RequestMapping(value = {"/edit-user-{ssoId}"}, method = RequestMethod.GET)
-    public String editUser(@PathVariable String ssoId, ModelMap model) {
-        User user = userService.findBySSO(ssoId);
+    @RequestMapping(value = {"/edit-user-{login}"}, method = RequestMethod.GET)
+    public String editUser(@PathVariable String login, ModelMap model) {
+        User user = userService.findByLogin(login);
         model.addAttribute("user", user);
         model.addAttribute("edit", true);
         model.addAttribute("loggedinuser", getPrincipal());
@@ -122,9 +127,9 @@ public class AppController {
      * This method will be called on form submission, handling POST request for
      * updating user in database. It also validates the user input
      */
-    @RequestMapping(value = {"/edit-user-{ssoId}"}, method = RequestMethod.POST)
+    @RequestMapping(value = {"/edit-user-{login}"}, method = RequestMethod.POST)
     public String updateUser(@Valid User user, BindingResult result,
-                                ModelMap model, @PathVariable String ssoId) {
+                                ModelMap model, @PathVariable String login) {
 
         if (result.hasErrors()) {
             return "register/register";
@@ -147,9 +152,9 @@ public class AppController {
     /**
      * This method will delete an user by it's SSOID value.
      */
-    @RequestMapping(value = {"/delete-user-{ssoId}"}, method = RequestMethod.GET)
-    public String deleteUser(@PathVariable String ssoId) {
-        userService.deleteUserBySSO(ssoId);
+    @RequestMapping(value = {"/delete-user-{login}"}, method = RequestMethod.GET)
+    public String deleteUser(@PathVariable String login) {
+        userService.deleteUserByLogin(login);
         return "redirect:/list";
     }
 
@@ -166,6 +171,7 @@ public class AppController {
      */
     @RequestMapping(value = "/Access_Denied", method = RequestMethod.GET)
     public String accessDeniedPage(ModelMap model) {
+        model.addAttribute("isLogged", isCurrentAuthenticationAnonymous());
         model.addAttribute("loggedinuser", getPrincipal());
         return "login/accessDenied";
     }
@@ -176,12 +182,12 @@ public class AppController {
      */
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String loginPage() {
-        //        if (isCurrentAuthenticationAnonymous()) {
-        //            return "login/login";
-        //        } else {
-        //            return "redirect:/list";
-        //        }
-        return "login/login";
+        if (isCurrentAuthenticationAnonymous()) {
+            return "login/login";
+        } else {
+            return "redirect:/list";
+        }
+//        return "login/login";
     }
 
     /**
@@ -197,6 +203,14 @@ public class AppController {
             SecurityContextHolder.getContext().setAuthentication(null);
         }
         return "redirect:/login?logout";
+    }
+
+    @RequestMapping(value = {"/userList"}, method = RequestMethod.GET)
+    public String listUsers2(ModelMap model) {
+        List<User> users = userService.findAllUsers();
+        model.addAttribute("users", users);
+        model.addAttribute("loggedinuser", getPrincipal());
+        return "user/userList";
     }
 
     /**

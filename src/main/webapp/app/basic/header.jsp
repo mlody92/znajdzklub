@@ -3,7 +3,7 @@
 
 <header>
     <div class="logo">
-        <a href="/application/"><img src="<c:url value='/img/logo.png' />" title="Magnetic" alt="Magnetic"/></a>
+        <a href="home"><img src="<c:url value='/img/logo.png' />" title="Magnetic" alt="Magnetic"/></a>
     </div><!-- end logo -->
 
     <div id="menu_icon"></div>

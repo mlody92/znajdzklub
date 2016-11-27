@@ -22,10 +22,10 @@ public class UserDaoImpl extends AbstractDao<Integer, User> implements UserDao {
         return user;
     }
 
-    public User findBySSO(String sso) {
-        logger.info("SSO : {}", sso);
+    public User findByLogin(String login) {
+        logger.info("Login : {}", login);
         Criteria crit = createEntityCriteria();
-        crit.add(Restrictions.eq("ssoId", sso));
+        crit.add(Restrictions.eq("login", login));
         User user = (User)crit.uniqueResult();
 //        if(user!=null){
 //            Hibernate.initialize(user.getUsers());
@@ -52,9 +52,9 @@ public class UserDaoImpl extends AbstractDao<Integer, User> implements UserDao {
         persist(user);
     }
 
-    public void deleteBySSO(String sso) {
+    public void deleteByLogin(String login) {
         Criteria crit = createEntityCriteria();
-        crit.add(Restrictions.eq("ssoId", sso));
+        crit.add(Restrictions.eq("login", login));
         User user = (User)crit.uniqueResult();
         delete(user);
     }
