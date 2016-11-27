@@ -35,7 +35,7 @@ public class SimpleCORSFilter implements Filter {
         response.setHeader("Access-Control-Max-Age", "3600");
         response.setHeader("Access-Control-Allow-Headers", "Origin, Content-Type, Accept, X-Requested-With, remember-me");
         response.setHeader("Vary", "Origin");
-        response.setHeader("Access-Control-Allow-Origin", "http://localhost:8080");
+        response.setHeader("Access-Control-Allow-Origin", "https://znajdzklub.herokuapp.com");
         chain.doFilter(req, res);
     }
 
