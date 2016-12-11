@@ -114,7 +114,7 @@
                             <div class="form-group col-md-12">
                                 <label class="col-md-3 control-lable" for="email">Email</label>
                                 <div class="col-md-7">
-                                    <form:input type="text" path="email" id="email" class="form-control input-sm"/>
+                                    <form:input type="email" path="email" id="email" class="form-control input-sm"/>
                                     <div class="has-error">
                                         <form:errors path="email" class="help-inline"/>
                                     </div>

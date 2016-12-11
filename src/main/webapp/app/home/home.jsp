@@ -2,11 +2,11 @@
 
 <section class="main clearfix">
     <div class="work">
-        <a href="/application/inner">
+        <a href="/application/sztukiWalki">
             <img src="<c:url value='/img/work1.jpg' />" class="media" alt=""/>
             <div class="caption">
                 <div class="work_title">
-                    <h1>culpa qui officia deserunt mollit</h1>
+                    <h1>Sztuki walki</h1>
                 </div>
             </div>
         </a>

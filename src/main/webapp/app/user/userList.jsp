@@ -7,15 +7,6 @@
     <section class="main clearfix">
         <section class="top">
             <div class="wrapper content_header clearfix">
-                <div class="work_nav">
-
-                    <ul class="btn clearfix">
-                        <li><a href="#" class="previous" data-title="Previous"></a></li>
-                        <li><a href="index.html" class="grid" data-title="Portfolio"></a></li>
-                        <li><a href="#" class="next" data-title="Next"></a></li>
-                    </ul>
-
-                </div><!-- end work_nav -->
                 <h1 class="title">Lista użytkowników</h1>
             </div>
         </section>
@@ -23,66 +14,78 @@
 
         <section class="wrapper">
             <div class="content ">
-                <div id="mainWrapper">
-                    <%--<div class="generic-container">--%>
-                            <%--<%@include file="authheader.jsp" %>--%>
-                        <div class="panel panel-default">
-                            <!-- Default panel contents -->
-                            <%--<div class="panel-heading"><span class="lead">List of Users </span></div>--%>
-
-                            <%--<div ng-app="app" ng-controller='customersCtrl'>--%>
-                                <%--<tbody>--%>
-                                <%--<tr ng-repeat="item in names | orderBy:sortingOrder:reverse">--%>
-                                    <%--<td>{{item.id}}</td>--%>
-                                <%--</tr>--%>
-                                <%--</tbody>--%>
-                            <%--</div>--%>
-
-
-                            <table class="table table-hover">
-                                <thead>
-                                <tr>
-                                    <th>Imię</th>
-                                    <th>Nazwisko</th>
-                                    <th>Email</th>
-                                    <th>Login</th>
-                                    <th>Rola</th>
-                                    <sec:authorize access="hasRole('ADMIN')">
-                                        <th width="100"></th>
-                                    </sec:authorize>
-
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <c:forEach items="${users}" var="user">
-                                    <tr>
-                                        <td>${user.firstName}</td>
-                                        <td>${user.lastName}</td>
-                                        <td>${user.email}</td>
-                                        <td>${user.login}</td>
-                                        <td>${user.role}</td>
-                                        <sec:authorize access="hasRole('ADMIN')">
-                                            <td><a href="<c:url value='/edit-user-${user.login}' />" class="btn btn-success custom-width">edytuj</a></td>
-                                        </sec:authorize>
-                                        <sec:authorize access="hasRole('ADMIN')">
-                                            <td><a href="<c:url value='/delete-user-${user.login}' />" class="btn btn-danger custom-width">usuń</a></td>
-                                        </sec:authorize>
-                                    </tr>
-                                </c:forEach>
-                                </tbody>
-                            </table>
-                        <%--</div>--%>
-                            <%--<sec:authorize access="hasRole('ADMIN')">--%>
-                            <%--<div class="well">--%>
-                            <%--<a href="<c:url value='/register' />">Add New User</a>--%>
-                            <%--</div>--%>
-                            <%--</sec:authorize>--%>
-                    <%--</div>--%>
+                <div id="mainWrapper" ng-app="app">
+                    <div class="panel panel-default">
+                        <!-- Default panel contents -->
+                        <div  ng-controller="SztukiWalkiCtrl">
+                            <div ui-grid="gridOptions" class="table table-hover"></div>
+                        </div>
+                    </div>
                 </div>
-
                 <div class="col-md-6 col-md-offset-3">
                 </div>
+            </div>
             </div><!-- end content -->
         </section>
     </section>
+
+    <script>
+        var app = angular.module('app', ['ngTouch', 'ui.grid', 'ui.grid.autoResize', 'ngMaterial']);
+
+        app.controller('SztukiWalkiCtrl', function ($scope, $http, $location, $mdDialog, $mdMedia) {
+            $scope.gridOptions = {
+                enableColumnResizing: true,
+                resizable: true
+            };
+            //you can override the default assignment if you wish
+            //$scope.gridOptions.appScopeProvider = someOtherReference;
+
+            $scope.gridOptions.columnDefs = [
+                {name: 'Imię', field: "firstName"},
+                {name: 'Nazwisko', field: "lastName"},
+                {name: 'Email', field: "email"},
+                {name: 'Login', field: "login"},
+                {name: 'Rola', field: "role"},
+                {
+                    name: 'action',
+                    displayName:'',
+                    enableSorting: false,
+                    cellTemplate: '<md-button ng-href="edit-user-{{row.entity.login}}"><span class="glyphicon glyphicon-pencil"></span></md-button><md-button ng-click="grid.appScope.showConfirm($event, row.entity.login)"><span class="glyphicon glyphicon-trash"></md-button>'
+                }
+            ];
+
+            delete $http.defaults.headers.common["X-Requested-With"];
+            $http.get('listUser').success(function (response, status) {
+                $scope.gridOptions.data = response;
+            }).error(function () {
+                alert("Failed to access");
+            });
+
+            $scope.customFullscreen = $mdMedia('xs') || $mdMedia('sm');
+            $scope.showConfirm = function (ev, data) {
+                // Appending dialog to document.body to cover sidenav in docs app
+                var login = data;
+                var confirm = $mdDialog.confirm()
+                        .title('Pytanie')
+                        .textContent('Czy na pewno chcesz usunąć użytkownika: '+login)
+                        .ariaLabel('Lucky day')
+                        .targetEvent(ev)
+                        .ok('Tak')
+                        .cancel('Nie');
+                $mdDialog.show(confirm).then(function () {
+                    location.href = 'delete-user-'+login;
+                });
+            };
+        });
+
+//        function DialogController($scope, $mdDialog) {
+//            $scope.hide = function () {
+//                $mdDialog.hide();
+//            };
+//            $scope.cancel = function () {
+//                $mdDialog.cancel();
+//            };
+//        }
+    </script>
+
 </t:wrapper>

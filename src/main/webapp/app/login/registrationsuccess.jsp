@@ -7,14 +7,12 @@
 <t:wrapper>
     <section class="main clearfix">
     <div class="generic-container">
-        <%@include file="authheader.jsp" %>
-
         <div class="alert alert-success lead">
                 ${success}
         </div>
 
         <span class="well floatRight">
-            Go to <a href="<c:url value='/list' />">Users List</a>
+            <a href="<c:url value='/login' />">Zaloguj</a>
         </span>
     </div>
         </section>

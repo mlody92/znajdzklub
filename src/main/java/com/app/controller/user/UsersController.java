@@ -37,7 +37,7 @@ public class UsersController {
     AuthenticationTrustResolver authenticationTrustResolver;
 
     @CrossOrigin
-    @RequestMapping(value = "/list2", method = RequestMethod.GET)
+    @RequestMapping(value = "/listUser", method = RequestMethod.GET)
     @ResponseBody
     public List<User> get() {
         List<User> listUser = userService.findAllUsers();
