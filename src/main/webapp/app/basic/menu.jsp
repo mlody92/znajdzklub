@@ -17,5 +17,6 @@
             <li><a href="login">Zaloguj</a></li>
         </sec:authorize>
         <li><a href="addClub">Dodaj klub</a></li>
+        <li><a href="addCategory">Dodaj kategorię</a></li>
     </ul>
 </nav>

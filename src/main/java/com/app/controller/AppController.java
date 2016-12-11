@@ -1,8 +1,10 @@
 package com.app.controller;
 
 import com.app.model.Advert;
+import com.app.model.Category;
 import com.app.model.User;
 import com.app.service.AdvertService;
+import com.app.service.CategoryService;
 import com.app.service.UserService;
 import java.sql.Date;
 import java.time.LocalDate;
@@ -249,7 +251,7 @@ public class AppController {
         }
         advert.setAddress("ares");
         advert.setCategoryId(1);
-        advert.setDate(Date.valueOf("2015-01-01"));
+        advert.setDate(Date.valueOf("2016,"));
         advert.setDescription("asd");
         advert.setEmail("asd");
         advert.setPhone("213");
@@ -259,6 +261,32 @@ public class AppController {
         advertService.save(advert);
 
         model.addAttribute("success", "Ogłoszenie " + advert.getTitle() + " zostało poprawnie dodane.");
+        model.addAttribute("loggedinuser", getPrincipal());
+        return "home";
+    }
+
+    @Autowired
+    CategoryService categoryService;
+
+    @RequestMapping(value = {"/addCategory"}, method = RequestMethod.GET)
+    public String newCategory(ModelMap model) {
+        Category category = new Category();
+        model.addAttribute("category", category);
+        model.addAttribute("edit", false);
+        model.addAttribute("loggedinuser", getPrincipal());
+        return "clubs/addCategory";
+    }
+
+    @RequestMapping(value = {"/addCategory"}, method = RequestMethod.POST)
+    public String saveCategory(@Valid Category category, BindingResult result,
+                          ModelMap model) {
+
+        if (result.hasErrors()) {
+            return "clubs/addCategory";
+        }
+        categoryService.save(category);
+
+        model.addAttribute("success", "Kategoria " + category.getName() + " została poprawnie dodana.");
         model.addAttribute("loggedinuser", getPrincipal());
         return "home";
     }
