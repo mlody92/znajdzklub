@@ -5,8 +5,6 @@ import java.util.List;
 
 public interface UserService
 {
-//    public boolean isValidUser(String username, String password) throws SQLException;
-
     User findById(int id);
 
     User findByLogin(String login);

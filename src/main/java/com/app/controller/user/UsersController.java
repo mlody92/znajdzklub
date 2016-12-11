@@ -27,15 +27,6 @@ public class UsersController {
     @Autowired
     UserService userService;
 
-    @Autowired
-    MessageSource messageSource;
-
-    @Autowired
-    PersistentTokenBasedRememberMeServices persistentTokenBasedRememberMeServices;
-
-    @Autowired
-    AuthenticationTrustResolver authenticationTrustResolver;
-
     @CrossOrigin
     @RequestMapping(value = "/listUser", method = RequestMethod.GET)
     @ResponseBody

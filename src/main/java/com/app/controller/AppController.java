@@ -1,7 +1,12 @@
 package com.app.controller;
 
+import com.app.model.Advert;
 import com.app.model.User;
+import com.app.service.AdvertService;
 import com.app.service.UserService;
+import java.sql.Date;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -32,6 +37,9 @@ public class AppController {
     UserService userService;
 
     @Autowired
+    AdvertService advertService;
+
+    @Autowired
     MessageSource messageSource;
 
     @Autowired
@@ -50,18 +58,6 @@ public class AppController {
     public String home2(ModelMap model) {
         return "redirect:/";
     }
-
-    /**
-     * This method will list all existing users.
-     */
-//    @RequestMapping(value = {"/list"}, method = RequestMethod.GET)
-//    public String listUsers(ModelMap model) {
-//
-//        List<User> users = userService.findAllUsers();
-//        model.addAttribute("users", users);
-//        model.addAttribute("loggedinuser", getPrincipal());
-//        return "login/userlist";
-//    }
 
     /**
      * This method will provide the medium to add a new user.
@@ -233,5 +229,37 @@ public class AppController {
     private boolean isCurrentAuthenticationAnonymous() {
         final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         return authenticationTrustResolver.isAnonymous(authentication);
+    }
+
+    @RequestMapping(value = {"/addClub"}, method = RequestMethod.GET)
+    public String newClub(ModelMap model) {
+        Advert advert = new Advert();
+        model.addAttribute("advert", advert);
+        model.addAttribute("edit", false);
+        model.addAttribute("loggedinuser", getPrincipal());
+        return "clubs/addClub";
+    }
+
+    @RequestMapping(value = {"/addClub"}, method = RequestMethod.POST)
+    public String save(@Valid Advert advert, BindingResult result,
+                              ModelMap model) {
+
+        if (result.hasErrors()) {
+            return "clubs/addClub";
+        }
+        advert.setAddress("ares");
+        advert.setCategoryId(1);
+        advert.setDate(Date.valueOf("2015-01-01"));
+        advert.setDescription("asd");
+        advert.setEmail("asd");
+        advert.setPhone("213");
+        advert.setPostalCode("23");
+        advert.setStatus("st");
+        advert.setWebsite("web");
+        advertService.save(advert);
+
+        model.addAttribute("success", "Ogłoszenie " + advert.getTitle() + " zostało poprawnie dodane.");
+        model.addAttribute("loggedinuser", getPrincipal());
+        return "home";
     }
 }
