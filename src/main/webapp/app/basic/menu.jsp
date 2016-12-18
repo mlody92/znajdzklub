@@ -4,7 +4,12 @@
 <nav>
     <ul>
         <li><a href="home" class="selected">Start</a></li>
-        <li><a href="#/contact">Kontakt</a></li>
+        <sec:authorize access="isAnonymous()">
+            <li><a href="register">Zarejestruj</a></li>
+            <li><a href="login">Zaloguj</a></li>
+        </sec:authorize>
+        <li><a href="addClub">Dodaj klub</a></li>
+        <li><a href="addCategory">Dodaj kategorię</a></li>
         <sec:authorize access="isAuthenticated()">
             <li><a href="userList">Lista użytkowników</a></li>
             <li>
@@ -12,11 +17,6 @@
             </li>
         </sec:authorize>
 
-        <sec:authorize access="isAnonymous()">
-            <li><a href="register">Zarejestruj</a></li>
-            <li><a href="login">Zaloguj</a></li>
-        </sec:authorize>
-        <li><a href="addClub">Dodaj klub</a></li>
-        <li><a href="addCategory">Dodaj kategorię</a></li>
+        <li><a href="clubsList">Lista klubów</a></li>
     </ul>
 </nav>

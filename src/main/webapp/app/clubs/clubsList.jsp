@@ -7,7 +7,7 @@
     <section class="main clearfix">
         <section class="top">
             <div class="wrapper content_header clearfix">
-                <h1 class="title">Lista użytkowników</h1>
+                <h1 class="title">Lista klubów</h1>
             </div>
         </section>
         <!-- end top -->
@@ -17,7 +17,7 @@
                 <div id="mainWrapper" ng-app="app">
                     <div class="panel panel-default">
                         <!-- Default panel contents -->
-                        <div  ng-controller="UserListCtrl">
+                        <div  ng-controller="ClubListCtrl">
                             <div ui-grid="gridOptions" class="table table-hover"></div>
                         </div>
                     </div>
