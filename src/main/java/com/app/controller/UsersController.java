@@ -3,16 +3,13 @@ package com.app.controller;
 import com.app.model.User;
 import com.app.service.UserService;
 import java.util.List;
-import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationTrustResolver;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.web.authentication.rememberme.PersistentTokenBasedRememberMeServices;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -20,6 +17,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -46,35 +44,29 @@ public class UsersController {
         return listUser;
     }
 
+    @RequestMapping(value = {"registerjson"}, method = RequestMethod.POST)
+    @ResponseStatus(value = HttpStatus.OK)
+    public @ResponseBody ResponseEntity saveUser2(@RequestBody String user) {
+        System.out.println(user);
+        return new ResponseEntity(user, HttpStatus.OK);
+    }
+
     @RequestMapping(value = {"/register"}, method = RequestMethod.POST)
-    public String saveUser(@Valid User user, BindingResult result,
+    @ResponseStatus(HttpStatus.OK)
+    public @ResponseBody ResponseEntity saveUser(@RequestBody @Valid User user, BindingResult result,
                               ModelMap model) {
-
-        if (result.hasErrors()) {
-            return "register/register";
-        }
-
-        /*
-         * Preferred way to achieve uniqueness of field [sso] should be implementing custom @Unique annotation
-         * and applying it on field [sso] of Model class [User].
-         *
-         * Below mentioned peace of code [if block] is to demonstrate that you can fill custom errors outside the validation
-         * framework as well while still using internationalized messages.
-         *
-         */
         user.setRole("USER");
         if (!userService.isUserLoginUnique(user.getId(), user.getLogin())) {
             FieldError loginError = new FieldError("user", "login", "Podany login już istnieje!");
             result.addError(loginError);
-            return "register/register";
+            return new ResponseEntity(loginError, HttpStatus.OK);
         }
 
         userService.saveUser(user);
-
         model.addAttribute("success", "Użytkownik " + user.getFirstName() + " " + user.getLastName() + " został poprawnie zarejestrowany.");
         model.addAttribute("loggedinuser", getPrincipal());
         //return "success";
-        return "login/registrationsuccess";
+        return new ResponseEntity(user, HttpStatus.OK);
     }
 
     /**

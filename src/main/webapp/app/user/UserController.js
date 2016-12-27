@@ -1,6 +1,4 @@
 'use strict';
-var app = angular.module('app', ['ngTouch', 'ui.grid', 'ui.grid.autoResize', 'ngMaterial', 'ui.grid.resizeColumns']);
-
 app.controller('UserListCtrl', function ($scope, $http, $location, $mdDialog, $mdMedia) {
     $scope.gridOptions = {
         enableColumnResizing: true,
