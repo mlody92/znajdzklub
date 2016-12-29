@@ -4,7 +4,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <t:wrapper>
-    <section class="main clearfix">
+    <section id="center-region-container" class="main clearfix">
         <section class="top">
             <div class="wrapper content_header clearfix">
                 <h1 class="title">Lista użytkowników</h1>

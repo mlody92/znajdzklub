@@ -4,16 +4,15 @@ import com.app.model.User;
 import com.app.service.UserService;
 import java.util.List;
 import javax.validation.Valid;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,7 +21,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 @Controller
@@ -51,22 +49,24 @@ public class UsersController {
         return new ResponseEntity(user, HttpStatus.OK);
     }
 
-    @RequestMapping(value = {"/register"}, method = RequestMethod.POST)
+    @RequestMapping(value = {"/register"}, method = RequestMethod.POST, produces={"application/json; charset=UTF-8"})
     @ResponseStatus(HttpStatus.OK)
     public @ResponseBody ResponseEntity saveUser(@RequestBody @Valid User user, BindingResult result,
-                              ModelMap model) {
+                                                    ModelMap model) {
+        JSONObject json = new JSONObject();
         user.setRole("USER");
         if (!userService.isUserLoginUnique(user.getId(), user.getLogin())) {
-            FieldError loginError = new FieldError("user", "login", "Podany login już istnieje!");
-            result.addError(loginError);
-            return new ResponseEntity(loginError, HttpStatus.OK);
+            json.put("success", false);
+            json.put("error", "Podany login już istnieje");
+            return new ResponseEntity(json.toString(), HttpStatus.OK);
         }
 
         userService.saveUser(user);
         model.addAttribute("success", "Użytkownik " + user.getFirstName() + " " + user.getLastName() + " został poprawnie zarejestrowany.");
         model.addAttribute("loggedinuser", getPrincipal());
-        //return "success";
-        return new ResponseEntity(user, HttpStatus.OK);
+        json.put("success", true);
+        json.put("data", user);
+        return new ResponseEntity(json.toString(), HttpStatus.OK);
     }
 
     /**

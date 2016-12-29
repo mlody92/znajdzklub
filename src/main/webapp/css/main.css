@@ -1419,3 +1419,7 @@ h5, h6          { font-weight: bolder }
     top: 50%;
     left:55%;
 }
+
+p.help-block {
+    margin-bottom: 0px;
+}
