@@ -42,14 +42,15 @@ public class UsersController {
         return listUser;
     }
 
-    @RequestMapping(value = {"registerjson"}, method = RequestMethod.POST)
-    @ResponseStatus(value = HttpStatus.OK)
-    public @ResponseBody ResponseEntity saveUser2(@RequestBody String user) {
-        System.out.println(user);
-        return new ResponseEntity(user, HttpStatus.OK);
+    @RequestMapping(value = "/user-{login}", method = RequestMethod.GET)
+    @ResponseBody
+    public User getUser(@PathVariable String login) {
+        User user = userService.findByLogin(login);
+        user.setPassword("");
+        return user;
     }
 
-    @RequestMapping(value = {"/register"}, method = RequestMethod.POST, produces={"application/json; charset=UTF-8"})
+    @RequestMapping(value = {"/register"}, method = RequestMethod.POST, produces = {"application/json; charset=UTF-8"})
     @ResponseStatus(HttpStatus.OK)
     public @ResponseBody ResponseEntity saveUser(@RequestBody @Valid User user, BindingResult result,
                                                     ModelMap model) {
@@ -81,16 +82,15 @@ public class UsersController {
         return "register/register";
     }
 
-    /**
-     * This method will be called on form submission, handling POST request for
-     * updating user in database. It also validates the user input
-     */
-    @RequestMapping(value = {"/edit-user-{login}"}, method = RequestMethod.POST)
-    public String updateUser(@Valid User user, BindingResult result,
-                                ModelMap model, @PathVariable String login) {
+    @RequestMapping(value = {"/edit-user-{login}"}, method = RequestMethod.POST, produces = {"application/json; charset=UTF-8"})
+    public ResponseEntity updateUser(@RequestBody @Valid User user, BindingResult result,
+                                        ModelMap model, @PathVariable String login) {
 
+        JSONObject json = new JSONObject();
         if (result.hasErrors()) {
-            return "register/register";
+            json.put("success", false);
+            json.put("error", result);
+            return new ResponseEntity(json.toString(), HttpStatus.OK);
         }
 
         /*//Uncomment below 'if block' if you WANT TO ALLOW UPDATING SSO_ID in UI which is a unique key to a User.
@@ -101,10 +101,12 @@ public class UsersController {
         }*/
 
         userService.updateUser(user);
-
-        model.addAttribute("success", "User " + user.getFirstName() + " " + user.getLastName() + " updated successfully");
+        model.addAttribute("success", "Użytkownik " + user.getFirstName() + " " + user.getLastName() + " został poprawnie zarejestrowany.");
         model.addAttribute("loggedinuser", getPrincipal());
-        return "login/registrationsuccess";
+
+        json.put("success", true);
+        json.put("data", user);
+        return new ResponseEntity(json.toString(), HttpStatus.OK);
     }
 
     /**

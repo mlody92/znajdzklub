@@ -1,5 +1,5 @@
 'use strict';
-var app = angular.module('app', ['ngTouch', 'ui.grid', 'ui.grid.autoResize', 'ngMaterial', 'ui.grid.resizeColumns']);
+var app = angular.module('app', ['ngTouch', 'ui.grid', 'ui.grid.autoResize', 'ngMaterial', 'ui.grid.resizeColumns', 'ngRoute']);
 app.controller('AppCtrl', ['$interval',
     function ($interval) {
         var self = this;

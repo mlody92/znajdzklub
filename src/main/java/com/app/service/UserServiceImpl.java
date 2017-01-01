@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service("userService")
 @Transactional
-public class UserServiceImpl implements UserService{
+public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserDao dao;
@@ -40,18 +40,16 @@ public class UserServiceImpl implements UserService{
      */
     public void updateUser(User user) {
         User entity = dao.findById(user.getId());
-        if(entity!=null){
+        if (entity != null) {
             entity.setLogin(user.getLogin());
-            if(!user.getPassword().equals(entity.getPassword())){
-                entity.setPassword(passwordEncoder.encode(user.getPassword()));
-            }
             entity.setFirstName(user.getFirstName());
             entity.setLastName(user.getLastName());
             entity.setEmail(user.getEmail());
-            entity.setRole(user.getRole());
+            if (!user.getRole().isEmpty()) {
+                entity.setRole(user.getRole());
+            }
         }
     }
-
 
     public void deleteUserByLogin(String login) {
         dao.deleteByLogin(login);
@@ -63,6 +61,6 @@ public class UserServiceImpl implements UserService{
 
     public boolean isUserLoginUnique(Integer id, String login) {
         User user = findByLogin(login);
-        return ( user == null || ((id != null) && (user.getId() == id)));
+        return (user == null || ((id != null) && (user.getId() == id)));
     }
 }

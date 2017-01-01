@@ -39,7 +39,7 @@
                             <div class="col-sm-6">
                                 <!-- FORM ============ -->
 
-                                <form name="userForm" ng-submit="submitForm(user)" method="post" novalidate modelAttribute="user" enctype="text/plain">
+                                <form name="userForm" ng-submit="submitForm(user, ${edit})" method="post" novalidate modelAttribute="user" enctype="text/plain">
                                     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                                     <input type="hidden" path="id" id="id"/>
 
@@ -80,35 +80,18 @@
                                         <p ng-show="userForm.email.$invalid && !userForm.email.$pristine" class="help-block">Wpisz poprawny adres e-mail.</p>
                                     </div>
 
-
-                                    <!-- Password -->
-                                    <div class="form-group" ng-class="{ 'has-error' : userForm.password.$invalid && !userForm.password.$pristine }">
-                                        <label>Hasło *</label>
-                                        <input type="password" name="password" class="form-control" ng-model="user.password" required ng-minlength="5" ng-maxlength="30">
-                                        <p ng-show="userForm.password.$error.minlength" class="help-block">Hasło jest zbyt krótkie.</p>
-                                        <p ng-show="userForm.password.$error.maxlength" class="help-block">Hasło jest zbyt długie.</p>
-                                    </div>
-                                    <div class="form-group" ng-class="{ 'has-error' : userForm.confirmPassword.$invalid && !userForm.confirmPassword.$pristine }">
-                                        <label>Powtórz hasło *</label>
-                                        <input type="password" name="confirmPassword" class="form-control" ng-model="user.confirmPassword" required compare-to="user.password">
-                                        <p ng-show="userForm.confirmPassword.$invalid && !userForm.confirmPassword.$pristine" class="help-block">Hasła nie są takie same.</p>
-                                    </div>
                                     <sec:authorize access="hasRole('ADMIN')">
-                                        <div class="row">
-                                            <div class="form-group col-md-12">
-                                                <label class="col-md-3 control-lable">Roles</label>
-                                                <div class="col-md-7">
-                                                    <select path="role" multiple="false" class="form-control input-sm">
-                                                        <option value="USER">User</option>
-                                                        <option value="ADMIN">Admin</option>
-                                                    </select>
-                                                </div>
-                                            </div>
+                                        <div class="form-group">
+                                            <label>Uprawnienie</label>
+                                            <select id="roleList" ng-model="user.role" class="form-control input-sm">
+                                                <option value="ADMIN">Administrator</option>
+                                                <option value="USER">Użytkownik</option>
+                                            </select>
                                         </div>
                                     </sec:authorize>
                                     <c:choose>
                                         <c:when test="${edit}">
-                                            <input type="submit" value="Update" class="btn btn-primary btn-sm" ng-disabled="userForm.$invalid"/> or <a href="<c:url value='/userList' />">Cancel</a>
+                                            <input type="submit" value="Zapisz" class="btn btn-primary btn-sm" ng-disabled="userForm.$invalid"/> or <a href="<c:url value='/userList' />">Anuluj</a>
                                         </c:when>
                                         <c:otherwise>
                                             <input type="submit" value="Zarejestruj" class="btn btn-primary btn-sm" ng-disabled="userForm.$invalid"/>

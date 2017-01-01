@@ -22,7 +22,6 @@ public class User implements Serializable {
     @Column(name = "LOGIN", unique = true, nullable = false)
     private String login;
 
-    @NotEmpty
     @Column(name = "PASSWORD", nullable = false)
     private String password;
 
@@ -38,7 +37,6 @@ public class User implements Serializable {
     @Column(name = "EMAIL", nullable = false)
     private String email;
 
-//    @NotEmpty
     @Column(name = "ROLE", nullable = false)
     private String role;
 

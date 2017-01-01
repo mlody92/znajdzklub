@@ -15,7 +15,7 @@ app.controller('UserListCtrl', function ($scope, $http, $location, $mdDialog, $m
             name: 'action',
             displayName:'',
             enableSorting: false,
-            cellTemplate: '<md-button ng-href="edit-user-{{row.entity.login}}"><span class="glyphicon glyphicon-pencil"></span></md-button><md-button ng-click="grid.appScope.showConfirm($event, row.entity.login)"><span class="glyphicon glyphicon-trash"></md-button>'
+            cellTemplate: '<md-button ng-href="edit-user-{{row.entity.login}}#?login={{row.entity.login}}"><span class="glyphicon glyphicon-pencil"></span></md-button><md-button ng-click="grid.appScope.showConfirm($event, row.entity.login)"><span class="glyphicon glyphicon-trash"></md-button>'
         }
     ];
 
