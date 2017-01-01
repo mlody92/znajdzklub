@@ -4,7 +4,6 @@
  */
 package com.app.dao;
 
-import com.app.model.Advert;
 import com.app.model.Category;
 import java.util.List;
 import org.hibernate.Criteria;
@@ -36,11 +35,18 @@ public class CategoryDaoImpl extends AbstractDao<Integer, Category> implements C
         persist(category);
     }
 
-    public void delete(int id) {
+    public void delete(String name) {
         Criteria crit = createEntityCriteria();
-        crit.add(Restrictions.eq("id", id));
-        Category category = (Category)crit.uniqueResult();
+        crit.add(Restrictions.eq("name", name));
+        Category category = (Category) crit.uniqueResult();
         delete(category);
     }
 
+    public Category findByName(String name) {
+        logger.info("Name : {}", name);
+        Criteria crit = createEntityCriteria();
+        crit.add(Restrictions.eq("name", name));
+        Category category = (Category) crit.uniqueResult();
+        return category;
+    }
 }

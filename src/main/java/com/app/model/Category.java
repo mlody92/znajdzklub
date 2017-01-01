@@ -58,12 +58,15 @@ public class Category implements Serializable {
             return false;
         if (!(obj instanceof User))
             return false;
+
         Category other = (Category) obj;
+        //id
         if (id == null) {
             if (other.id != null)
                 return false;
         } else if (!id.equals(other.id))
             return false;
+        //name
         if (name == null) {
             if (other.name != null)
                 return false;

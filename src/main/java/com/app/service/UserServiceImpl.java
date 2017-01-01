@@ -45,9 +45,7 @@ public class UserServiceImpl implements UserService {
             entity.setFirstName(user.getFirstName());
             entity.setLastName(user.getLastName());
             entity.setEmail(user.getEmail());
-            if (!user.getRole().isEmpty()) {
-                entity.setRole(user.getRole());
-            }
+            entity.setRole(user.getRole());
         }
     }
 

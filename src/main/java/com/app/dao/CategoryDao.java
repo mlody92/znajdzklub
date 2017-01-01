@@ -12,9 +12,11 @@ public interface CategoryDao {
 
     Category findById(int id);
 
+    Category findByName(String name);
+
     void save(Category user);
 
-    void delete(int id);
+    void delete(String name);
 
     List<Category> findAll();
 }

@@ -158,12 +158,15 @@ public class Advert implements Serializable {
             return false;
         if (!(obj instanceof User))
             return false;
+
         Advert other = (Advert) obj;
+        //id
         if (id == null) {
             if (other.id != null)
                 return false;
         } else if (!id.equals(other.id))
             return false;
+        //title
         if (title == null) {
             if (other.title!= null)
                 return false;

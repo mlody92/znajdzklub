@@ -13,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service("categoryService")
 @Transactional
-public class CategoryServiceImpl implements CategoryService{
+public class CategoryServiceImpl implements CategoryService {
 
     @Autowired
     private CategoryDao dao;
@@ -35,11 +35,21 @@ public class CategoryServiceImpl implements CategoryService{
         }
     }
 
-    public void delete(int id) {
-        dao.delete(id);
+    public void delete(String name) {
+        dao.delete(name);
     }
 
     public List<Category> findAll() {
         return dao.findAll();
+    }
+
+    public boolean isNameUnique(Integer id, String name) {
+        Category category = findByName(name);
+        return (category == null || ((id != null) && (category.getId() == id)));
+    }
+
+    public Category findByName(String name) {
+        Category category = dao.findByName(name);
+        return category;
     }
 }

@@ -18,6 +18,7 @@
 <script src="<c:url value='/app/AppController.js' />"></script>
 <script src="<c:url value='/app/user/UserController.js' />"></script>
 <script src="<c:url value='/app/clubs/ClubController.js' />"></script>
+<script src="<c:url value='/app/category/CategoryController.js' />"></script>
 <script src="<c:url value='/app/register/RegisterController.js' />"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/ngStorage/0.3.6/ngStorage.min.js"></script>
 <script src="http://ui-grid.info/docs/grunt-scripts/csv.js"></script>

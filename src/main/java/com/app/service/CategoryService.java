@@ -11,11 +11,15 @@ public interface CategoryService {
 
     Category findById(int id);
 
+    Category findByName(String name);
+
     String save(Category category);
 
     void update(Category category);
 
-    void delete(int id);
+    void delete(String name);
 
     List<Category> findAll();
+
+    boolean isNameUnique(Integer id, String name);
 }

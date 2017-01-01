@@ -80,6 +80,41 @@
                                         <p ng-show="userForm.email.$invalid && !userForm.email.$pristine" class="help-block">Wpisz poprawny adres e-mail.</p>
                                     </div>
 
+                                    <c:choose>
+                                        <c:when test="${edit}">
+                                        </c:when>
+                                        <c:otherwise>
+                                            <!-- Password -->
+                                            <div class="form-group" ng-class="{ 'has-error' : userForm.password.$invalid && !userForm.password.$pristine }">
+                                                <label>Hasło *</label>
+                                                <c:choose>
+                                                    <c:when test="${edit}">
+                                                        <input type="password" name="password" class="form-control" ng-model="user.password"  ng-minlength="5" ng-maxlength="30">
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        <input type="password" name="password" class="form-control" ng-model="user.password" required ng-minlength="5" ng-maxlength="30">
+                                                    </c:otherwise>
+                                                </c:choose>
+                                                <p ng-show="userForm.password.$error.minlength" class="help-block">Hasło jest zbyt krótkie.</p>
+                                                <p ng-show="userForm.password.$error.maxlength" class="help-block">Hasło jest zbyt długie.</p>
+                                            </div>
+                                            <div class="form-group" ng-class="{ 'has-error' : userForm.confirmPassword.$invalid && !userForm.confirmPassword.$pristine }">
+                                                <label>Powtórz hasło *</label>
+                                                <c:choose>
+                                                    <c:when test="${edit}">
+                                                        <input type="password" name="confirmPassword" class="form-control" ng-model="user.confirmPassword">
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        <input type="password" name="confirmPassword" class="form-control" ng-model="user.confirmPassword" required compare-to="user.password">
+                                                    </c:otherwise>
+                                                </c:choose>
+                                                <p ng-show="userForm.confirmPassword.$invalid && !userForm.confirmPassword.$pristine" class="help-block">Hasła nie są takie same.</p>
+                                            </div>
+                                        </c:otherwise>
+                                    </c:choose>
+
+
+
                                     <sec:authorize access="hasRole('ADMIN')">
                                         <div class="form-group">
                                             <label>Uprawnienie</label>
@@ -91,7 +126,7 @@
                                     </sec:authorize>
                                     <c:choose>
                                         <c:when test="${edit}">
-                                            <input type="submit" value="Zapisz" class="btn btn-primary btn-sm" ng-disabled="userForm.$invalid"/> or <a href="<c:url value='/userList' />">Anuluj</a>
+                                            <input type="submit" value="Zapisz" class="btn btn-primary btn-sm" ng-disabled="userForm.$invalid"/> or <input action="action" type="button" value="Powrót" onclick="history.go(-1);" />
                                         </c:when>
                                         <c:otherwise>
                                             <input type="submit" value="Zarejestruj" class="btn btn-primary btn-sm" ng-disabled="userForm.$invalid"/>
@@ -101,6 +136,7 @@
                             </div>
                         </div>
                     </div><!-- end content -->
+                </div>
             </section>
         </section>
     </div>

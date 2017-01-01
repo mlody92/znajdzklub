@@ -113,16 +113,25 @@ public class User implements Serializable {
             return false;
         if (!(obj instanceof User))
             return false;
+
         User other = (User) obj;
+        //id
         if (id == null) {
             if (other.id != null)
                 return false;
         } else if (!id.equals(other.id))
             return false;
+        //login
         if (login == null) {
             if (other.login != null)
                 return false;
         } else if (!login.equals(other.login))
+            return false;
+        //email
+        if (email == null) {
+            if (other.email != null)
+                return false;
+        } else if (!email.equals(other.email))
             return false;
         return true;
     }

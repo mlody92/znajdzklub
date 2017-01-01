@@ -12,6 +12,7 @@
         <li><a href="addCategory">Dodaj kategorię</a></li>
         <sec:authorize access="isAuthenticated()">
             <li><a href="userList">Lista użytkowników</a></li>
+            <li><a href="categoryList">Lista kategorii</a></li>
             <li>
                 <%@include file="../login/authheader.jsp" %>
             </li>
