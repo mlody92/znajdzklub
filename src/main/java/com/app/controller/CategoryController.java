@@ -42,7 +42,6 @@ public class CategoryController {
     @RequestMapping(value = "/category-{name}", method = RequestMethod.GET)
     @ResponseBody
     public Category getCategory(@PathVariable String name) {
-        JSONObject json = new JSONObject();
         return categoryService.findByName(name);
     }
 
@@ -61,20 +60,6 @@ public class CategoryController {
         model.addAttribute("loggedinuser", getPrincipal());
         return "category/addCategory";
     }
-
-    //    @RequestMapping(value = {"/addCategory"}, method = RequestMethod.POST)
-    //    public String saveCategory(@Valid Category category, BindingResult result,
-    //                                  ModelMap model) {
-    //
-    //        if (result.hasErrors()) {
-    //            return "clubs/addCategory";
-    //        }
-    //        categoryService.save(category);
-    //
-    //        model.addAttribute("success", "Kategoria " + category.getName() + " została poprawnie dodana.");
-    //        model.addAttribute("loggedinuser", getPrincipal());
-    //        return "home";
-    //    }
 
     @RequestMapping(value = {"/addCategory"}, method = RequestMethod.POST, produces = {"application/json; charset=UTF-8"})
     @ResponseStatus(HttpStatus.OK)
@@ -122,12 +107,23 @@ public class CategoryController {
         return new ResponseEntity(json.toString(), HttpStatus.OK);
     }
 
-    @RequestMapping(value = {"/delete-category-{name}"}, method = RequestMethod.GET)
-    public String deleteUser(@PathVariable String name) {
-        categoryService.delete(name);
-        return "redirect:/categoryList";
-    }
+    @RequestMapping(value = {"/delete-category-{name}"}, method = RequestMethod.POST, produces = {"application/json; charset=UTF-8"})
+    public ResponseEntity deleteCategory(@RequestBody @Valid Category category, BindingResult result,
+                                        ModelMap model, @PathVariable String name) {
 
+        JSONObject json = new JSONObject();
+        if (result.hasErrors()) {
+            json.put("success", false);
+            json.put("error", result);
+            return new ResponseEntity(json.toString(), HttpStatus.OK);
+        }
+
+        categoryService.delete(name);
+        model.addAttribute("loggedinuser", getPrincipal());
+        json.put("success", true);
+        json.put("info", "Poprawnie usunięto kategorię");
+        return new ResponseEntity(json.toString(), HttpStatus.OK);
+    }
 
     private String getPrincipal() {
         String userName = null;

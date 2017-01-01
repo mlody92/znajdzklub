@@ -93,29 +93,37 @@ public class UsersController {
             return new ResponseEntity(json.toString(), HttpStatus.OK);
         }
 
-        /*//Uncomment below 'if block' if you WANT TO ALLOW UPDATING SSO_ID in UI which is a unique key to a User.
-        if(!userService.isUserSSOUnique(user.getId(), user.getSsoId())){
-            FieldError ssoError =new FieldError("user","ssoId",messageSource.getMessage("non.unique.ssoId", new String[]{user.getSsoId()}, Locale.getDefault()));
-            result.addError(ssoError);
-            return "registration";
-        }*/
-
-        userService.updateUser(user);
-        model.addAttribute("success", "Użytkownik " + user.getFirstName() + " " + user.getLastName() + " został poprawnie zarejestrowany.");
+        userService.deleteUserByLogin(login);
         model.addAttribute("loggedinuser", getPrincipal());
-
         json.put("success", true);
-        json.put("data", user);
+        json.put("info", "Poprawnie usunięto kategorię");
         return new ResponseEntity(json.toString(), HttpStatus.OK);
     }
 
     /**
      * This method will delete an user by it's SSOID value.
      */
-    @RequestMapping(value = {"/delete-user-{login}"}, method = RequestMethod.GET)
-    public String deleteUser(@PathVariable String login) {
+//    @RequestMapping(value = {"/delete-user-{login}"}, method = RequestMethod.GET)
+//    public String deleteUser(@PathVariable String login) {
+//        userService.deleteUserByLogin(login);
+//        return "redirect:/userList";
+//    }
+
+    @RequestMapping(value = {"/delete-user-{login}"}, method = RequestMethod.POST, produces = {"application/json; charset=UTF-8"})
+    public ResponseEntity deleteUser2(@RequestBody @Valid User user, BindingResult result,
+                                         ModelMap model, @PathVariable String login) {
+        JSONObject json = new JSONObject();
+        if (result.hasErrors()) {
+            json.put("success", false);
+            json.put("error", result);
+            return new ResponseEntity(json.toString(), HttpStatus.OK);
+        }
+
         userService.deleteUserByLogin(login);
-        return "redirect:/userList";
+        model.addAttribute("loggedinuser", getPrincipal());
+        json.put("success", true);
+        json.put("info", "Poprawnie usunięto użytkownika");
+        return new ResponseEntity(json.toString(), HttpStatus.OK);
     }
 
     /**

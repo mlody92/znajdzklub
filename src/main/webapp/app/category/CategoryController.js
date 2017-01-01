@@ -96,32 +96,65 @@ app.controller('CategoryListCtrl', function ($scope, $http, $location, $mdDialog
         {name: 'Nazwa', field: "name"},
         {
             name: 'action',
-            displayName:'',
+            displayName: '',
             enableSorting: false,
-            cellTemplate: '<md-button ng-href="edit-category-{{row.entity.name}}#?name={{row.entity.name}}"><span class="glyphicon glyphicon-pencil"></span></md-button><md-button ng-click="grid.appScope.showConfirm($event, row.entity.name)"><span class="glyphicon glyphicon-trash"></md-button>'
+            cellTemplate: '<md-button ng-href="edit-category-{{row.entity.name}}#?name={{row.entity.name}}"><span class="glyphicon glyphicon-pencil"></span></md-button><md-button ng-click="grid.appScope.showConfirm($event, row.entity)"><span class="glyphicon glyphicon-trash"></md-button>'
         }
     ];
 
     delete $http.defaults.headers.common["X-Requested-With"];
-    $http.get('listCategory').success(function (response, status) {
-        $scope.gridOptions.data = response;
-    }).error(function () {
-        alert("Failed to access");
-    });
+    var refreshData = function () {
+        $http.get('listCategory').success(function (response, status) {
+            $scope.gridOptions.data = response;
+        }).error(function () {
+            alert("Failed to access");
+        });
+    };
 
+
+    refreshData();
     $scope.customFullscreen = $mdMedia('xs') || $mdMedia('sm');
     $scope.showConfirm = function (ev, data) {
         // Appending dialog to document.body to cover sidenav in docs app
-        var name = data;
+        var name = data.name;
         var confirm = $mdDialog.confirm()
+            .parent(angular.element(document.body))
             .title('Pytanie')
-            .textContent('Czy na pewno chcesz usunąć kategorię: '+name)
+            .textContent('Czy na pewno chcesz usunąć kategorię: ' + name)
             .ariaLabel('Lucky day')
             .targetEvent(ev)
             .ok('Tak')
             .cancel('Nie');
         $mdDialog.show(confirm).then(function () {
-            location.href = 'delete-category-'+name;
+            var dataObj = {
+                id: data.id,
+                name: data.name
+            };
+            var token = $("meta[name='_csrf']").attr("content");
+            var header = $("meta[name='_csrf_header']").attr("content");
+            delete $http.defaults.headers.common["X-Requested-With"];
+            $http.defaults.headers.common['content-type'] = 'application/json';
+            $http.defaults.headers.common[header] = token;
+            $http({
+                method: 'POST',
+                url: 'delete-category-' + name,
+                data: dataObj,
+                headers: {'Content-Type': 'application/json; charset=utf-8'}
+
+            }).success(function (data, status, headers, config) {
+                if (data.success == true) {
+                    showAlert($scope, $mdDialog, 'Informacja', 'Poprawnie usunięto kategorię');
+                }
+                else {
+                    showAlert($scope, $mdDialog, 'Błąd', data.error);
+                }
+            }).error(function (data, status, headers, config) {
+                showAlert($scope, $mdDialog, 'Błąd', "Błąd na serwerze");
+            }).finally(function () {
+                refreshData();
+                $scope.disableMask();
+            });
+
         });
     };
 });

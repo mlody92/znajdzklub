@@ -4,7 +4,6 @@
  */
 package com.app.dao;
 
-import com.app.model.Advert;
 import com.app.model.Category;
 import java.util.List;
 

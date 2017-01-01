@@ -4,28 +4,34 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <t:wrapper>
-    <section class="main clearfix">
-        <section class="top">
-            <div class="wrapper content_header clearfix">
-                <h1 class="title">Lista użytkowników</h1>
+    <div ng-app="app" ng-controller="AppCtrl" ng-disabled="true">
+        <section class="main clearfix">
+            <div id="cover" ng-show="mask">
+                <div>
+                    <md-progress-circular id="mask" md-mode="indeterminate" md-diameter="96"></md-progress-circular>
+                </div>
             </div>
-        </section>
-        <!-- end top -->
+            <section class="top">
+                <div class="wrapper content_header clearfix">
+                    <h1 class="title">Lista użytkowników</h1>
+                </div>
+            </section>
+            <!-- end top -->
 
-        <section class="wrapper">
-            <div class="content ">
-                <div id="mainWrapper" ng-app="app">
-                    <div class="panel panel-default">
-                        <!-- Default panel contents -->
-                        <div  ng-controller="UserListCtrl">
-                            <div ui-grid="gridOptions" class="table table-hover"></div>
+            <section class="wrapper">
+                <div class="content ">
+                    <div id="mainWrapper" ng-app="app">
+                        <div class="panel panel-default">
+                            <!-- Default panel contents -->
+                            <div ng-controller="UserListCtrl">
+                                <div ui-grid="gridOptions" class="table table-hover"></div>
+                            </div>
                         </div>
                     </div>
+                    <div class="col-md-6 col-md-offset-3">
+                    </div>
                 </div>
-                <div class="col-md-6 col-md-offset-3">
-                </div>
-            </div>
-            </div><!-- end content -->
+            </section>
         </section>
-    </section>
+    </div>
 </t:wrapper>
