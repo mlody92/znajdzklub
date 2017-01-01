@@ -40,6 +40,7 @@ public class AdvertServiceImpl implements AdvertService {
             entity.setStatus(advert.getStatus());
             entity.setTitle(advert.getTitle());
             entity.setWebsite(advert.getWebsite());
+            entity.setCategoryId(advert.getCategoryId());
         }
     }
 
@@ -49,5 +50,14 @@ public class AdvertServiceImpl implements AdvertService {
 
     public List<Advert> findAll() {
         return dao.findAll();
+    }
+
+    public boolean isUnique(Advert newAdvert) {
+        Advert advert = findByTitle(newAdvert.getTitle());
+        return (advert == null || ((newAdvert.getId() != null) && (advert.getId() == newAdvert.getId())));
+    }
+
+    public Advert findByTitle(String title) {
+        return dao.findByTitle(title);
     }
 }

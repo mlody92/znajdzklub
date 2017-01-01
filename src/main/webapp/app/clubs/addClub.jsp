@@ -5,114 +5,108 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
 <t:wrapper>
-    <section class="main clearfix">
-
-            <%--////--%>
-        <section class="top">
-            <div class="wrapper content_header clearfix">
-                <div class="work_nav">
-                </div><!-- end work_nav -->
-                <h1 class="title">Dodawanie klubu</h1>
+    <div ng-app="app" ng-controller="AppCtrl" ng-disabled="true">
+        <section class="main clearfix">
+            <div id="cover" ng-show="mask">
+                <div>
+                    <md-progress-circular id="mask" md-mode="indeterminate" md-diameter="96"></md-progress-circular>
+                </div>
             </div>
+
+            <section class="top">
+                <div class="wrapper content_header clearfix">
+                    <div class="work_nav">
+
+                        <ul class="btn clearfix">
+                            <li><a href="#" class="previous" data-title="Previous"></a></li>
+                            <li><a href="index.html" class="grid" data-title="Portfolio"></a></li>
+                            <li><a href="#" class="next" data-title="Next"></a></li>
+                        </ul>
+
+                    </div><!-- end work_nav -->
+                    <h1 class="title">Dodawanie klubu</h1>
+                </div>
+            </section>
+            <!-- end top -->
+
+            <section class="wrapper">
+
+                <div class="content " ng-controller="ClubCtrl">
+
+                    <div class="container">
+                        <div class="row">
+
+                            <div class="col-sm-6">
+                                <!-- FORM ============ -->
+
+                                <form name="form" ng-submit="submitForm(advert, ${edit})" method="post" novalidate modelAttribute="advert" enctype="text/plain">
+                                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                                    <input type="hidden" path="id" id="id"/>
+                                    <div class="form-group" ng-class="{ 'has-error' : form.title.$invalid && !form.title.$pristine }">
+                                        <label>Tytuł *</label>
+                                        <input type="text" name="title" class="form-control" ng-model="advert.title" required>
+                                        <p ng-show="form.title.$invalid && !form.title.$pristine" class="help-block">Pole tytuł jest obowiązkowe.</p>
+                                    </div>
+
+                                    <div class="form-group" ng-class="{ 'has-error' : form.description.$invalid && !form.description.$pristine }">
+                                        <label>Opis *</label>
+                                        <textarea type="text" name="description" class="form-control" ng-model="advert.description" required></textarea>
+                                        <p ng-show="form.description.$invalid && !form.description.$pristine" class="help-block">Pole opis jest obowiązkowe.</p>
+                                    </div>
+
+                                    <div class="form-group" ng-class="{ 'has-error' : form.website.$invalid && !form.website.$pristine }">
+                                        <label>Strona www</label>
+                                        <input type="url" name="website" class="form-control" ng-model="advert.website" >
+                                        <p ng-show="form.website.$invalid && !form.website.$pristine" class="help-block">Nieprawidłowy adres url</p>
+                                    </div>
+
+                                    <div class="form-group" ng-class="{ 'has-error' : form.address.$invalid && !form.address.$pristine }">
+                                        <label>Adres *</label>
+                                        <input type="text" name="address" class="form-control" ng-model="advert.address" required>
+                                        <p ng-show="form.address.$invalid && !form.address.$pristine" class="help-block">Pole adres jest obowiązkowe.</p>
+                                    </div>
+
+                                    <div class="form-group" ng-class="{ 'has-error' : form.email.$invalid && !form.email.$pristine }">
+                                        <label>Email *</label>
+                                        <input type="email" name="email" class="form-control" ng-model="advert.email">
+                                        <p ng-show="form.email.$invalid && !form.email.$pristine" class="help-block">Wpisz poprawny adres e-mail.</p>
+                                    </div>
+
+                                    <div class="form-group" ng-class="{ 'has-error' : form.phone.$invalid && !form.phone.$pristine }">
+                                        <label>Numer telefonu</label>
+                                        <input type="phone" name="phone" class="form-control" ng-model="advert.phone">
+                                        <p ng-show="form.phone.$invalid && !form.phone.$pristine" class="help-block">Wpisz poprawny numer telefonu.</p>
+                                    </div>
+
+                                    <div class="form-group" ng-class="{ 'has-error' : form.postalCode.$invalid && !form.postalCode.$pristine }">
+                                        <label>Kod pocztowy *</label>
+                                        <input type="text" name="postalCode" class="form-control" ng-model="advert.postalCode">
+                                        <p ng-show="form.postalCode.$invalid && !form.postalCode.$pristine" class="help-block">Wpisz poprawny kod pocztowy.</p>
+                                    </div>
+
+                                    <div class="form-group"  ng-class="{ 'has-error' : form.categoryId.$invalid && !form.categoryId.$pristine }">
+                                        <label>Kategoria *</label>
+                                        <select name="categoryId" ng-model="advert.categoryId" class="form-control input-sm" required ng-options="categoryId.id as categoryId.name for categoryId in categories">
+                                            <option value="" disabled selected>Wybierz kategorię...</option>
+                                        </select>
+                                        <p ng-show="form.categoryId.$invalid && !form.categoryId.$pristine" class="help-block">Pole kategoria jest obowiązkowe.</p>
+                                    </div>
+
+                                    <c:choose>
+                                        <c:when test="${edit}">
+                                            <input type="submit" value="Zapisz" class="btn btn-primary btn-sm" ng-disabled="form.$invalid"/> or <input action="action" type="button" value="Powrót" onclick="history.go(-1);" />
+                                        </c:when>
+                                        <c:otherwise>
+                                            <input type="submit" value="Dodaj" class="btn btn-primary btn-sm" ng-disabled="form.$invalid"/>
+                                        </c:otherwise>
+                                    </c:choose>
+                                </form>
+                            </div>
+                        </div>
+                    </div><!-- end content -->
+                </div>
+            </section>
         </section>
-        <!-- end top -->
-
-        <section class="wrapper">
-
-            <div class="content ">
-
-                <form:form method="POST" modelAttribute="advert" class="form-horizontal">
-                    <form:input type="hidden" path="id" id="id"/>
-                    <div class="row">
-                        <div class="form-group col-md-12">
-                            <label class="col-md-3 control-lable" for="title">Tytuł</label>
-                            <div class="col-md-7">
-                                <form:input type="text" path="title" id="title" class="form-control input-sm" ng-model="vm.advert.title"/>
-                                <div class="has-error" ng-class="{ 'has-error': form.title.$dirty && form.title.$error.required }">
-                                    <form:errors path="title" class="help-inline"/>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="form-group col-md-12">
-                            <label class="col-md-3 control-lable" for="description">Opis</label>
-                            <div class="col-md-7">
-                                <form:textarea type="text" path="description" id="description" class="form-control input-sm" ng-model="vm.advert.description"/>
-                                <div class="has-error" ng-class="{ 'has-error': form.description.$dirty && form.description.$error.required }">
-                                    <form:errors path="description" class="help-inline"/>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="form-group col-md-12">
-                            <label class="col-md-3 control-lable" for="title">Strona www</label>
-                            <div class="col-md-7">
-                                <form:input type="text" path="website" id="website" class="form-control input-sm" ng-model="vm.advert.website"/>
-                            </div>
-                        </div>
-
-                    </div>
-                    <div class="row">
-                        <div class="form-group col-md-12">
-                            <label class="col-md-3 control-lable" for="title">Adres</label>
-                            <div class="col-md-7">
-                                <form:input type="text" path="address" id="address" class="form-control input-sm" ng-model="vm.advert.address"/>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="form-group col-md-12">
-                            <label class="col-md-3 control-lable" for="title">E-mail</label>
-                            <div class="col-md-7">
-                                <form:input type="email" path="email" id="email" class="form-control input-sm" ng-model="vm.advert.email"/>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="form-group col-md-12">
-                            <label class="col-md-3 control-lable" for="title">Numer telefonu</label>
-                            <div class="col-md-7">
-                                <form:input type="phone" path="phone" id="phone" class="form-control input-sm" ng-model="vm.advert.phone"/>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="form-group col-md-12">
-                            <label class="col-md-3 control-lable" for="title">Kod pocztowy</label>
-                            <div class="col-md-7">
-                                <form:input type="text" path="postalCode" id="phone" class="form-control input-sm" ng-model="vm.advert.postalCode"/>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="form-group col-md-12">
-                            <label class="col-md-3 control-lable" for="categoryId">Kategoria</label>
-                            <div class="col-md-7">
-                                <form:select path="categoryId" multiple="false" class="form-control input-sm">
-                                    <option value="1">Kategoria 1</option>
-                                    <option value="2">Admin</option>
-                                </form:select>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="form-actions floatRight">
-                            <c:choose>
-                                <c:when test="${edit}">
-                                    <input type="submit" value="Update" class="btn btn-primary btn-sm"/> or <a href="<c:url value='/userList' />">Cancel</a>
-                                </c:when>
-                                <c:otherwise>
-                                    <input type="submit" value="Dodaj" class="btn btn-primary btn-sm"/> or <a href="<c:url value='/userList' />">Cancel</a>
-                                </c:otherwise>
-                            </c:choose>
-                        </div>
-                    </div>
-                </form:form>
-                    <%--</div>--%>
-            </div><!-- end content -->
-        </section>
-    </section>
+    </div>
 </t:wrapper>
 

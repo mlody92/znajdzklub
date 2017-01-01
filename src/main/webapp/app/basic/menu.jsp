@@ -8,7 +8,7 @@
             <li><a href="register">Zarejestruj</a></li>
             <li><a href="login">Zaloguj</a></li>
         </sec:authorize>
-        <li><a href="addClub">Dodaj klub</a></li>
+        <li><a href="addAdvert">Dodaj klub</a></li>
         <li><a href="addCategory">Dodaj kategorię</a></li>
         <sec:authorize access="isAuthenticated()">
             <li><a href="userList">Lista użytkowników</a></li>

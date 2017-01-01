@@ -11,6 +11,8 @@ public interface AdvertDao {
 
     Advert findById(int id);
 
+    Advert findByTitle(String title);
+
     void save(Advert user);
 
     void delete(int id);

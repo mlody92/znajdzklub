@@ -11,6 +11,8 @@ public interface AdvertService {
 
     Advert findById(int id);
 
+    Advert findByTitle(String title);
+
     String save(Advert user);
 
     void update(Advert user);
@@ -18,4 +20,6 @@ public interface AdvertService {
     void delete(int id);
 
     List<Advert> findAll();
+
+    boolean isUnique(Advert advert);
 }

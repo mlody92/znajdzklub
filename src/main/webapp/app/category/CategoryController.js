@@ -118,7 +118,7 @@ app.controller('CategoryListCtrl', function ($scope, $http, $location, $mdDialog
         // Appending dialog to document.body to cover sidenav in docs app
         var name = data.name;
         var confirm = $mdDialog.confirm()
-            .parent(angular.element(document.body))
+            
             .title('Pytanie')
             .textContent('Czy na pewno chcesz usunąć kategorię: ' + name)
             .ariaLabel('Lucky day')

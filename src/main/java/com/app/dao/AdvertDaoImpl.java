@@ -42,4 +42,11 @@ public class AdvertDaoImpl extends AbstractDao<Integer, Advert> implements Adver
         delete(advert);
     }
 
+    public Advert findByTitle(String title) {
+        logger.info("Title : {}", title);
+        Criteria crit = createEntityCriteria();
+        crit.add(Restrictions.eq("title", title));
+        Advert advert = (Advert) crit.uniqueResult();
+        return advert;
+    }
 }
