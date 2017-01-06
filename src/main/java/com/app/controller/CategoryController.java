@@ -47,7 +47,6 @@ public class CategoryController {
 
     @RequestMapping(value = {"/categoryList"}, method = RequestMethod.GET)
     public String catlist(ModelMap model) {
-//        List<Category> users = categoryService.findAll();
         model.addAttribute("loggedinuser", getPrincipal());
         return "category/categoryList";
     }

@@ -11,6 +11,8 @@ public interface AdvertDao {
 
     Advert findById(int id);
 
+    List<Advert> findByCategoryId(int id);
+
     Advert findByTitle(String title);
 
     void save(Advert user);

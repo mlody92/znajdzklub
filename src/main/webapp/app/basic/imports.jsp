@@ -16,6 +16,7 @@
 <script src="<c:url value='/scripts/angular/angular-touch.js' />"></script>
 <script src="<c:url value='/app/main.js' />"></script>
 <script src="<c:url value='/app/AppController.js' />"></script>
+<script src="<c:url value='/app/home/HomeController.js' />"></script>
 <script src="<c:url value='/app/user/UserController.js' />"></script>
 <script src="<c:url value='/app/clubs/ClubController.js' />"></script>
 <script src="<c:url value='/app/category/CategoryController.js' />"></script>

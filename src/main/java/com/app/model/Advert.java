@@ -54,6 +54,24 @@ public class Advert implements Serializable {
     @Column(name = "CATEGORY_ID")
     private int categoryId;
 
+    @Column(name = "USER_ID")
+    private int userId;
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
+
+    //    @ManyToOne
+    //    @JoinTable(name = "CATEGORY")
+    //    private Category category;
+
+    //    @ManyToOne(optional = true, fetch = FetchType.LAZY)
+    //    private Category category;
+
     public Integer getId() {
         return id;
     }
@@ -141,6 +159,10 @@ public class Advert implements Serializable {
     public void setEmail(String email) {
         this.email = email;
     }
+    //
+    //    public Category getCategory() {
+    //        return category;
+    //    }
 
     @Override
     public int hashCode() {
@@ -168,7 +190,7 @@ public class Advert implements Serializable {
             return false;
         //title
         if (title == null) {
-            if (other.title!= null)
+            if (other.title != null)
                 return false;
         } else if (!title.equals(other.title))
             return false;

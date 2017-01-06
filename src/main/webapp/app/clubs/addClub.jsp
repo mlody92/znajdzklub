@@ -39,7 +39,7 @@
                             <div class="col-sm-6">
                                 <!-- FORM ============ -->
 
-                                <form name="form" ng-submit="submitForm(advert, ${edit})" method="post" novalidate modelAttribute="advert" enctype="text/plain">
+                                <form name="form" ng-submit="submitForm(advert, ${edit})" method="post" novalidate modelAttribute="advert" enctype="multipart/form-data">
                                     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                                     <input type="hidden" path="id" id="id"/>
                                     <div class="form-group" ng-class="{ 'has-error' : form.title.$invalid && !form.title.$pristine }">
@@ -92,6 +92,11 @@
                                         <p ng-show="form.categoryId.$invalid && !form.categoryId.$pristine" class="help-block">Pole kategoria jest obowiązkowe.</p>
                                     </div>
 
+
+                                    <%--<div class="form-group">--%>
+                                        <%--<label>Zdjęcie</label>--%>
+                                        <%--<input type="file" name="file">--%>
+                                    <%--</div>--%>
                                     <c:choose>
                                         <c:when test="${edit}">
                                             <input type="submit" value="Zapisz" class="btn btn-primary btn-sm" ng-disabled="form.$invalid"/> or <input action="action" type="button" value="Powrót" onclick="history.go(-1);" />

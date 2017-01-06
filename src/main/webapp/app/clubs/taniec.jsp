@@ -2,7 +2,6 @@
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 
 <t:wrapper>
-
     <div ng-app="app" ng-controller="AppCtrl" ng-disabled="true">
         <section class="main clearfix">
             <div id="cover" ng-show="mask">
@@ -10,7 +9,7 @@
                     <md-progress-circular id="mask" md-mode="indeterminate" md-diameter="96"></md-progress-circular>
                 </div>
             </div>
-            <section class="topSztukiWalki"></section>
+            <section class="topTaniec"></section>
             <!-- end top -->
             <section class="wrapper">
                 <div class="content ">

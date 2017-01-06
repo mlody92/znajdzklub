@@ -24,6 +24,16 @@ public class AdvertDaoImpl extends AbstractDao<Integer, Advert> implements Adver
     }
 
     @SuppressWarnings("unchecked")
+    public List<Advert> findByCategoryId(int id) {
+        Criteria criteria = getSession().createCriteria(Advert.class, "advert");
+        criteria.add(Restrictions.eq("categoryId", id));
+        criteria.addOrder(Order.asc("title"));
+        criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);//To avoid duplicates.
+        List<Advert> adverts = (List<Advert>) criteria.list();
+        return adverts;
+    }
+
+    @SuppressWarnings("unchecked")
     public List<Advert> findAll() {
         Criteria criteria = createEntityCriteria().addOrder(Order.asc("title"));
         criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);//To avoid duplicates.
@@ -38,7 +48,7 @@ public class AdvertDaoImpl extends AbstractDao<Integer, Advert> implements Adver
     public void delete(int id) {
         Criteria crit = createEntityCriteria();
         crit.add(Restrictions.eq("id", id));
-        Advert advert = (Advert)crit.uniqueResult();
+        Advert advert = (Advert) crit.uniqueResult();
         delete(advert);
     }
 

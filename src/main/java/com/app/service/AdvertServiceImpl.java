@@ -22,6 +22,10 @@ public class AdvertServiceImpl implements AdvertService {
         return dao.findById(id);
     }
 
+    public List<Advert>  findByCategoryId(int id) {
+        return dao.findByCategoryId(id);
+    }
+
     public String save(Advert advert) {
         dao.save(advert);
         return "success";

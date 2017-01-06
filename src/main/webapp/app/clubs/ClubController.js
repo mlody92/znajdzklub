@@ -20,7 +20,7 @@ app.controller('ClubListCtrl', function ($scope, $http, $location, $mdDialog, $m
         {name: 'Kategoria', field: "categoryId"},
         {
             name: 'action',
-            displayName:'',
+            displayName: '',
             enableSorting: false,
             width: 100,
             cellTemplate: '<md-button ng-href="edit-advert-{{row.entity.id}}#?id={{row.entity.id}}"><span class="glyphicon glyphicon-pencil"></span></md-button><md-button ng-click="grid.appScope.showConfirm($event, row.entity)"><span class="glyphicon glyphicon-trash"></md-button>'
@@ -42,7 +42,7 @@ app.controller('ClubListCtrl', function ($scope, $http, $location, $mdDialog, $m
         var title = data.title;
         var confirm = $mdDialog.confirm()
             .title('Pytanie')
-            .textContent('Czy na pewno chcesz usunąć klub: '+title)
+            .textContent('Czy na pewno chcesz usunąć klub: ' + title)
             .ariaLabel('Lucky day')
             .targetEvent(ev)
             .ok('Tak')
@@ -158,5 +158,49 @@ app.controller('ClubCtrl', function ($scope, $http, $mdDialog, $location) {
         });
     };
 
+
+});
+
+app.controller('ClubListViewCtrl', function ($scope, $http) {
+
+
+    $scope.gridOptions = {
+        enableColumnResizing: true,
+        resizable: true
+    };
+
+    $scope.gridOptions.columnDefs = [
+        {name: 'Tytuł', field: "title"},
+        {name: 'Opis', field: "description"},
+        {name: 'Strona www', field: "website"},
+        {name: 'Adres', field: "address"},
+        {name: 'Email', field: "email"},
+        {name: 'Kontakt', field: "phone"},
+        {name: 'Status', field: "status"},
+        {name: 'Data dodania', field: "date"},
+        {name: 'Kod pocztowy', field: "postalCode"}
+
+    ];
+
+    var refreshData = function (category) {
+        var all = 'listClubs';
+        var category = 'clubs-category-' + category;
+        if (category != undefined) {
+            $http.get(category).success(function (response, status) {
+                $scope.gridOptions.data = response;
+            }).error(function () {
+                alert("Failed to access");
+            });
+        } else {
+            $http.get(all).success(function (response, status) {
+                $scope.gridOptions.data = response;
+            }).error(function () {
+                alert("Failed to access");
+            });
+        }
+    };
+    $scope.$watch("categoryId", function(){
+        refreshData($scope.categoryId);
+    });
 
 });

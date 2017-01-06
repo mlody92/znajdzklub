@@ -11,6 +11,8 @@ public interface AdvertService {
 
     Advert findById(int id);
 
+    List<Advert> findByCategoryId(int id);
+
     Advert findByTitle(String title);
 
     String save(Advert user);
