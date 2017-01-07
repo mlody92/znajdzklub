@@ -7,15 +7,17 @@ package com.app.controller;
 import com.app.model.Advert;
 import com.app.model.User;
 import com.app.service.AdvertService;
-import java.io.InputStream;
+import com.app.service.CoordinatesService;
+import java.util.Collection;
+import java.util.LinkedList;
 import java.util.List;
 import javax.validation.Valid;
-import javax.xml.ws.Response;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -26,11 +28,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.SessionAttributes;
-import org.springframework.web.multipart.MultipartFile;
 
 @Controller
 @RequestMapping("/")
@@ -39,6 +39,9 @@ public class ClubsController {
 
     @Autowired
     AdvertService advertService;
+
+    @Autowired
+    CoordinatesService coordinatesService;
 
     @CrossOrigin
     @RequestMapping(value = "/listClubs", method = RequestMethod.GET)
@@ -59,6 +62,19 @@ public class ClubsController {
         return advertService.findByCategoryId(id);
     }
 
+    /////// Filtrowanie
+
+    @RequestMapping(value = "/clubs-filter-{kod}-{km}-{catId}", method = RequestMethod.GET)
+    @ResponseBody
+    public List<Advert> getClubsFilter(@PathVariable String kod, @PathVariable Integer km, @PathVariable Integer catId) {
+        //String kod, int km
+        List<String> list = coordinatesService.findFilter(kod, km);
+        List<Advert> advertList = new LinkedList<>();
+        advertList = advertService.findByKodPocztowy(list, catId);
+        return advertList;
+    }
+
+    /////
     @RequestMapping(value = {"/clubsList"}, method = RequestMethod.GET)
     public String list(ModelMap model) {
         List<Advert> users = advertService.findAll();
@@ -95,10 +111,17 @@ public class ClubsController {
         return new ResponseEntity(json.toString(), HttpStatus.OK);
     }
 
+    @RequestMapping(value = {"/view-advert-{id}"}, method = RequestMethod.GET)
+    public String viewAdvert(@PathVariable Integer id, ModelMap model) {
+        Advert advert = advertService.findById(id);
+        model.addAttribute("advert", advert);
+        model.addAttribute("loggedinuser", getPrincipal());
+        return "clubs/view";
+    }
 
     @RequestMapping(value = {"/edit-advert-{id}"}, method = RequestMethod.GET)
     public String editUser(@PathVariable Integer id, ModelMap model) {
-        Advert advert= advertService.findById(id);
+        Advert advert = advertService.findById(id);
         model.addAttribute("advert", advert);
         model.addAttribute("edit", true);
         model.addAttribute("loggedinuser", getPrincipal());
@@ -143,9 +166,10 @@ public class ClubsController {
 
     @RequestMapping(value = {"/sztukiWalki"}, method = RequestMethod.GET)
     public String sztukiWalki(ModelMap model) {
-        User user = new User();
-        model.addAttribute("user", user);
         model.addAttribute("categoryId", 1);
+        Collection<? extends GrantedAuthority> authorities = SecurityContextHolder.getContext().getAuthentication().getAuthorities();
+        boolean authorized = authorities.contains(new SimpleGrantedAuthority("ROLE_ADMIN"));
+        model.addAttribute("edit", authorized);
         model.addAttribute("loggedinuser", getPrincipal());
         return "clubs/sztuki_walki";
     }
@@ -155,31 +179,34 @@ public class ClubsController {
         User user = new User();
         model.addAttribute("user", user);
         model.addAttribute("categoryId", 5);
+        Collection<? extends GrantedAuthority> authorities = SecurityContextHolder.getContext().getAuthentication().getAuthorities();
+        boolean authorized = authorities.contains(new SimpleGrantedAuthority("ROLE_ADMIN"));
+        model.addAttribute("edit", authorized);
         model.addAttribute("loggedinuser", getPrincipal());
-        return "clubs/sztuki_walki";
+        return "clubs/taniec";
     }
 
-//    @RequestMapping(value = {"/asd"}, method = RequestMethod.POST, consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = {"application/json; charset=UTF-8"})
-//    @ResponseStatus(HttpStatus.OK)
-//    public @ResponseBody ResponseEntity asd(@RequestBody @Valid Advert advert, BindingResult result,
-//                                                    ModelMap model, @RequestPart("file") @Valid MultipartFile file) {
-//        JSONObject json = new JSONObject();
-//        if (!advertService.isUnique(advert)) {
-//            json.put("success", false);
-//            json.put("error", "Klub o podanym tytule już istnieje");
-//            return new ResponseEntity(json.toString(), HttpStatus.OK);
-//        }
-//
-//        if(!file.isEmpty())   {
-//            advert.save;
-//        }
-//        advertService.save(advert);
-//        model.addAttribute("success", "Tytuł " + advert.getTitle() + " została poprawnie dodana.");
-//        model.addAttribute("loggedinuser", getPrincipal());
-//        json.put("success", true);
-//        json.put("data", advert);
-//        return new ResponseEntity(json.toString(), HttpStatus.OK);
-//    }
+    //    @RequestMapping(value = {"/asd"}, method = RequestMethod.POST, consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = {"application/json; charset=UTF-8"})
+    //    @ResponseStatus(HttpStatus.OK)
+    //    public @ResponseBody ResponseEntity asd(@RequestBody @Valid Advert advert, BindingResult result,
+    //                                                    ModelMap model, @RequestPart("file") @Valid MultipartFile file) {
+    //        JSONObject json = new JSONObject();
+    //        if (!advertService.isUnique(advert)) {
+    //            json.put("success", false);
+    //            json.put("error", "Klub o podanym tytule już istnieje");
+    //            return new ResponseEntity(json.toString(), HttpStatus.OK);
+    //        }
+    //
+    //        if(!file.isEmpty())   {
+    //            advert.save;
+    //        }
+    //        advertService.save(advert);
+    //        model.addAttribute("success", "Tytuł " + advert.getTitle() + " została poprawnie dodana.");
+    //        model.addAttribute("loggedinuser", getPrincipal());
+    //        json.put("success", true);
+    //        json.put("data", advert);
+    //        return new ResponseEntity(json.toString(), HttpStatus.OK);
+    //    }
 
     /**
      * This method returns the principal[user-name] of logged-in user.

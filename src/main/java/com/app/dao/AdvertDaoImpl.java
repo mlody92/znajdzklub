@@ -5,6 +5,7 @@
 package com.app.dao;
 
 import com.app.model.Advert;
+import java.util.LinkedList;
 import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Order;
@@ -58,5 +59,15 @@ public class AdvertDaoImpl extends AbstractDao<Integer, Advert> implements Adver
         crit.add(Restrictions.eq("title", title));
         Advert advert = (Advert) crit.uniqueResult();
         return advert;
+    }
+
+    @SuppressWarnings("unchecked")
+    public List<Advert> findByKodPocztowy(List<String> kody, int catId) {
+        Criteria criteria = getSession().createCriteria(Advert.class, "advert");
+        criteria.add(Restrictions.eq("categoryId", catId));
+        criteria.add(Restrictions.in("postalCode", kody));
+        criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);//To avoid duplicates.
+        List<Advert> adverts = (List<Advert>) criteria.list();
+        return adverts;
     }
 }

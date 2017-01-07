@@ -163,24 +163,69 @@ app.controller('ClubCtrl', function ($scope, $http, $mdDialog, $location) {
 
 app.controller('ClubListViewCtrl', function ($scope, $http) {
 
+    console.log($scope);
+
+    $scope.submitFilter = function (data) {
+
+        // check to make sure the form is completely valid
+        $scope.loadMask();
+        if ($scope.form.$valid) {
+            if (data.kod != "" || data.km != "") {
+                $http.get("clubs-filter-" + data.kod + "-" + data.km + "-" + $scope.categoryId).success(function (response, status) {
+                    $scope.gridOptions.data = response;
+                }).error(function () {
+                    alert("Failed to access");
+                }).finally(function () {
+                    $scope.disableMask();
+                });
+            } else {
+                refreshData($scope.categoryId)
+            }
+        }
+    };
 
     $scope.gridOptions = {
         enableColumnResizing: true,
         resizable: true
     };
 
-    $scope.gridOptions.columnDefs = [
-        {name: 'Tytuł', field: "title"},
-        {name: 'Opis', field: "description"},
-        {name: 'Strona www', field: "website"},
-        {name: 'Adres', field: "address"},
-        {name: 'Email', field: "email"},
-        {name: 'Kontakt', field: "phone"},
-        {name: 'Status', field: "status"},
-        {name: 'Data dodania', field: "date"},
-        {name: 'Kod pocztowy', field: "postalCode"}
-
-    ];
+    $scope.$watch("edit", function () {
+        if ($scope.edit) {
+            $scope.gridOptions.columnDefs = [
+                {name: 'Tytuł', field: "title"},
+                {name: 'Opis', field: "description"},
+                {name: 'Strona www', field: "website"},
+                {name: 'Adres', field: "address"},
+                {name: 'Email', field: "email"},
+                {name: 'Kontakt', field: "phone"},
+                {name: 'Status', field: "status"},
+                {name: 'Data dodania', field: "date"},
+                {name: 'Kod pocztowy', field: "postalCode"},
+                {
+                    name: 'action',
+                    displayName: '',
+                    enableSorting: false,
+                    width: 100,
+                    cellTemplate: '<md-button ng-href="edit-advert-{{row.entity.id}}#?id={{row.entity.id}}"><span class="glyphicon glyphicon-pencil"></span></md-button><md-button ng-click="grid.appScope.showConfirm($event, row.entity)"><span class="glyphicon glyphicon-trash"></md-button>'
+                }
+            ];
+        } else {
+            $scope.gridOptions.columnDefs = [
+                {
+                    name: 'Tytuł',
+                    cellTemplate: '<a ng-href="view-advert-{{row.entity.id}}#?id={{row.entity.id}}"><span >{{row.entity.title}}</span></a>'
+                },
+                {name: 'Opis', field: "description"},
+                {name: 'Strona www', field: "website"},
+                {name: 'Adres', field: "address"},
+                {name: 'Email', field: "email"},
+                {name: 'Kontakt', field: "phone"},
+                {name: 'Status', field: "status"},
+                {name: 'Data dodania', field: "date"},
+                {name: 'Kod pocztowy', field: "postalCode"}
+            ];
+        }
+    });
 
     var refreshData = function (category) {
         var all = 'listClubs';
@@ -199,7 +244,7 @@ app.controller('ClubListViewCtrl', function ($scope, $http) {
             });
         }
     };
-    $scope.$watch("categoryId", function(){
+    $scope.$watch("categoryId", function () {
         refreshData($scope.categoryId);
     });
 

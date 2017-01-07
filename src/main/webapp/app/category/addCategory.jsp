@@ -24,7 +24,7 @@
                         </ul>
 
                     </div><!-- end work_nav -->
-                    <h1 class="title">Dodawanie kategorii</h1>
+                    <h1 class="title">Kategoria</h1>
                 </div>
             </section>
             <!-- end top -->
@@ -50,12 +50,14 @@
                                     </div>
                                     <c:choose>
                                         <c:when test="${edit}">
-                                            <input type="submit" value="Zapisz" class="btn btn-primary btn-sm" ng-disabled="form.$invalid"/> or <input action="action" type="button"
+                                            <input type="submit" value="Zapisz" class="btn btn-primary btn-sm" ng-disabled="form.$invalid"/> <input action="action" type="button"
                                                                                                                                                                value="Powrót"
                                                                                                                                                                onclick="history.go(-1);"/>
                                         </c:when>
                                         <c:otherwise>
-                                            <input type="submit" value="Dodaj" class="btn btn-primary btn-sm" ng-disabled="form.$invalid"/>
+                                            <input type="submit" value="Dodaj" class="btn btn-primary btn-sm" ng-disabled="form.$invalid"/> <input action="action" type="button"
+                                                                                                                                                      value="Powrót"
+                                                                                                                                                      onclick="history.go(-1);"/>
                                         </c:otherwise>
                                     </c:choose>
                                 </form>

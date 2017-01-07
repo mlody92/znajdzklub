@@ -382,7 +382,7 @@ h5, h6          { font-weight: bolder }
     overflow: hidden;
     display: block;
     position: relative;
-    background: url('../img/taniec.jpg') no-repeat;
+    background: url('../img/taniec_inner.jpg') no-repeat;
     background-size: cover;
     -webkit-background-size: cover;
     -moz-background-size: cover;
@@ -457,24 +457,24 @@ h5, h6          { font-weight: bolder }
     margin-bottom: 0; }
 
 .top .title{
-    display: block;
-    width: 100%;color: #4b4848;
-    font-family: "raleway-bold", arial;
-    font-size: 26px;
-    font-weight: bold;
-    background: rgba(255, 255, 255, .7);
-    padding: 20px;
-    text-transform: uppercase;
-    line-height: 30px;
-    margin: 0!important;
-    overflow: hidden;
+     display: block;
+     width: 100%;color: #4b4848;
+     font-family: "raleway-bold", arial;
+     font-size: 26px;
+     font-weight: bold;
+     background: rgba(255, 255, 255, .7);
+     padding: 20px;
+     text-transform: uppercase;
+     line-height: 30px;
+     margin: 0!important;
+     overflow: hidden;
 
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    -ms-box-sizing: border-box;
-    box-sizing: border-box;
+     -webkit-box-sizing: border-box;
+     -moz-box-sizing: border-box;
+     -ms-box-sizing: border-box;
+     box-sizing: border-box;
 
-}
+ }
 
 .content_header{
     position: absolute;
@@ -1436,4 +1436,42 @@ h5, h6          { font-weight: bolder }
 
 p.help-block {
     margin-bottom: 0px;
+}
+
+.title_kluby_jasne{
+    display: block;
+    width: 100%;color: #4b4848;
+    font-family: "raleway-bold", arial;
+    font-size: 26px;
+    font-weight: bold;
+    background: rgba(0, 0, 0, .1);
+    padding: 20px;
+    text-transform: uppercase;
+    line-height: 30px;
+    margin: 0!important;
+    overflow: hidden;
+
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.title_kluby_ciemne{
+    display: block;
+    width: 100%;color: #4b4848;
+    font-family: "raleway-bold", arial;
+    font-size: 26px;
+    font-weight: bold;
+    background: rgba(255, 255, 255, .8);
+    padding: 20px;
+    text-transform: uppercase;
+    line-height: 30px;
+    margin: 0!important;
+    overflow: hidden;
+
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+    box-sizing: border-box;
 }

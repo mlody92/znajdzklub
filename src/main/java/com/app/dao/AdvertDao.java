@@ -20,4 +20,6 @@ public interface AdvertDao {
     void delete(int id);
 
     List<Advert> findAll();
+
+    List<Advert> findByKodPocztowy(List<String> kody, int catId);
 }

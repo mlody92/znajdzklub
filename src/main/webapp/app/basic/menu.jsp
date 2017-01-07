@@ -8,16 +8,15 @@
             <li><a href="register">Zarejestruj</a></li>
             <li><a href="login">Zaloguj</a></li>
         </sec:authorize>
-        <li><a href="addAdvert">Dodaj klub</a></li>
-        <li><a href="addCategory">Dodaj kategorię</a></li>
         <sec:authorize access="isAuthenticated()">
+            <li><a href="addAdvert">Dodaj klub</a></li>
             <li><a href="userList">Lista użytkowników</a></li>
-            <li><a href="categoryList">Lista kategorii</a></li>
+            <li><a href="categoryList">Kategorie</a></li>
+            <li><a href="clubsList">Lista klubów</a></li>
             <li>
                 <%@include file="../login/authheader.jsp" %>
             </li>
         </sec:authorize>
 
-        <li><a href="clubsList">Lista klubów</a></li>
     </ul>
 </nav>

@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationTrustResolver;
 import org.springframework.security.authentication.AuthenticationTrustResolverImpl;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -43,13 +42,21 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .addFilterBefore(new SimpleCORSFilter(), ChannelProcessingFilter.class)
             .authorizeRequests()
             .antMatchers("/userList").access("hasRole('ADMIN')")
-//            .antMatchers("/register/**", "/delete-user-*").access("hasRole('ADMIN')")
-            .antMatchers("/edit-user-*").access("hasRole('ADMIN')").and().formLogin().loginPage("/login")
+            .antMatchers("/addCategory").access("hasRole('ADMIN')")
+            .antMatchers("/edit-category-*").access("hasRole('ADMIN')")
+            .antMatchers("/delete-category-*").access("hasRole('ADMIN')")
+            .antMatchers("/addAdvert").hasAnyRole()
+            .antMatchers("/edit-advert-*").hasAnyRole()
+            .antMatchers("/delete-advert").hasAnyRole()
+            .antMatchers("/listUser").access("hasRole('ADMIN')")
+            .antMatchers("/user-*").access("hasRole('ADMIN')")
+            .antMatchers("/edit-user-*").access("hasRole('ADMIN')")
+            .antMatchers("/delete-user-*").access("hasRole('ADMIN')")
+            .antMatchers("/userList").access("hasRole('ADMIN')").and().formLogin().loginPage("/login")
             .loginProcessingUrl("/login").usernameParameter("login").passwordParameter("password").and()
             .rememberMe().rememberMeParameter("remember-me").tokenRepository(tokenRepository)
             .tokenValiditySeconds(86400).and().csrf().and().exceptionHandling().accessDeniedPage("/Access_Denied");
     }
-
 
     @Bean
     public PasswordEncoder passwordEncoder() {

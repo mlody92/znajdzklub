@@ -39,7 +39,7 @@
                             <div class="col-sm-6">
                                 <!-- FORM ============ -->
 
-                                <form name="form" ng-submit="submitForm(advert, ${edit})" method="post" novalidate modelAttribute="advert" enctype="multipart/form-data">
+                                <form name="form" ng-submit="submitForm(advert, ${edit})" method="post" novalidate modelAttribute="advert" >
                                     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                                     <input type="hidden" path="id" id="id"/>
                                     <div class="form-group" ng-class="{ 'has-error' : form.title.$invalid && !form.title.$pristine }">

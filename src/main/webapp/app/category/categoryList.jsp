@@ -4,18 +4,19 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <t:wrapper>
-    <section class="main clearfix">
+    <section class="main clearfix"ng-app="app">
         <section class="top">
             <div class="wrapper content_header clearfix">
-                <h1 class="title">Lista kategorii</h1>
+                <h1 class="title">Kategorie</h1>
             </div>
         </section>
         <!-- end top -->
 
         <section class="wrapper">
             <div class="content ">
-                <div id="mainWrapper" ng-app="app">
+                <div id="mainWrapper" >
                     <div class="panel panel-default">
+                        <a href="addCategory">Dodaj kategorię</a>
                         <!-- Default panel contents -->
                         <div  ng-controller="CategoryListCtrl">
                             <div ui-grid="gridOptions" class="table table-hover"></div>
