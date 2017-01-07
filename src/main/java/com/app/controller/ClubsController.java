@@ -63,7 +63,8 @@ public class ClubsController {
     @RequestMapping(value = "/clubs-category-{id}", method = RequestMethod.GET)
     @ResponseBody
     public List<Advert> getClubsByCategory(@PathVariable Integer id) {
-        return advertService.findByCategoryId(id);
+        List<Advert> list = advertService.findByCategoryId(id);
+        return list;
     }
 
     @RequestMapping(value = "/clubs-user", method = RequestMethod.GET)
@@ -71,7 +72,8 @@ public class ClubsController {
     public List<Advert> getMyClubs() {
         String userName = getPrincipal();
         User user = userService.findByLogin(userName);
-        return advertService.findByUserId(user.getId());
+        List<Advert> list = advertService.findByUserId(user.getId());
+        return list;
     }
 
     /////// Filtrowanie
@@ -81,7 +83,7 @@ public class ClubsController {
     public List<Advert> getClubsFilter(@PathVariable String kod, @PathVariable Integer km, @PathVariable Integer catId) {
         //String kod, int km
         List<String> list = coordinatesService.findFilter(kod, km);
-        List<Advert> advertList = new LinkedList<>();
+        List<Advert> advertList;
         advertList = advertService.findByKodPocztowy(list, catId);
         return advertList;
     }

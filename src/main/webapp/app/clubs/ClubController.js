@@ -163,9 +163,6 @@ app.controller('ClubCtrl', function ($scope, $http, $mdDialog, $location) {
 });
 
 app.controller('ClubListViewCtrl', function ($scope, $http) {
-
-    console.log($scope);
-
     $scope.submitFilter = function (data) {
 
         // check to make sure the form is completely valid
