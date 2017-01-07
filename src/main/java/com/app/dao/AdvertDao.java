@@ -13,6 +13,8 @@ public interface AdvertDao {
 
     List<Advert> findByCategoryId(int id);
 
+    List<Advert> findByUserId(int id);
+
     Advert findByTitle(String title);
 
     void save(Advert user);

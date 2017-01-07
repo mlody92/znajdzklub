@@ -13,6 +13,8 @@ public interface AdvertService {
 
     List<Advert> findByCategoryId(int id);
 
+    List<Advert> findByUserId(int id);
+
     List<Advert> findByKodPocztowy(List<String> kody, int catId);
 
     Advert findByTitle(String title);

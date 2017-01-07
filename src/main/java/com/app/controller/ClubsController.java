@@ -8,6 +8,7 @@ import com.app.model.Advert;
 import com.app.model.User;
 import com.app.service.AdvertService;
 import com.app.service.CoordinatesService;
+import com.app.service.UserService;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
@@ -41,6 +42,9 @@ public class ClubsController {
     AdvertService advertService;
 
     @Autowired
+    UserService userService;
+
+    @Autowired
     CoordinatesService coordinatesService;
 
     @CrossOrigin
@@ -60,6 +64,14 @@ public class ClubsController {
     @ResponseBody
     public List<Advert> getClubsByCategory(@PathVariable Integer id) {
         return advertService.findByCategoryId(id);
+    }
+
+    @RequestMapping(value = "/clubs-user", method = RequestMethod.GET)
+    @ResponseBody
+    public List<Advert> getMyClubs() {
+        String userName = getPrincipal();
+        User user = userService.findByLogin(userName);
+        return advertService.findByUserId(user.getId());
     }
 
     /////// Filtrowanie
@@ -83,6 +95,14 @@ public class ClubsController {
         return "clubs/clubsList";
     }
 
+    @RequestMapping(value = {"/myClubs"}, method = RequestMethod.GET)
+    public String myclubs(ModelMap model) {
+        List<Advert> advert = advertService.findAll();
+        model.addAttribute("advert", advert);
+        model.addAttribute("loggedinuser", getPrincipal());
+        return "clubs/myClubs";
+    }
+
     @RequestMapping(value = {"/addAdvert"}, method = RequestMethod.GET)
     public String newClub(ModelMap model) {
         Advert advert = new Advert();
@@ -102,10 +122,12 @@ public class ClubsController {
             json.put("error", "Klub o podanym tytule już istnieje");
             return new ResponseEntity(json.toString(), HttpStatus.OK);
         }
-
+        String userName = getPrincipal();
+        User user = userService.findByLogin(userName);
+        advert.setUserId(user.getId());
         advertService.save(advert);
         model.addAttribute("success", "Tytuł " + advert.getTitle() + " została poprawnie dodana.");
-        model.addAttribute("loggedinuser", getPrincipal());
+        model.addAttribute("loggedinuser", userName);
         json.put("success", true);
         json.put("data", advert);
         return new ResponseEntity(json.toString(), HttpStatus.OK);
@@ -121,7 +143,16 @@ public class ClubsController {
 
     @RequestMapping(value = {"/edit-advert-{id}"}, method = RequestMethod.GET)
     public String editUser(@PathVariable Integer id, ModelMap model) {
+        String userName = getPrincipal();
+        Collection<? extends GrantedAuthority> authorities = SecurityContextHolder.getContext().getAuthentication().getAuthorities();
+        boolean authorized = authorities.contains(new SimpleGrantedAuthority("ROLE_ADMIN"));
+        User user = userService.findByLogin(userName);
         Advert advert = advertService.findById(id);
+        if (!authorized && user.getId() != advert.getUserId()) {
+            model.addAttribute("loggedinuser", getPrincipal());
+            return "clubs/myClubs";
+        }
+
         model.addAttribute("advert", advert);
         model.addAttribute("edit", true);
         model.addAttribute("loggedinuser", getPrincipal());
@@ -138,7 +169,15 @@ public class ClubsController {
             json.put("error", result);
             return new ResponseEntity(json.toString(), HttpStatus.OK);
         }
-
+        String userName = getPrincipal();
+        Collection<? extends GrantedAuthority> authorities = SecurityContextHolder.getContext().getAuthentication().getAuthorities();
+        boolean authorized = authorities.contains(new SimpleGrantedAuthority("ROLE_ADMIN"));
+        User user = userService.findByLogin(userName);
+        if (!authorized && user.getId() != advert.getUserId()) {
+            json.put("success", false);
+            json.put("error", "To nie twoje ogłoszenie");
+            return new ResponseEntity(json.toString(), HttpStatus.OK);
+        }
         advertService.update(advert);
         model.addAttribute("loggedinuser", getPrincipal());
         json.put("success", true);
@@ -156,7 +195,15 @@ public class ClubsController {
             json.put("error", result);
             return new ResponseEntity(json.toString(), HttpStatus.OK);
         }
-
+        String userName = getPrincipal();
+        Collection<? extends GrantedAuthority> authorities = SecurityContextHolder.getContext().getAuthentication().getAuthorities();
+        boolean authorized = authorities.contains(new SimpleGrantedAuthority("ROLE_ADMIN"));
+        User user = userService.findByLogin(userName);
+        if (!authorized && user.getId() != advert.getUserId()) {
+            json.put("success", false);
+            json.put("error", "To nie twoje ogłoszenie");
+            return new ResponseEntity(json.toString(), HttpStatus.OK);
+        }
         advertService.delete(advert.getId());
         model.addAttribute("loggedinuser", getPrincipal());
         json.put("success", true);

@@ -8,7 +8,7 @@
     <section class="main clearfix">
         <div class="generic-container">
             <div class="authbar">
-                <span>Drogi <strong>${loggedinuser}</strong>, Nie posiadasz uprawnień do przeglądania tej strony.</span> <span class="floatRight"><a href="<c:url value="/logout" />">Wyloguj</a></span>
+                <span>Drogi <strong>${loggedinuser}</strong>, Nie posiadasz uprawnień do przeglądania tej strony.</span> <span class="floatRight"><a onclick="history.go(-1);" href>Powrót</a></span>
             </div>
         </div>
     </section>

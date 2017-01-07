@@ -26,6 +26,10 @@ public class AdvertServiceImpl implements AdvertService {
         return dao.findByCategoryId(id);
     }
 
+    public List<Advert> findByUserId(int id) {
+        return dao.findByUserId(id);
+    }
+
     public List<Advert> findByKodPocztowy(List<String> kody, int catId) {
         return dao.findByKodPocztowy(kody, catId);
     }
@@ -49,6 +53,7 @@ public class AdvertServiceImpl implements AdvertService {
             entity.setTitle(advert.getTitle());
             entity.setWebsite(advert.getWebsite());
             entity.setCategoryId(advert.getCategoryId());
+            entity.setUserId(advert.getUserId());
         }
     }
 

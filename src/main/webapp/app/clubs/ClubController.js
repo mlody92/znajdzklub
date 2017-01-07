@@ -18,6 +18,7 @@ app.controller('ClubListCtrl', function ($scope, $http, $location, $mdDialog, $m
         {name: 'Data dodania', field: "date"},
         {name: 'Kod pocztowy', field: "postalCode"},
         {name: 'Kategoria', field: "categoryId"},
+        {name: 'Użytkownik', field: "userId"},
         {
             name: 'action',
             displayName: '',
@@ -119,7 +120,7 @@ app.controller('ClubCtrl', function ($scope, $http, $mdDialog, $location) {
         }).success(function (data, status, headers, config) {
             if (data.success == true) {
                 showAlert($scope, $mdDialog, 'Informacja', 'Poprawnie dodano ogłoszenie', function () {
-                    location.href = 'clubsList'
+                    location.href = 'myClubs'
                 });
             }
             else {
@@ -248,4 +249,80 @@ app.controller('ClubListViewCtrl', function ($scope, $http) {
         refreshData($scope.categoryId);
     });
 
+});
+
+
+app.controller('MyClubListCtrl', function ($scope, $http, $location, $mdDialog, $mdMedia) {
+    $scope.gridOptions = {
+        enableColumnResizing: true,
+        resizable: true
+    };
+
+    $scope.gridOptions.columnDefs = [
+        {name: 'Tytuł', field: "title"},
+        {name: 'Opis', field: "description"},
+        {name: 'Strona www', field: "website"},
+        {name: 'Adres', field: "address"},
+        {name: 'Email', field: "email"},
+        {name: 'Kontakt', field: "phone"},
+        {name: 'Status', field: "status"},
+        {name: 'Data dodania', field: "date"},
+        {name: 'Kod pocztowy', field: "postalCode"},
+        {name: 'Kategoria', field: "categoryId"},
+        {
+            name: 'action',
+            displayName: '',
+            enableSorting: false,
+            width: 100,
+            cellTemplate: '<md-button ng-href="edit-advert-{{row.entity.id}}#?id={{row.entity.id}}"><span class="glyphicon glyphicon-pencil"></span></md-button><md-button ng-click="grid.appScope.showConfirm($event, row.entity)"><span class="glyphicon glyphicon-trash"></md-button>'
+        }
+    ];
+    var refreshData = function () {
+        $http.get('clubs-user').success(function (response, status) {
+            $scope.gridOptions.data = response;
+        }).error(function () {
+            alert("Failed to access");
+        });
+    };
+
+    refreshData();
+    delete $http.defaults.headers.common["X-Requested-With"];
+    $scope.customFullscreen = $mdMedia('xs') || $mdMedia('sm');
+    $scope.showConfirm = function (ev, data) {
+        // Appending dialog to document.body to cover sidenav in docs app
+        var title = data.title;
+        var confirm = $mdDialog.confirm()
+            .title('Pytanie')
+            .textContent('Czy na pewno chcesz usunąć klub: ' + title)
+            .ariaLabel('Lucky day')
+            .targetEvent(ev)
+            .ok('Tak')
+            .cancel('Nie');
+        $mdDialog.show(confirm).then(function () {
+            var token = $("meta[name='_csrf']").attr("content");
+            var header = $("meta[name='_csrf_header']").attr("content");
+            delete $http.defaults.headers.common["X-Requested-With"];
+            $http.defaults.headers.common['content-type'] = 'application/json';
+            $http.defaults.headers.common[header] = token;
+            $http({
+                method: 'POST',
+                url: 'delete-advert',
+                data: data,
+                headers: {'Content-Type': 'application/json; charset=utf-8'}
+
+            }).success(function (data, status, headers, config) {
+                if (data.success == true) {
+                    showAlert($scope, $mdDialog, 'Informacja', 'Poprawnie usunięto ogłoszenie');
+                }
+                else {
+                    showAlert($scope, $mdDialog, 'Błąd', data.error);
+                }
+            }).error(function (data, status, headers, config) {
+                showAlert($scope, $mdDialog, 'Błąd', "Błąd na serwerze");
+            }).finally(function () {
+                refreshData();
+                $scope.disableMask();
+            });
+        });
+    };
 });

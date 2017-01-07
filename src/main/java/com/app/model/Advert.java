@@ -65,13 +65,6 @@ public class Advert implements Serializable {
         this.userId = userId;
     }
 
-    //    @ManyToOne
-    //    @JoinTable(name = "CATEGORY")
-    //    private Category category;
-
-    //    @ManyToOne(optional = true, fetch = FetchType.LAZY)
-    //    private Category category;
-
     public Integer getId() {
         return id;
     }
