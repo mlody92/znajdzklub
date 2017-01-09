@@ -3,6 +3,8 @@ package com.app.controller;
 import com.app.model.User;
 import com.app.service.UserService;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.validation.Valid;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,6 +61,13 @@ public class UsersController {
         if (!userService.isUserLoginUnique(user.getId(), user.getLogin())) {
             json.put("success", false);
             json.put("error", "Podany login już istnieje");
+            return new ResponseEntity(json.toString(), HttpStatus.OK);
+        }
+
+        String waliduj = waliduj(user);
+        if (waliduj != "") {
+            json.put("success", false);
+            json.put("error", waliduj);
             return new ResponseEntity(json.toString(), HttpStatus.OK);
         }
 
@@ -186,5 +195,25 @@ public class UsersController {
             userName = principal.toString();
         }
         return userName;
+    }
+
+    private String waliduj(User user) {
+        String error = "";
+        Pattern pemail = Pattern.compile(".+@.+");
+        Matcher memail = pemail.matcher(user.getEmail());
+        if (!memail.matches()) {
+            error += "adres email jest nieprawidłowy.\n";
+        }
+
+        if (user.getLogin().length() < 3) {
+            error += "login jest za krótki.\n";
+        } else if (user.getLogin().length() > 30){
+            error += "login jest zbyt długi";
+        }
+
+        if (user.getPassword().length() < 5) {
+            error += "hasło jest zbyt krótkie \n";
+        }
+        return error;
     }
 }
