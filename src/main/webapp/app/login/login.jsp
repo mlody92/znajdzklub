@@ -7,15 +7,6 @@
     <section class="main clearfix">
         <section class="top">
             <div class="wrapper content_header clearfix">
-                <div class="work_nav">
-
-                    <ul class="btn clearfix">
-                        <li><a href="#" class="previous" data-title="Previous"></a></li>
-                        <li><a href="index.html" class="grid" data-title="Portfolio"></a></li>
-                        <li><a href="#" class="next" data-title="Next"></a></li>
-                    </ul>
-
-                </div><!-- end work_nav -->
                 <h1 class="title">Logowanie</h1>
             </div>
         </section>
@@ -33,11 +24,6 @@
                             <c:if test="${param.error != null}">
                                 <div class="alert alert-danger">
                                     <p>Niepoprawna nazwa użytkownika lub hasło.</p>
-                                </div>
-                            </c:if>
-                            <c:if test="${param.logout != null}">
-                                <div class="alert alert-success">
-                                    <p>Zalogowano.</p>
                                 </div>
                             </c:if>
                             <div class="input-group input-sm">

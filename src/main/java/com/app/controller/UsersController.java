@@ -93,22 +93,21 @@ public class UsersController {
             return new ResponseEntity(json.toString(), HttpStatus.OK);
         }
 
-        userService.deleteUserByLogin(login);
+        userService.updateUser(user);
         model.addAttribute("loggedinuser", getPrincipal());
         json.put("success", true);
-        json.put("info", "Poprawnie usunięto kategorię");
+        json.put("info", "Poprawnie przeedytowany użytkownika");
         return new ResponseEntity(json.toString(), HttpStatus.OK);
     }
 
     /**
      * This method will delete an user by it's SSOID value.
      */
-//    @RequestMapping(value = {"/delete-user-{login}"}, method = RequestMethod.GET)
-//    public String deleteUser(@PathVariable String login) {
-//        userService.deleteUserByLogin(login);
-//        return "redirect:/userList";
-//    }
-
+    //    @RequestMapping(value = {"/delete-user-{login}"}, method = RequestMethod.GET)
+    //    public String deleteUser(@PathVariable String login) {
+    //        userService.deleteUserByLogin(login);
+    //        return "redirect:/userList";
+    //    }
     @RequestMapping(value = {"/delete-user-{login}"}, method = RequestMethod.POST, produces = {"application/json; charset=UTF-8"})
     public ResponseEntity deleteUser2(@RequestBody @Valid User user, BindingResult result,
                                          ModelMap model, @PathVariable String login) {
@@ -140,6 +139,38 @@ public class UsersController {
         model.addAttribute("users", users);
         model.addAttribute("loggedinuser", getPrincipal());
         return "user/userList";
+    }
+
+    @RequestMapping(value = {"/edit-profile"}, method = RequestMethod.GET)
+    public String editProfile(ModelMap model) {
+        User user = userService.findByLogin(getPrincipal());
+        model.addAttribute("user", user);
+        model.addAttribute("edit", true);
+        model.addAttribute("loggedinuser", getPrincipal());
+        return "register/register";
+    }
+
+    @RequestMapping(value = {"/edit-profile"}, method = RequestMethod.POST, produces = {"application/json; charset=UTF-8"})
+    public ResponseEntity updateProfile(@RequestBody @Valid User user, BindingResult result,
+                                           ModelMap model) {
+
+        JSONObject json = new JSONObject();
+        if (result.hasErrors()) {
+            json.put("success", false);
+            json.put("error", result);
+            return new ResponseEntity(json.toString(), HttpStatus.OK);
+        }
+        if (user.getLogin() != getPrincipal()) {
+            json.put("success", false);
+            json.put("error", "Możesz edytować tylko swój profil");
+            return new ResponseEntity(json.toString(), HttpStatus.OK);
+        }
+
+        userService.updateUser(user);
+        model.addAttribute("loggedinuser", getPrincipal());
+        json.put("success", true);
+        json.put("info", "Poprawnie przeedytowany użytkownika");
+        return new ResponseEntity(json.toString(), HttpStatus.OK);
     }
 
     /**
