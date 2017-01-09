@@ -1,7 +1,3 @@
-/*
- * Copyright (c) Krakfin
- * All rights reserved
- */
 package com.app.service;
 
 import com.app.model.Advert;

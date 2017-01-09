@@ -1,7 +1,3 @@
-/*
- * Copyright (c) Krakfin
- * All rights reserved
- */
 package com.app.dao;
 
 import com.app.model.Category;
