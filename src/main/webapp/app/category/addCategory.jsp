@@ -13,18 +13,13 @@
                 </div>
             </div>
 
-            <section class="top">
+            <section class="topKlaw">
                 <div class="wrapper content_header clearfix">
                     <div class="work_nav">
 
-                        <ul class="btn clearfix">
-                            <li><a href="#" class="previous" data-title="Previous"></a></li>
-                            <li><a href="index.html" class="grid" data-title="Portfolio"></a></li>
-                            <li><a href="#" class="next" data-title="Next"></a></li>
-                        </ul>
 
                     </div><!-- end work_nav -->
-                    <h1 class="title">Kategoria</h1>
+                    <h1 class="title_kluby_ciemne">Kategoria</h1>
                 </div>
             </section>
             <!-- end top -->

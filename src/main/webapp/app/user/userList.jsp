@@ -11,9 +11,9 @@
                     <md-progress-circular id="mask" md-mode="indeterminate" md-diameter="96"></md-progress-circular>
                 </div>
             </div>
-            <section class="top">
+            <section class="topUser">
                 <div class="wrapper content_header clearfix">
-                    <h1 class="title">Lista użytkowników</h1>
+                    <h1 class="title_kluby_jasne">Lista użytkowników</h1>
                 </div>
             </section>
             <!-- end top -->

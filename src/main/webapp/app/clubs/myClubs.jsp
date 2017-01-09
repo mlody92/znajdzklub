@@ -5,9 +5,9 @@
 
 <t:wrapper>
     <section class="main clearfix">
-        <section class="top">
+        <section class="topKlaw">
             <div class="wrapper content_header clearfix">
-                <h1 class="title">Moje kluby</h1>
+                <h1 class="title_kluby_ciemne">Moje kluby</h1>
             </div>
         </section>
         <!-- end top -->

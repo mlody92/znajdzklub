@@ -5,9 +5,9 @@
 
 <t:wrapper>
     <section class="main clearfix"ng-app="app">
-        <section class="top">
+        <section class="topKlaw">
             <div class="wrapper content_header clearfix">
-                <h1 class="title">Kategorie</h1>
+                <h1 class="title_kluby_jasne">Kategorie</h1>
             </div>
         </section>
         <!-- end top -->
