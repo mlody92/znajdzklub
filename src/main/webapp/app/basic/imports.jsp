@@ -5,7 +5,9 @@
 <link href="<c:url value='/css/main.css' />" rel="stylesheet"/>
 <link href="<c:url value='/css/angular-material.css' />" rel="stylesheet"/>
 <link href="<c:url value='/css/bootstrap/bootstrap.min.css' />" rel="stylesheet"/>
+<link href="<c:url value='/css/ext/theme-neptune-touch-all-debug_1.css' />" rel="stylesheet"/>
 
+<script src="<c:url value='/scripts/ext/ext-all-debug.js' />"></script>
 <script src="<c:url value='/scripts/js/jquery-2.0.3.min.js' />"></script>
 <script src="<c:url value='/scripts/angular/angular.min.js' />"></script>
 <script src="<c:url value='/scripts/ui-grid.min.js' />"></script>
