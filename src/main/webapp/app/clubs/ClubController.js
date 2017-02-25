@@ -40,6 +40,7 @@ app.controller('ClubListCtrl', function ($scope, $http, $location, $mdDialog, $m
     $scope.customFullscreen = $mdMedia('xs') || $mdMedia('sm');
     $scope.showConfirm = function (ev, data) {
         // Appending dialog to document.body to cover sidenav in docs app
+        console.log(data);
         var title = data.title;
         var confirm = $mdDialog.confirm()
             .title('Pytanie')

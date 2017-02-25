@@ -1,5 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="t" tagdir="/WEB-INF/tags" %>
 
 <section class="main clearfix">
     <div class="work">
@@ -7,7 +8,7 @@
         <img src="<c:url value='/img/sztuki_walki_home.jpg' />" class="media" alt=""/>
         <div class="caption">
             <div class="work_title">
-                <h1>Sztuki walki</h1>
+                <h1>Sztuki walki2 ${x}</h1>
             </div>
         </div>
         </a>

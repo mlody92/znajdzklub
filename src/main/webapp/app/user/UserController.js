@@ -1,5 +1,5 @@
 'use strict';
-app.controller('UserListCtrl', function ($scope, $http, $location, $mdDialog, $mdMedia) {
+app.controller('UserListCtrl', function ($scope, $http, $location, $mdDialog, $mdMedia, Factory) {
     $scope.gridOptions = {
         enableColumnResizing: true,
         resizable: true
@@ -13,61 +13,33 @@ app.controller('UserListCtrl', function ($scope, $http, $location, $mdDialog, $m
         {name: 'Rola', field: "role"},
         {
             name: 'action',
-            displayName:'',
+            displayName: '',
             enableSorting: false,
             cellTemplate: '<md-button ng-href="edit-user-{{row.entity.login}}#?login={{row.entity.login}}"><span class="glyphicon glyphicon-pencil"></span></md-button><md-button ng-click="grid.appScope.showConfirm($event, row.entity)"><span class="glyphicon glyphicon-trash"></md-button>'
         }
     ];
 
-    delete $http.defaults.headers.common["X-Requested-With"];
-
-    var refreshData = function () {
-        $http.get('listUser').success(function (response, status) {
-            $scope.gridOptions.data = response;
-        }).error(function () {
-            alert("Failed to access");
-        });
-    };
-
-    refreshData();
+    loadStore();
     $scope.customFullscreen = $mdMedia('xs') || $mdMedia('sm');
-    $scope.showConfirm = function (ev, data) {
+    $scope.showConfirm = function (event, data) {
         // Appending dialog to document.body to cover sidenav in docs app
         var login = data.login;
-        var confirm = $mdDialog.confirm()
-            .parent(angular.element(document.body))
-            .title('Pytanie')
-            .textContent('Czy na pewno chcesz usunąć użytkownika: '+login)
-            .ariaLabel('Lucky day')
-            .targetEvent(ev)
-            .ok('Tak')
-            .cancel('Nie');
-        $mdDialog.show(confirm).then(function () {
-            var dataObj = data;
-            var token = $("meta[name='_csrf']").attr("content");
-            var header = $("meta[name='_csrf_header']").attr("content");
-            delete $http.defaults.headers.common["X-Requested-With"];
-            $http.defaults.headers.common['content-type'] = 'application/json';
-            $http.defaults.headers.common[header] = token;
-            $http({
-                method: 'POST',
-                url: 'delete-user-' + login,
-                data: dataObj,
-                headers: {'Content-Type': 'application/json; charset=utf-8'}
-
-            }).success(function (data, status, headers, config) {
-                if (data.success == true) {
-                    showAlert($scope, $mdDialog, 'Informacja', 'Poprawnie usunięto użyytkownika');
-                }
-                else {
-                    showAlert($scope, $mdDialog, 'Błąd', data.error);
-                }
-            }).error(function (data, status, headers, config) {
-                showAlert($scope, $mdDialog, 'Błąd', "Błąd na serwerze");
-            }).finally(function () {
-                refreshData();
-                $scope.disableMask();
-            });
-        });
+        var config = {
+            event: event,
+            textContent: "Czy na pewno chcesz usunąć użytkownika: " + login,
+            thenFn: function () {
+                Factory.postData('delete-user-' + login, data, function () {
+                        loadStore();
+                    }
+                );
+            }
+        };
+        Factory.showConfirm(config);
     };
+
+    function loadStore() {
+        Factory.getData('listUser').then(function (result) {
+            $scope.gridOptions.data = result.data;
+        });
+    }
 });

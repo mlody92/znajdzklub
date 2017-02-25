@@ -8,6 +8,7 @@
 <link href="<c:url value='/css/ext/theme-neptune-touch-all-debug_1.css' />" rel="stylesheet"/>
 
 <script src="<c:url value='/scripts/ext/ext-all-debug.js' />"></script>
+<script src="<c:url value='/scripts/ext/my-ext.js' />"></script>
 <script src="<c:url value='/scripts/js/jquery-2.0.3.min.js' />"></script>
 <script src="<c:url value='/scripts/angular/angular.min.js' />"></script>
 <script src="<c:url value='/scripts/ui-grid.min.js' />"></script>
@@ -21,6 +22,7 @@
 <script src="<c:url value='/scripts/angular/angular-material.min.js' />"></script>
 <script src="<c:url value='/scripts/ngStorage.min.js' />"></script>
 <script src="<c:url value='/app/main.js' />"></script>
+<script src="<c:url value='/scripts/angular/my-angular.js' />"></script>
 <script src="<c:url value='/app/AppController.js' />"></script>
 <script src="<c:url value='/app/home/HomeController.js' />"></script>
 <script src="<c:url value='/app/user/UserController.js' />"></script>

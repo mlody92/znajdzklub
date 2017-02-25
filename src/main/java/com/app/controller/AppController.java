@@ -54,9 +54,7 @@ public class AppController {
         return "redirect:/";
     }
 
-    /**
-     * This method will provide the medium to add a new user.
-     */
+    //open register page
     @RequestMapping(value = {"/register"}, method = RequestMethod.GET)
     public String newUser(ModelMap model) {
         User user = new User();

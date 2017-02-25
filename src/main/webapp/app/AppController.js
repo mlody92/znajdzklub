@@ -1,5 +1,5 @@
 'use strict';
-var app = angular.module('app', ['ngTouch', 'ui.grid', 'ui.grid.autoResize', 'ngMaterial', 'ui.grid.resizeColumns', 'ngRoute']);
+// var app = angular.module('app', ['ngTouch', 'ui.grid', 'ui.grid.autoResize', 'ngMaterial', 'ui.grid.resizeColumns', 'ngRoute']);
 app.controller('AppCtrl', ['$interval',
     function ($interval) {
         var self = this;
@@ -16,13 +16,3 @@ app.controller('AppCtrl', ['$interval',
         }, 100);
     }
 ]);
-
-app.run(function($rootScope) {
-    $rootScope.loadMask = function () {
-        $rootScope.mask =  true;
-    };
-
-    $rootScope.disableMask = function () {
-        $rootScope.mask =  false;
-    };
-});

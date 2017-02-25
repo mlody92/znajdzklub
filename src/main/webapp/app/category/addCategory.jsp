@@ -1,18 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
 <t:wrapper>
     <div ng-app="app" ng-controller="AppCtrl" ng-disabled="true">
         <section class="main clearfix">
-            <div id="cover" ng-show="mask">
-                <div>
-                    <md-progress-circular id="mask" md-mode="indeterminate" md-diameter="96"></md-progress-circular>
-                </div>
-            </div>
-
+            <t:mask/>
             <section class="topKlaw">
                 <div class="wrapper content_header clearfix">
                     <div class="work_nav">
@@ -25,7 +18,6 @@
             <!-- end top -->
 
             <section class="wrapper">
-
                 <div class="content " ng-controller="CategoryCtrl">
 
                     <div class="container">
@@ -45,16 +37,13 @@
                                     </div>
                                     <c:choose>
                                         <c:when test="${edit}">
-                                            <input type="submit" value="Zapisz" class="btn btn-primary btn-sm" ng-disabled="form.$invalid"/> <input action="action" type="button"
-                                                                                                                                                               value="Powrót"
-                                                                                                                                                               onclick="history.go(-1);"/>
+                                            <input type="submit" value="Zapisz" class="btn btn-primary btn-sm" ng-disabled="form.$invalid"/>
                                         </c:when>
                                         <c:otherwise>
-                                            <input type="submit" value="Dodaj" class="btn btn-primary btn-sm" ng-disabled="form.$invalid"/> <input action="action" type="button"
-                                                                                                                                                      value="Powrót"
-                                                                                                                                                      onclick="history.go(-1);"/>
+                                            <input type="submit" value="Dodaj" class="btn btn-primary btn-sm" ng-disabled="form.$invalid"/>
                                         </c:otherwise>
                                     </c:choose>
+                                    <input action="action" type="button" value="Powrót" onclick="history.go(-1);"/>
                                 </form>
                             </div>
                         </div>

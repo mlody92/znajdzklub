@@ -1,7 +1,4 @@
 $(document).ready(function(){
-
-
-
     //mobile menu toggling
     $("#menu_icon").click(function(){
         $("header nav ul").toggleClass("show_menu");
@@ -27,10 +24,6 @@ $(document).ready(function(){
             "margin-left" : hw
         });
     }
-
-   
-
-
 
     //Tooltip
     $("a").mouseover(function(){

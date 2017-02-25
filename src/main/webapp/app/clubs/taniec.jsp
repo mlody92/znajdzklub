@@ -4,11 +4,8 @@
 <t:wrapper>
     <div ng-app="app" ng-controller="AppCtrl" ng-disabled="true">
         <section class="main clearfix">
-            <div id="cover" ng-show="mask">
-                <div>
-                    <md-progress-circular id="mask" md-mode="indeterminate" md-diameter="96"></md-progress-circular>
-                </div>
-            </div>
+            <t:mask/>
+
             <section class="topTaniec">
                 <div class="wrapper content_header clearfix">
                     <h1 class="title_kluby_jasne">Taniec</h1>

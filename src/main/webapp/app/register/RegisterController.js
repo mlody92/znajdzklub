@@ -110,35 +110,4 @@ app.controller('RegisterCtrl', function ($scope, $http, $mdDialog, $location) {
     };
 });
 
-var showAlert = function (scope, mdDialog, title, text, thenFn) {
-    var alert = mdDialog.alert()
-        .parent(angular.element(document.body))
-        .clickOutsideToClose(true)
-        .title(title)
-        .textContent(text)
-        .ariaLabel('Alert Dialog Demo')
-        .ok('Ok');
-    mdDialog.show(alert).then(thenFn);
-};
-
-var compareTo = function () {
-    return {
-        require: "ngModel",
-        scope: {
-            otherModelValue: "=compareTo"
-        },
-        link: function (scope, element, attributes, ngModel) {
-
-            ngModel.$validators.compareTo = function (modelValue) {
-                return modelValue == scope.otherModelValue;
-            };
-
-            scope.$watch("otherModelValue", function () {
-                ngModel.$validate();
-            });
-        }
-    };
-};
-
-app.directive("compareTo", compareTo);
 
