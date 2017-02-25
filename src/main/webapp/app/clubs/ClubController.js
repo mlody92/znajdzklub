@@ -2,12 +2,12 @@
 // var app = angular.module('app', ['ngTouch', 'ui.grid', 'ui.grid.autoResize', 'ngMaterial', 'ui.grid.resizeColumns']);
 
 app.controller('ClubListCtrl', function ($scope, $http, $location, $mdDialog, $mdMedia) {
-    $scope.gridOptions = {
+    $scope.grid = {
         enableColumnResizing: true,
         resizable: true
     };
 
-    $scope.gridOptions.columnDefs = [
+    $scope.grid.columnDefs = [
         {name: 'Tytuł', field: "title"},
         {name: 'Opis', field: "description"},
         {name: 'Strona www', field: "website"},
@@ -29,7 +29,7 @@ app.controller('ClubListCtrl', function ($scope, $http, $location, $mdDialog, $m
     ];
     var refreshData = function () {
         $http.get('listClubs').success(function (response, status) {
-            $scope.gridOptions.data = response;
+            $scope.grid.data = response;
         }).error(function () {
             alert("Failed to access");
         });
@@ -171,7 +171,7 @@ app.controller('ClubListViewCtrl', function ($scope, $http) {
         if ($scope.form.$valid) {
             if (data.kod != "" || data.km != "") {
                 $http.get("clubs-filter-" + data.kod + "-" + data.km + "-" + $scope.categoryId).success(function (response, status) {
-                    $scope.gridOptions.data = response;
+                    $scope.grid.data = response;
                 }).error(function () {
                     alert("Failed to access");
                 }).finally(function () {
@@ -183,14 +183,14 @@ app.controller('ClubListViewCtrl', function ($scope, $http) {
         }
     };
 
-    $scope.gridOptions = {
+    $scope.grid = {
         enableColumnResizing: true,
         resizable: true
     };
 
     $scope.$watch("edit", function () {
         if ($scope.edit) {
-            $scope.gridOptions.columnDefs = [
+            $scope.grid.columnDefs = [
                 {name: 'Tytuł', field: "title"},
                 {name: 'Opis', field: "description"},
                 {name: 'Strona www', field: "website"},
@@ -209,7 +209,7 @@ app.controller('ClubListViewCtrl', function ($scope, $http) {
                 }
             ];
         } else {
-            $scope.gridOptions.columnDefs = [
+            $scope.grid.columnDefs = [
                 {
                     name: 'Tytuł',
                     cellTemplate: '<a ng-href="view-advert-{{row.entity.id}}#?id={{row.entity.id}}"><span >{{row.entity.title}}</span></a>'
@@ -231,13 +231,13 @@ app.controller('ClubListViewCtrl', function ($scope, $http) {
         var category = 'clubs-category-' + category;
         if (category != undefined) {
             $http.get(category).success(function (response, status) {
-                $scope.gridOptions.data = response;
+                $scope.grid.data = response;
             }).error(function () {
                 alert("Failed to access");
             });
         } else {
             $http.get(all).success(function (response, status) {
-                $scope.gridOptions.data = response;
+                $scope.grid.data = response;
             }).error(function () {
                 alert("Failed to access");
             });
@@ -251,12 +251,12 @@ app.controller('ClubListViewCtrl', function ($scope, $http) {
 
 
 app.controller('MyClubListCtrl', function ($scope, $http, $location, $mdDialog, $mdMedia) {
-    $scope.gridOptions = {
+    $scope.grid = {
         enableColumnResizing: true,
         resizable: true
     };
 
-    $scope.gridOptions.columnDefs = [
+    $scope.grid.columnDefs = [
         {name: 'Tytuł', field: "title"},
         {name: 'Opis', field: "description"},
         {name: 'Strona www', field: "website"},
@@ -277,7 +277,7 @@ app.controller('MyClubListCtrl', function ($scope, $http, $location, $mdDialog, 
     ];
     var refreshData = function () {
         $http.get('clubs-user').success(function (response, status) {
-            $scope.gridOptions.data = response;
+            $scope.grid.data = response;
         }).error(function () {
             alert("Failed to access");
         });

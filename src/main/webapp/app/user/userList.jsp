@@ -16,7 +16,7 @@
                     <div id="mainWrapper" ng-app="app">
                         <div class="panel panel-default">
                             <div ng-controller="UserListCtrl">
-                                <div ui-grid="gridOptions" class="table table-hover"></div>
+                                <div ui-grid="grid" class="table table-hover"></div>
                             </div>
                         </div>
                     </div>

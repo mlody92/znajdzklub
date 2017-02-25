@@ -44,15 +44,19 @@ app.factory('Factory', function ($http, $mdDialog) {
             });
         };
 
-        factory.showAlert = function ($title, $text, $thenFn) {
+        factory.showAlert = function (title, text, thenFn) {
             var alert = $mdDialog.alert()
                 .parent(angular.element(document.body))
                 .clickOutsideToClose(true)
-                .title($title)
-                .textContent($text)
+                .title(title)
+                .textContent(text)
                 .ariaLabel('Alert Dialog Demo')
                 .ok('Ok');
-            $mdDialog.show(alert).then($thenFn);
+            $mdDialog.show(alert).then(function () {
+                if (typeof thenFn == 'function') {
+                    thenFn()
+                }
+            });
         };
 
         factory.showConfirm = function (config) {
@@ -67,7 +71,7 @@ app.factory('Factory', function ($http, $mdDialog) {
             $mdDialog.show(confirm).then(config.thenFn);
         };
 
-        factory.postData = function ($url, $data, $finallyFn) {
+        factory.postData = function (config) {
             delete $http.defaults.headers.common["X-Requested-With"];
             var token = $("meta[name='_csrf']").attr("content");
             var header = $("meta[name='_csrf_header']").attr("content");
@@ -75,24 +79,31 @@ app.factory('Factory', function ($http, $mdDialog) {
             $http.defaults.headers.common[header] = token;
             $http({
                 method: 'POST',
-                url: $url,
-                data: $data,
+                url: config.url,
+                data: config.data,
                 headers: {'Content-Type': 'application/json; charset=utf-8'}
-
-            }).success(function (data, status, headers, config) {
+                // }).success(function (data, status, headers, config) {
+            }).success(function (data, status) {
                 if (data.success == true) {
-                    factory.showAlert('Informacja', 'Poprawnie usunięto użyytkownika');
+                    factory.showAlert('Informacja', 'Poprawnie usunięto użyytkownika', config.successFn);
                 }
                 else {
                     factory.showAlert('Błąd', data.error);
+                    config.failureFn;
                 }
             }).error(function (data, status, headers, config) {
                 factory.showAlert('Błąd', "Błąd na serwerze");
+                if (typeof config.errorFn == 'function') {
+                    config.errorFn();
+                }
             }).finally(function () {
-                $finallyFn();
-                $scope.disableMask();
+                if (typeof config.finallyFn == 'function') {
+                    config.finallyFn();
+                }
+                disableMask();
             });
         };
+
 
         return factory;
     }

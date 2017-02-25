@@ -202,7 +202,7 @@ public class ClubsController {
             json.put("error", "To nie twoje ogłoszenie");
             return new ResponseEntity(json.toString(), HttpStatus.OK);
         }
-        advertService.delete(advert.getId());
+//        advertService.delete(advert.getId());
         model.addAttribute("loggedinuser", getPrincipal());
         json.put("success", true);
         json.put("info", "Poprawnie usunięto kategorię");

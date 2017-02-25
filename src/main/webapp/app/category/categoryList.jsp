@@ -19,7 +19,7 @@
                         <a href="addCategory">Dodaj kategorię</a>
                         <!-- Default panel contents -->
                         <div  ng-controller="CategoryListCtrl">
-                            <div ui-grid="gridOptions" class="table table-hover"></div>
+                            <div ui-grid="grid" class="table table-hover"></div>
                         </div>
                     </div>
                 </div>

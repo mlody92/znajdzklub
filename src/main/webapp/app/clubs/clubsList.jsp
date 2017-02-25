@@ -18,7 +18,7 @@
                     <div class="panel panel-default">
                         <!-- Default panel contents -->
                         <div ng-controller="ClubListCtrl">
-                            <div ui-grid="gridOptions" class="table table-hover"></div>
+                            <div ui-grid="grid" class="table table-hover"></div>
                         </div>
 
 

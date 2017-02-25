@@ -1,11 +1,9 @@
 'use strict';
-app.controller('CategoryCtrl', function ($scope, $http, $mdDialog, $location) {
+app.controller('CategoryCtrl', function ($scope, $http, $mdDialog, $location, Factory) {
 
     if ($location.search().name != undefined) {
-        $http.get('category-' + $location.search().name).success(function (response, status) {
-            $scope.category = response;
-        }).error(function () {
-            alert("Błąd pobrania danych kategorii");
+        Factory.getData('category-' + $location.search().name).then(function (result) {
+            $scope.category = result.data;
         });
     }
     // function to submit the form after all validation has occurred
@@ -27,31 +25,15 @@ app.controller('CategoryCtrl', function ($scope, $http, $mdDialog, $location) {
             name: $scope.data.name
         };
 
-        var token = $("meta[name='_csrf']").attr("content");
-        var header = $("meta[name='_csrf_header']").attr("content");
-        delete $http.defaults.headers.common["X-Requested-With"];
-        $http.defaults.headers.common['content-type'] = 'application/json';
-        $http.defaults.headers.common[header] = token;
-        $http({
-            method: 'POST',
+        var postConfig = {
             url: 'addCategory',
             data: dataObj,
-            headers: {'Content-Type': 'application/json; charset=utf-8'}
+            successFn: function () {
+                location.href = 'addCategory'
+            }
 
-        }).success(function (data, status, headers, config) {
-            if (data.success == true) {
-                showAlert($scope, $mdDialog, 'Informacja', 'Poprawnie dodano kategorię', function () {
-                    location.href = 'addCategory'
-                });
-            }
-            else {
-                showAlert($scope, $mdDialog, 'Błąd', data.error);
-            }
-        }).error(function (data, status, headers, config) {
-            showAlert($scope, $mdDialog, 'Błąd', "Błąd na serwerze");
-        }).finally(function () {
-            $scope.disableMask();
-        });
+        };
+        Factory.postData(postConfig);
     };
 
     $scope.editRowAsyncAsJSON = function () {
@@ -86,13 +68,13 @@ app.controller('CategoryCtrl', function ($scope, $http, $mdDialog, $location) {
     };
 });
 
-app.controller('CategoryListCtrl', function ($scope, $http, $location, $mdDialog, $mdMedia) {
-    $scope.gridOptions = {
+app.controller('CategoryListCtrl', function ($scope, $http, $location, $mdDialog, $mdMedia, Factory) {
+    $scope.grid = {
         enableColumnResizing: true,
         resizable: true
     };
 
-    $scope.gridOptions.columnDefs = [
+    $scope.grid.columnDefs = [
         {name: 'Nazwa', field: "name"},
         {
             name: 'action',
@@ -105,7 +87,7 @@ app.controller('CategoryListCtrl', function ($scope, $http, $location, $mdDialog
     delete $http.defaults.headers.common["X-Requested-With"];
     var refreshData = function () {
         $http.get('listCategory').success(function (response, status) {
-            $scope.gridOptions.data = response;
+            $scope.grid.data = response;
         }).error(function () {
             alert("Failed to access");
         });
@@ -114,47 +96,24 @@ app.controller('CategoryListCtrl', function ($scope, $http, $location, $mdDialog
 
     refreshData();
     $scope.customFullscreen = $mdMedia('xs') || $mdMedia('sm');
-    $scope.showConfirm = function (ev, data) {
+
+    $scope.showConfirm = function (event, data) {
         // Appending dialog to document.body to cover sidenav in docs app
         var name = data.name;
-        var confirm = $mdDialog.confirm()
-            
-            .title('Pytanie')
-            .textContent('Czy na pewno chcesz usunąć kategorię: ' + name)
-            .ariaLabel('Lucky day')
-            .targetEvent(ev)
-            .ok('Tak')
-            .cancel('Nie');
-        $mdDialog.show(confirm).then(function () {
-            var dataObj = {
-                id: data.id,
-                name: data.name
-            };
-            var token = $("meta[name='_csrf']").attr("content");
-            var header = $("meta[name='_csrf_header']").attr("content");
-            delete $http.defaults.headers.common["X-Requested-With"];
-            $http.defaults.headers.common['content-type'] = 'application/json';
-            $http.defaults.headers.common[header] = token;
-            $http({
-                method: 'POST',
-                url: 'delete-category-' + name,
-                data: dataObj,
-                headers: {'Content-Type': 'application/json; charset=utf-8'}
-
-            }).success(function (data, status, headers, config) {
-                if (data.success == true) {
-                    showAlert($scope, $mdDialog, 'Informacja', 'Poprawnie usunięto kategorię');
-                }
-                else {
-                    showAlert($scope, $mdDialog, 'Błąd', data.error);
-                }
-            }).error(function (data, status, headers, config) {
-                showAlert($scope, $mdDialog, 'Błąd', "Błąd na serwerze");
-            }).finally(function () {
-                refreshData();
-                $scope.disableMask();
-            });
-
-        });
+        var config = {
+            event: event,
+            textContent: "Czy na pewno chcesz usunąć kategorię: " + name,
+            thenFn: function () {
+                var postConfig = {
+                    url: 'delete-category-' + name,
+                    data: data,
+                    finallyFn: function () {
+                        refreshData();
+                    }
+                };
+                Factory.postData(postConfig);
+            }
+        };
+        Factory.showConfirm(config);
     };
 });

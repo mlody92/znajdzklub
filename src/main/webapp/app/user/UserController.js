@@ -1,11 +1,11 @@
 'use strict';
 app.controller('UserListCtrl', function ($scope, $http, $location, $mdDialog, $mdMedia, Factory) {
-    $scope.gridOptions = {
+    $scope.grid = {
         enableColumnResizing: true,
         resizable: true
     };
 
-    $scope.gridOptions.columnDefs = [
+    $scope.grid.columnDefs = [
         {name: 'Imię', field: "firstName"},
         {name: 'Nazwisko', field: "lastName"},
         {name: 'Email', field: "email"},
@@ -28,10 +28,15 @@ app.controller('UserListCtrl', function ($scope, $http, $location, $mdDialog, $m
             event: event,
             textContent: "Czy na pewno chcesz usunąć użytkownika: " + login,
             thenFn: function () {
-                Factory.postData('delete-user-' + login, data, function () {
+                var postConfig = {
+                    url: 'delete-user-' + login,
+                    data: data,
+                    finallyFn: function () {
                         loadStore();
                     }
-                );
+
+                };
+                Factory.postData(postConfig);
             }
         };
         Factory.showConfirm(config);
@@ -39,7 +44,7 @@ app.controller('UserListCtrl', function ($scope, $http, $location, $mdDialog, $m
 
     function loadStore() {
         Factory.getData('listUser').then(function (result) {
-            $scope.gridOptions.data = result.data;
+            $scope.grid.data = result.data;
         });
     }
 });

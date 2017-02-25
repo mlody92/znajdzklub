@@ -30,7 +30,7 @@
                             </form>
                             <!-- Default panel contents -->
                             <div  ng-init="categoryId = ${categoryId}">
-                                <div ui-grid="gridOptions" class="table table-hover"></div>
+                                <div ui-grid="grid" class="table table-hover"></div>
                             </div>
                         </div>
                     </div>

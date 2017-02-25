@@ -31,7 +31,7 @@
                                 </table>
                             </form>
                             <div ng-init="categoryId = ${categoryId}; edit = ${edit}";>
-                                <div ui-grid="gridOptions" class="table table-hover"></div>
+                                <div ui-grid="grid" class="table table-hover"></div>
                             </div>
                         </div>
                     </div>
