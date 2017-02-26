@@ -33,14 +33,24 @@ app.run(function ($rootScope) {
     };
 });
 
-app.factory('Factory', function ($http, $mdDialog) {
+app.factory('Factory', function ($http, $mdDialog, $rootScope) {
         var factory = this;
+
+        factory.loadMask = function () {
+            $rootScope.mask = true;
+        };
+
+        factory.disableMask = function () {
+            $rootScope.mask = false;
+        };
 
         factory.getData = function ($url) {
             return $http.get($url).success(function (response, status) {
                 return response;
             }).error(function () {
                 alert("Failed to access");
+            }).finally(function () {
+                factory.disableMask();
             });
         };
 
@@ -89,7 +99,9 @@ app.factory('Factory', function ($http, $mdDialog) {
                 }
                 else {
                     factory.showAlert('Błąd', data.error);
-                    config.failureFn;
+                    if (typeof config.failureFn == 'function') {
+                        config.failureFn();
+                    }
                 }
             }).error(function (data, status, headers, config) {
                 factory.showAlert('Błąd', "Błąd na serwerze");
@@ -100,11 +112,9 @@ app.factory('Factory', function ($http, $mdDialog) {
                 if (typeof config.finallyFn == 'function') {
                     config.finallyFn();
                 }
-                disableMask();
+                factory.disableMask();
             });
         };
-
-
         return factory;
     }
 );

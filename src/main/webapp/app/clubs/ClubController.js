@@ -1,7 +1,5 @@
 'use strict';
-// var app = angular.module('app', ['ngTouch', 'ui.grid', 'ui.grid.autoResize', 'ngMaterial', 'ui.grid.resizeColumns']);
-
-app.controller('ClubListCtrl', function ($scope, $http, $location, $mdDialog, $mdMedia) {
+app.controller('ClubListCtrl', function ($scope, $http, $location, $mdDialog, $mdMedia, Factory) {
     $scope.grid = {
         enableColumnResizing: true,
         resizable: true
@@ -27,158 +25,92 @@ app.controller('ClubListCtrl', function ($scope, $http, $location, $mdDialog, $m
             cellTemplate: '<md-button ng-href="edit-advert-{{row.entity.id}}#?id={{row.entity.id}}"><span class="glyphicon glyphicon-pencil"></span></md-button><md-button ng-click="grid.appScope.showConfirm($event, row.entity)"><span class="glyphicon glyphicon-trash"></md-button>'
         }
     ];
-    var refreshData = function () {
-        $http.get('listClubs').success(function (response, status) {
-            $scope.grid.data = response;
-        }).error(function () {
-            alert("Failed to access");
-        });
-    };
 
-    refreshData();
-    delete $http.defaults.headers.common["X-Requested-With"];
-    $scope.customFullscreen = $mdMedia('xs') || $mdMedia('sm');
-    $scope.showConfirm = function (ev, data) {
-        // Appending dialog to document.body to cover sidenav in docs app
-        console.log(data);
-        var title = data.title;
-        var confirm = $mdDialog.confirm()
-            .title('Pytanie')
-            .textContent('Czy na pewno chcesz usunąć klub: ' + title)
-            .ariaLabel('Lucky day')
-            .targetEvent(ev)
-            .ok('Tak')
-            .cancel('Nie');
-        $mdDialog.show(confirm).then(function () {
-            var token = $("meta[name='_csrf']").attr("content");
-            var header = $("meta[name='_csrf_header']").attr("content");
-            delete $http.defaults.headers.common["X-Requested-With"];
-            $http.defaults.headers.common['content-type'] = 'application/json';
-            $http.defaults.headers.common[header] = token;
-            $http({
-                method: 'POST',
-                url: 'delete-advert',
-                data: data,
-                headers: {'Content-Type': 'application/json; charset=utf-8'}
-
-            }).success(function (data, status, headers, config) {
-                if (data.success == true) {
-                    showAlert($scope, $mdDialog, 'Informacja', 'Poprawnie usunięto ogłoszenie');
-                }
-                else {
-                    showAlert($scope, $mdDialog, 'Błąd', data.error);
-                }
-            }).error(function (data, status, headers, config) {
-                showAlert($scope, $mdDialog, 'Błąd', "Błąd na serwerze");
-            }).finally(function () {
-                refreshData();
-                $scope.disableMask();
-            });
-        });
-    };
-});
-
-app.controller('ClubCtrl', function ($scope, $http, $mdDialog, $location) {
-    if ($location.search().id != undefined) {
-        $http.get('club-' + $location.search().id).success(function (response, status) {
-            $scope.advert = response;
-        }).error(function () {
-            alert("Błąd pobrania danych.");
+    function loadStore() {
+        Factory.getData('listClubs').then(function (result) {
+            $scope.grid.data = result.data;
         });
     }
 
-    $http.get('listCategory').success(function (response, status) {
-        $scope.categories = response;
-    }).error(function () {
-        alert("Błąd pobrania danych.");
+    loadStore();
+    $scope.customFullscreen = $mdMedia('xs') || $mdMedia('sm');
+    $scope.showConfirm = function (event, data) {
+        var title = data.title;
+        var config = {
+            event: event,
+            textContent: "Czy na pewno chcesz usunąć klub: " + title,
+            thenFn: function () {
+                var postConfig = {
+                    url: 'delete-advert',
+                    data: data,
+                    finallyFn: function () {
+                        loadStore();
+                    }
+                };
+                Factory.postData(postConfig);
+            }
+        };
+        Factory.showConfirm(config);
+    };
+});
+
+app.controller('ClubCtrl', function ($scope, $http, $mdDialog, $location, Factory) {
+
+    if ($location.search().id != undefined) {
+        Factory.getData('club-' + $location.search().id).then(function (result) {
+            $scope.grid.data = result.data;
+        });
+    }
+
+    Factory.getData('listCategory').then(function (result) {
+        $scope.categories = result.data;
     });
 
-    // function to submit the form after all validation has occurred
     $scope.submitForm = function (data, edit) {
-
-        // check to make sure the form is completely valid
-        $scope.loadMask();
+        Factory.loadMask();
         if ($scope.form.$valid && !edit) {
-            $scope.addRowAsyncAsJSON(data);
-        }
-        else if ($scope.form.$valid && edit) {
-            $scope.editRowAsyncAsJSON(data);
+            addClub(data);
+        } else if ($scope.form.$valid && edit) {
+            editClub(data);
         }
     };
 
-    $scope.addRowAsyncAsJSON = function (dataObj) {
-        var token = $("meta[name='_csrf']").attr("content");
-        var header = $("meta[name='_csrf_header']").attr("content");
-        delete $http.defaults.headers.common["X-Requested-With"];
-        $http.defaults.headers.common['content-type'] = 'application/json';
-        $http.defaults.headers.common[header] = token;
-        $http({
-            method: 'POST',
+    var addClub = function (data) {
+        var postConfig = {
             url: 'addAdvert',
-            data: dataObj,
-            headers: {'Content-Type': 'application/json; charset=utf-8'}
-
-        }).success(function (data, status, headers, config) {
-            if (data.success == true) {
-                showAlert($scope, $mdDialog, 'Informacja', 'Poprawnie dodano ogłoszenie', function () {
-                    location.href = 'myClubs'
-                });
+            data: data,
+            successFn: function () {
+                location.href = 'myClubs';
             }
-            else {
-                showAlert($scope, $mdDialog, 'Błąd', data.error);
-            }
-        }).error(function (data, status, headers, config) {
-            showAlert($scope, $mdDialog, 'Błąd', "Nie można połączyć się z serwerem");
-        }).finally(function () {
-            $scope.disableMask();
-        });
+        };
+        Factory.postData(postConfig);
     };
 
-    $scope.editRowAsyncAsJSON = function (dataObj) {
-        var token = $("meta[name='_csrf']").attr("content");
-        var header = $("meta[name='_csrf_header']").attr("content");
-        delete $http.defaults.headers.common["X-Requested-With"];
-        $http.defaults.headers.common['content-type'] = 'application/json';
-        $http.defaults.headers.common[header] = token;
-        $http({
-            method: 'POST',
-            url: 'edit-advert-' + dataObj.title,
-            data: dataObj,
-            headers: {'Content-Type': 'application/json; charset=utf-8'}
-
-        }).success(function (data, status, headers, config) {
-            if (data.success == true) {
-                showAlert($scope, $mdDialog, 'Informacja', 'Poprawnie zaktualizowano ogłoszenie');
+    var editClub = function (data) {
+        var postConfig = {
+            url: 'edit-advert-' + data.title,
+            data: data,
+            successFn: function () {
+                location.href = 'myClubs';
             }
-            else {
-                showAlert($scope, $mdDialog, 'Błąd', data.error);
-            }
-        }).error(function (data, status, headers, config) {
-            showAlert($scope, $mdDialog, 'Błąd', "Błąd na serwerze");
-        }).finally(function () {
-            $scope.disableMask();
-        });
+        };
+        Factory.postData(postConfig);
     };
 
 
 });
 
-app.controller('ClubListViewCtrl', function ($scope, $http) {
-    $scope.submitFilter = function (data) {
+app.controller('ClubListViewCtrl', function ($scope, $http, Factory) {
 
-        // check to make sure the form is completely valid
-        $scope.loadMask();
+    $scope.submitFilter = function (data) {
+        Factory.loadMask();
         if ($scope.form.$valid) {
             if (data.kod != "" || data.km != "") {
-                $http.get("clubs-filter-" + data.kod + "-" + data.km + "-" + $scope.categoryId).success(function (response, status) {
-                    $scope.grid.data = response;
-                }).error(function () {
-                    alert("Failed to access");
-                }).finally(function () {
-                    $scope.disableMask();
+                Factory.getData("clubs-filter-" + data.kod + "-" + data.km + "-" + $scope.categoryId).then(function (result) {
+                    $scope.grid.data = result.data;
                 });
             } else {
-                refreshData($scope.categoryId)
+                loadStore($scope.categoryId)
             }
         }
     };
@@ -226,31 +158,28 @@ app.controller('ClubListViewCtrl', function ($scope, $http) {
         }
     });
 
-    var refreshData = function (category) {
-        var all = 'listClubs';
+    var loadStore = function (category) {
         var category = 'clubs-category-' + category;
         if (category != undefined) {
-            $http.get(category).success(function (response, status) {
-                $scope.grid.data = response;
-            }).error(function () {
-                alert("Failed to access");
+            Factory.getData(category).then(function (result) {
+                $scope.grid.data = result.data;
             });
         } else {
-            $http.get(all).success(function (response, status) {
-                $scope.grid.data = response;
-            }).error(function () {
-                alert("Failed to access");
+            Factory.getData('listClubs').then(function (result) {
+                $scope.grid.data = result.data;
             });
         }
     };
+
+
     $scope.$watch("categoryId", function () {
-        refreshData($scope.categoryId);
+        loadStore($scope.categoryId);
     });
 
 });
 
 
-app.controller('MyClubListCtrl', function ($scope, $http, $location, $mdDialog, $mdMedia) {
+app.controller('MyClubListCtrl', function ($scope, $http, $location, $mdDialog, $mdMedia, Factory) {
     $scope.grid = {
         enableColumnResizing: true,
         resizable: true
@@ -275,52 +204,32 @@ app.controller('MyClubListCtrl', function ($scope, $http, $location, $mdDialog, 
             cellTemplate: '<md-button ng-href="edit-advert-{{row.entity.id}}#?id={{row.entity.id}}"><span class="glyphicon glyphicon-pencil"></span></md-button><md-button ng-click="grid.appScope.showConfirm($event, row.entity)"><span class="glyphicon glyphicon-trash"></md-button>'
         }
     ];
-    var refreshData = function () {
-        $http.get('clubs-user').success(function (response, status) {
-            $scope.grid.data = response;
-        }).error(function () {
-            alert("Failed to access");
+
+    var loadStore = function (category) {
+        Factory.getData('clubs-user').then(function (result) {
+            $scope.grid.data = result.data;
         });
     };
 
-    refreshData();
-    delete $http.defaults.headers.common["X-Requested-With"];
+    loadStore();
     $scope.customFullscreen = $mdMedia('xs') || $mdMedia('sm');
-    $scope.showConfirm = function (ev, data) {
-        // Appending dialog to document.body to cover sidenav in docs app
+    $scope.showConfirm = function (event, data) {
         var title = data.title;
-        var confirm = $mdDialog.confirm()
-            .title('Pytanie')
-            .textContent('Czy na pewno chcesz usunąć klub: ' + title)
-            .ariaLabel('Lucky day')
-            .targetEvent(ev)
-            .ok('Tak')
-            .cancel('Nie');
-        $mdDialog.show(confirm).then(function () {
-            var token = $("meta[name='_csrf']").attr("content");
-            var header = $("meta[name='_csrf_header']").attr("content");
-            delete $http.defaults.headers.common["X-Requested-With"];
-            $http.defaults.headers.common['content-type'] = 'application/json';
-            $http.defaults.headers.common[header] = token;
-            $http({
-                method: 'POST',
-                url: 'delete-advert',
-                data: data,
-                headers: {'Content-Type': 'application/json; charset=utf-8'}
+        var config = {
+            event: event,
+            textContent: "Czy na pewno chcesz usunąć użytkownika: " + login,
+            thenFn: function () {
+                var postConfig = {
+                    url: 'delete-advert',
+                    data: data,
+                    finallyFn: function () {
+                        loadStore();
+                    }
 
-            }).success(function (data, status, headers, config) {
-                if (data.success == true) {
-                    showAlert($scope, $mdDialog, 'Informacja', 'Poprawnie usunięto ogłoszenie');
-                }
-                else {
-                    showAlert($scope, $mdDialog, 'Błąd', data.error);
-                }
-            }).error(function (data, status, headers, config) {
-                showAlert($scope, $mdDialog, 'Błąd', "Błąd na serwerze");
-            }).finally(function () {
-                refreshData();
-                $scope.disableMask();
-            });
-        });
+                };
+                Factory.postData(postConfig);
+            }
+        };
+        Factory.showConfirm(config);
     };
 });

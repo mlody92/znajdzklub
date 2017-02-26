@@ -6,65 +6,33 @@ app.controller('CategoryCtrl', function ($scope, $http, $mdDialog, $location, Fa
             $scope.category = result.data;
         });
     }
-    // function to submit the form after all validation has occurred
-    $scope.submitForm = function (data, edit) {
 
-        // check to make sure the form is completely valid
-        $scope.loadMask();
-        $scope.data = data;
+    $scope.submitForm = function (data, edit) {
+        Factory.loadMask();
         if ($scope.form.$valid && !edit) {
-            $scope.addRowAsyncAsJSON();
-        }
-        else if ($scope.form.$valid && edit) {
-            $scope.editRowAsyncAsJSON();
+            addCategory(data);
+        } else if ($scope.form.$valid && edit) {
+            editCategory(data);
         }
     };
 
-    $scope.addRowAsyncAsJSON = function () {
-        var dataObj = {
-            name: $scope.data.name
-        };
-
+    var addCategory = function (data) {
         var postConfig = {
             url: 'addCategory',
-            data: dataObj,
+            data: data,
             successFn: function () {
-                location.href = 'addCategory'
+                location.href = 'categoryList'
             }
-
         };
         Factory.postData(postConfig);
     };
 
-    $scope.editRowAsyncAsJSON = function () {
-        var dataObj = {
-            id: $scope.data.id,
-            name: $scope.data.name
-        };
-
-        var token = $("meta[name='_csrf']").attr("content");
-        var header = $("meta[name='_csrf_header']").attr("content");
-        delete $http.defaults.headers.common["X-Requested-With"];
-        $http.defaults.headers.common['content-type'] = 'application/json';
-        $http.defaults.headers.common[header] = token;
-        $http({
-            method: 'POST',
+    var editCategory = function (data) {
+        var postConfig = {
             url: 'edit-category-' + $scope.data.name,
-            data: dataObj,
-            headers: {'Content-Type': 'application/json; charset=utf-8'}
-
-        }).success(function (data, status, headers, config) {
-            if (data.success == true) {
-                showAlert($scope, $mdDialog, 'Informacja', 'Poprawnie zaktualizowano kategorię');
-            }
-            else {
-                showAlert($scope, $mdDialog, 'Błąd', data.error);
-            }
-        }).error(function (data, status, headers, config) {
-            showAlert($scope, $mdDialog, 'Błąd', "Błąd na serwerze");
-        }).finally(function () {
-            $scope.disableMask();
-        });
+            data: data
+        };
+        Factory.postData(postConfig);
     };
 });
 
@@ -84,21 +52,10 @@ app.controller('CategoryListCtrl', function ($scope, $http, $location, $mdDialog
         }
     ];
 
-    delete $http.defaults.headers.common["X-Requested-With"];
-    var refreshData = function () {
-        $http.get('listCategory').success(function (response, status) {
-            $scope.grid.data = response;
-        }).error(function () {
-            alert("Failed to access");
-        });
-    };
-
-
-    refreshData();
+    loadStore();
     $scope.customFullscreen = $mdMedia('xs') || $mdMedia('sm');
 
     $scope.showConfirm = function (event, data) {
-        // Appending dialog to document.body to cover sidenav in docs app
         var name = data.name;
         var config = {
             event: event,
@@ -116,4 +73,10 @@ app.controller('CategoryListCtrl', function ($scope, $http, $location, $mdDialog
         };
         Factory.showConfirm(config);
     };
+
+    function loadStore() {
+        Factory.getData('listCategory').then(function (result) {
+            $scope.grid.data = result.data;
+        });
+    }
 });
