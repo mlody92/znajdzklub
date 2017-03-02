@@ -33,7 +33,6 @@ public class UsersController {
     @Autowired
     UserService userService;
 
-    @CrossOrigin
     @RequestMapping(value = "/listUser", method = RequestMethod.GET)
     @ResponseBody
     public List<User> get() {
@@ -54,8 +53,7 @@ public class UsersController {
 
     @RequestMapping(value = {"/register"}, method = RequestMethod.POST, produces = {"application/json; charset=UTF-8"})
     @ResponseStatus(HttpStatus.OK)
-    public @ResponseBody ResponseEntity saveUser(@RequestBody @Valid User user, BindingResult result,
-                                                    ModelMap model) {
+    public @ResponseBody ResponseEntity saveUser(@RequestBody @Valid User user) {
         JSONObject json = new JSONObject();
         user.setRole("USER");
         if (!userService.isUserLoginUnique(user.getId(), user.getLogin())) {
@@ -65,35 +63,29 @@ public class UsersController {
         }
 
         String waliduj = waliduj(user);
-        if (waliduj != "") {
+        if (!"".equals(waliduj)) {
             json.put("success", false);
             json.put("error", waliduj);
             return new ResponseEntity(json.toString(), HttpStatus.OK);
         }
 
         userService.saveUser(user);
-        model.addAttribute("success", "Użytkownik " + user.getFirstName() + " " + user.getLastName() + " został poprawnie zarejestrowany.");
-        model.addAttribute("loggedinuser", getPrincipal());
         json.put("success", true);
-        json.put("data", user);
+        json.put("info", "Użytkownik " + user.getLogin() + " został poprawnie zarejestrowany.");
         return new ResponseEntity(json.toString(), HttpStatus.OK);
     }
 
     /**
      * This method will provide the medium to update an existing user.
      */
-    @RequestMapping(value = {"/edit-user-{login}"}, method = RequestMethod.GET)
-    public String editUser(@PathVariable String login, ModelMap model) {
-        User user = userService.findByLogin(login);
-        model.addAttribute("user", user);
+    @RequestMapping(value = {"/edit-user"}, method = RequestMethod.GET)
+    public String editUser(ModelMap model) {
         model.addAttribute("edit", true);
-        model.addAttribute("loggedinuser", getPrincipal());
         return "register/register";
     }
 
-    @RequestMapping(value = {"/edit-user-{login}"}, method = RequestMethod.POST, produces = {"application/json; charset=UTF-8"})
-    public ResponseEntity updateUser(@RequestBody @Valid User user, BindingResult result,
-                                        ModelMap model, @PathVariable String login) {
+    @RequestMapping(value = {"/edit-user"}, method = RequestMethod.POST, produces = {"application/json; charset=UTF-8"})
+    public ResponseEntity updateUser(@RequestBody @Valid User user, BindingResult result) {
 
         JSONObject json = new JSONObject();
         if (result.hasErrors()) {
@@ -103,23 +95,13 @@ public class UsersController {
         }
 
         userService.updateUser(user);
-        model.addAttribute("loggedinuser", getPrincipal());
         json.put("success", true);
         json.put("info", "Poprawnie przeedytowany użytkownika");
         return new ResponseEntity(json.toString(), HttpStatus.OK);
     }
 
-    /**
-     * This method will delete an user by it's SSOID value.
-     */
-    //    @RequestMapping(value = {"/delete-user-{login}"}, method = RequestMethod.GET)
-    //    public String deleteUser(@PathVariable String login) {
-    //        userService.deleteUserByLogin(login);
-    //        return "redirect:/userList";
-    //    }
-    @RequestMapping(value = {"/delete-user-{login}"}, method = RequestMethod.POST, produces = {"application/json; charset=UTF-8"})
-    public ResponseEntity deleteUser2(@RequestBody @Valid User user, BindingResult result,
-                                         ModelMap model, @PathVariable String login) {
+    @RequestMapping(value = {"/delete-user"}, method = RequestMethod.POST, produces = {"application/json; charset=UTF-8"})
+    public ResponseEntity deleteUser(@RequestBody @Valid User user, BindingResult result) {
         JSONObject json = new JSONObject();
         if (result.hasErrors()) {
             json.put("success", false);
@@ -127,8 +109,7 @@ public class UsersController {
             return new ResponseEntity(json.toString(), HttpStatus.OK);
         }
 
-        userService.deleteUserByLogin(login);
-        model.addAttribute("loggedinuser", getPrincipal());
+        userService.deleteUserByLogin(user.getLogin());
         json.put("success", true);
         json.put("info", "Poprawnie usunięto użytkownika");
         return new ResponseEntity(json.toString(), HttpStatus.OK);
@@ -143,59 +124,42 @@ public class UsersController {
     }
 
     @RequestMapping(value = {"/userList"}, method = RequestMethod.GET)
-    public String listUsers2(ModelMap model) {
-        List<User> users = userService.findAllUsers();
-        model.addAttribute("users", users);
-        model.addAttribute("loggedinuser", getPrincipal());
+    public String userList() {
         return "user/userList";
     }
 
-    @RequestMapping(value = {"/edit-profile"}, method = RequestMethod.GET)
-    public String editProfile(ModelMap model) {
-        User user = userService.findByLogin(getPrincipal());
-        model.addAttribute("user", user);
-        model.addAttribute("edit", true);
-        model.addAttribute("loggedinuser", getPrincipal());
-        return "register/register";
-    }
-
-    @RequestMapping(value = {"/edit-profile"}, method = RequestMethod.POST, produces = {"application/json; charset=UTF-8"})
-    public ResponseEntity updateProfile(@RequestBody @Valid User user, BindingResult result,
-                                           ModelMap model) {
-
-        JSONObject json = new JSONObject();
-        if (result.hasErrors()) {
-            json.put("success", false);
-            json.put("error", result);
-            return new ResponseEntity(json.toString(), HttpStatus.OK);
-        }
-        if (user.getLogin() != getPrincipal()) {
-            json.put("success", false);
-            json.put("error", "Możesz edytować tylko swój profil");
-            return new ResponseEntity(json.toString(), HttpStatus.OK);
-        }
-
-        userService.updateUser(user);
-        model.addAttribute("loggedinuser", getPrincipal());
-        json.put("success", true);
-        json.put("info", "Poprawnie przeedytowany użytkownika");
-        return new ResponseEntity(json.toString(), HttpStatus.OK);
-    }
-
-    /**
-     * This method returns the principal[user-name] of logged-in user.
-     */
-    private String getPrincipal() {
-        String userName = null;
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
-        if (principal instanceof UserDetails) {
-            userName = ((UserDetails) principal).getUsername();
-        } else {
-            userName = principal.toString();
-        }
-        return userName;
-    }
+    //TODO
+//    @RequestMapping(value = {"/edit-profile"}, method = RequestMethod.GET)
+//    public String editProfile(ModelMap model) {
+//        User user = userService.findByLogin(getPrincipal());
+//        model.addAttribute("user", user);
+//        model.addAttribute("edit", true);
+//        model.addAttribute("loggedinuser", getPrincipal());
+//        return "register/register";
+//    }
+//
+//    @RequestMapping(value = {"/edit-profile"}, method = RequestMethod.POST, produces = {"application/json; charset=UTF-8"})
+//    public ResponseEntity updateProfile(@RequestBody @Valid User user, BindingResult result,
+//                                           ModelMap model) {
+//
+//        JSONObject json = new JSONObject();
+//        if (result.hasErrors()) {
+//            json.put("success", false);
+//            json.put("error", result);
+//            return new ResponseEntity(json.toString(), HttpStatus.OK);
+//        }
+//        if (user.getLogin() != getPrincipal()) {
+//            json.put("success", false);
+//            json.put("error", "Możesz edytować tylko swój profil");
+//            return new ResponseEntity(json.toString(), HttpStatus.OK);
+//        }
+//
+//        userService.updateUser(user);
+//        model.addAttribute("loggedinuser", getPrincipal());
+//        json.put("success", true);
+//        json.put("info", "Poprawnie przeedytowany użytkownika");
+//        return new ResponseEntity(json.toString(), HttpStatus.OK);
+//    }
 
     private String waliduj(User user) {
         String error = "";
@@ -207,7 +171,7 @@ public class UsersController {
 
         if (user.getLogin().length() < 3) {
             error += "login jest za krótki.\n";
-        } else if (user.getLogin().length() > 30){
+        } else if (user.getLogin().length() > 30) {
             error += "login jest zbyt długi";
         }
 

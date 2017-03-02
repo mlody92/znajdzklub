@@ -30,7 +30,7 @@
 
             <section class="wrapper">
 
-                <div class="content " ng-controller="ClubCtrl">
+                <div class="content">
 
                     <div class="container">
                         <div class="row">

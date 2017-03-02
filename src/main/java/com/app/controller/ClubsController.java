@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.SessionAttributes;
@@ -43,7 +44,6 @@ public class ClubsController {
     @Autowired
     CoordinatesService coordinatesService;
 
-    @CrossOrigin
     @RequestMapping(value = "/listClubs", method = RequestMethod.GET)
     @ResponseBody
     public List<Advert> getList() {
@@ -73,7 +73,6 @@ public class ClubsController {
     }
 
     /////// Filtrowanie
-
     @RequestMapping(value = "/clubs-filter-{kod}-{km}-{catId}", method = RequestMethod.GET)
     @ResponseBody
     public List<Advert> getClubsFilter(@PathVariable String kod, @PathVariable Integer km, @PathVariable Integer catId) {
@@ -86,34 +85,24 @@ public class ClubsController {
 
     /////
     @RequestMapping(value = {"/clubsList"}, method = RequestMethod.GET)
-    public String list(ModelMap model) {
-        List<Advert> users = advertService.findAll();
-        model.addAttribute("users", users);
-        model.addAttribute("loggedinuser", getPrincipal());
+    public String clubsList() {
         return "clubs/clubsList";
     }
 
     @RequestMapping(value = {"/myClubs"}, method = RequestMethod.GET)
-    public String myclubs(ModelMap model) {
-        List<Advert> advert = advertService.findAll();
-        model.addAttribute("advert", advert);
-        model.addAttribute("loggedinuser", getPrincipal());
+    public String myclubs() {
         return "clubs/myClubs";
     }
 
     @RequestMapping(value = {"/addAdvert"}, method = RequestMethod.GET)
     public String newClub(ModelMap model) {
-        Advert advert = new Advert();
-        model.addAttribute("advert", advert);
         model.addAttribute("edit", false);
-        model.addAttribute("loggedinuser", getPrincipal());
         return "clubs/addClub";
     }
 
     @RequestMapping(value = {"/addAdvert"}, method = RequestMethod.POST, produces = {"application/json; charset=UTF-8"})
     @ResponseStatus(HttpStatus.OK)
-    public @ResponseBody ResponseEntity saveClub(@RequestBody @Valid Advert advert, BindingResult result,
-                                                    ModelMap model) {
+    public @ResponseBody ResponseEntity saveClub(@RequestBody @Valid Advert advert) {
         JSONObject json = new JSONObject();
         if (!advertService.isUnique(advert)) {
             json.put("success", false);
@@ -124,42 +113,32 @@ public class ClubsController {
         User user = userService.findByLogin(userName);
         advert.setUserId(user.getId());
         advertService.save(advert);
-        model.addAttribute("success", "Tytuł " + advert.getTitle() + " została poprawnie dodana.");
-        model.addAttribute("loggedinuser", userName);
         json.put("success", true);
-        json.put("data", advert);
+        json.put("info", "Klub został prawidłowo dodany.");
         return new ResponseEntity(json.toString(), HttpStatus.OK);
     }
 
-    @RequestMapping(value = {"/view-advert-{id}"}, method = RequestMethod.GET)
-    public String viewAdvert(@PathVariable Integer id, ModelMap model) {
-        Advert advert = advertService.findById(id);
-        model.addAttribute("advert", advert);
-        model.addAttribute("loggedinuser", getPrincipal());
+    @RequestMapping(value = {"/view-advert"}, method = RequestMethod.GET)
+    public String viewAdvert() {
         return "clubs/view";
     }
 
-    @RequestMapping(value = {"/edit-advert-{id}"}, method = RequestMethod.GET)
-    public String editUser(@PathVariable Integer id, ModelMap model) {
+    @RequestMapping(value = {"/edit-advert"}, method = RequestMethod.GET)
+    public String editUser(@RequestParam("id") int id, ModelMap model) {
         String userName = getPrincipal();
         Collection<? extends GrantedAuthority> authorities = SecurityContextHolder.getContext().getAuthentication().getAuthorities();
         boolean authorized = authorities.contains(new SimpleGrantedAuthority("ROLE_ADMIN"));
         User user = userService.findByLogin(userName);
         Advert advert = advertService.findById(id);
         if (!authorized && user.getId() != advert.getUserId()) {
-            model.addAttribute("loggedinuser", getPrincipal());
             return "clubs/myClubs";
         }
-
-        model.addAttribute("advert", advert);
         model.addAttribute("edit", true);
-        model.addAttribute("loggedinuser", getPrincipal());
         return "clubs/addClub";
     }
 
-    @RequestMapping(value = {"/edit-advert-{title}"}, method = RequestMethod.POST, produces = {"application/json; charset=UTF-8"})
-    public ResponseEntity updateUser(@RequestBody @Valid Advert advert, BindingResult result,
-                                        ModelMap model, @PathVariable String title) {
+    @RequestMapping(value = {"/edit-advert"}, method = RequestMethod.POST, produces = {"application/json; charset=UTF-8"})
+    public ResponseEntity editAdvert(@RequestBody @Valid Advert advert, BindingResult result) {
 
         JSONObject json = new JSONObject();
         if (result.hasErrors()) {
@@ -177,15 +156,13 @@ public class ClubsController {
             return new ResponseEntity(json.toString(), HttpStatus.OK);
         }
         advertService.update(advert);
-        model.addAttribute("loggedinuser", getPrincipal());
         json.put("success", true);
-        json.put("data", advert);
+        json.put("info", "Poprawnie zmieniono dane klubu.");
         return new ResponseEntity(json.toString(), HttpStatus.OK);
     }
 
     @RequestMapping(value = {"/delete-advert"}, method = RequestMethod.POST, produces = {"application/json; charset=UTF-8"})
-    public ResponseEntity deleteCategory(@RequestBody @Valid Advert advert, BindingResult result,
-                                            ModelMap model) {
+    public ResponseEntity deleteAdvert(@RequestBody @Valid Advert advert, BindingResult result) {
 
         JSONObject json = new JSONObject();
         if (result.hasErrors()) {
@@ -202,10 +179,9 @@ public class ClubsController {
             json.put("error", "To nie twoje ogłoszenie");
             return new ResponseEntity(json.toString(), HttpStatus.OK);
         }
-//        advertService.delete(advert.getId());
-        model.addAttribute("loggedinuser", getPrincipal());
+        advertService.delete(advert.getId());
         json.put("success", true);
-        json.put("info", "Poprawnie usunięto kategorię");
+        json.put("info", "Poprawnie usunięto ogłoszenie");
         return new ResponseEntity(json.toString(), HttpStatus.OK);
     }
 
@@ -230,28 +206,6 @@ public class ClubsController {
         model.addAttribute("loggedinuser", getPrincipal());
         return "clubs/taniec";
     }
-
-    //    @RequestMapping(value = {"/asd"}, method = RequestMethod.POST, consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = {"application/json; charset=UTF-8"})
-    //    @ResponseStatus(HttpStatus.OK)
-    //    public @ResponseBody ResponseEntity asd(@RequestBody @Valid Advert advert, BindingResult result,
-    //                                                    ModelMap model, @RequestPart("file") @Valid MultipartFile file) {
-    //        JSONObject json = new JSONObject();
-    //        if (!advertService.isUnique(advert)) {
-    //            json.put("success", false);
-    //            json.put("error", "Klub o podanym tytule już istnieje");
-    //            return new ResponseEntity(json.toString(), HttpStatus.OK);
-    //        }
-    //
-    //        if(!file.isEmpty())   {
-    //            advert.save;
-    //        }
-    //        advertService.save(advert);
-    //        model.addAttribute("success", "Tytuł " + advert.getTitle() + " została poprawnie dodana.");
-    //        model.addAttribute("loggedinuser", getPrincipal());
-    //        json.put("success", true);
-    //        json.put("data", advert);
-    //        return new ResponseEntity(json.toString(), HttpStatus.OK);
-    //    }
 
     /**
      * This method returns the principal[user-name] of logged-in user.

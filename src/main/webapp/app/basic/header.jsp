@@ -3,8 +3,8 @@
 
 <header>
     <div class="logo">
-        <a href="home"><img src="<c:url value='/img/logo.png' />" title="Magnetic" alt="Magnetic"/></a>
-    </div><!-- end logo -->
+        <a href="home"><img src="<c:url value='/img/logo.png' />" title="Znajdź klub" alt="Znajdź klub"/></a>
+    </div>
 
     <div id="menu_icon"></div>
     <%@ include file="/app/basic/menu.jsp" %>
@@ -14,14 +14,11 @@
             <li><a href="#" class="fb" data-title="Facebook"></a></li>
             <li><a href="#" class="google" data-title="Google +"></a></li>
             <li><a href="#" class="behance" data-title="Behance"></a></li>
-            <!--<li><a href="#" class="twitter" data-title="Twitter"></a></li>
-            <li><a href="#" class="dribble" data-title="Dribble"></a></li>-->
             <li><a href="#" class="rss" data-title="RSS"></a></li>
-        </ul><!-- end social -->
+        </ul>
 
         <div class="rights">
             <p>Copyright © 2016 ZnajdźKlub</p>
-            <%--<p>Template by <a href="">Pixelhint.com</a></p>--%>
-        </div><!-- end rights -->
-    </div><!-- end footer -->
-</header><!-- end header -->
+        </div>
+    </div>
+</header>

@@ -1,15 +1,8 @@
 package com.app.controller;
 
-import com.app.model.Advert;
-import com.app.model.Category;
-import com.app.model.User;
-import com.app.service.AdvertService;
 import com.app.service.CategoryService;
-import com.app.service.UserService;
-import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.security.authentication.AuthenticationTrustResolver;
@@ -19,10 +12,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenBasedRememberMeServices;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.SessionAttributes;
@@ -40,34 +29,25 @@ public class AppController {
 
     @Autowired
     AuthenticationTrustResolver authenticationTrustResolver;
+
     @Autowired
     CategoryService categoryService;
 
     @RequestMapping(value = {"/"}, method = RequestMethod.GET)
-    public String home(ModelMap model) {
-        model.addAttribute("loggedinuser", getPrincipal());
+    public String home() {
         return "home";
     }
 
     @RequestMapping(value = {"/home"}, method = RequestMethod.GET)
-    public String home2(ModelMap model) {
+    public String home2() {
         return "redirect:/";
     }
 
-    //open register page
     @RequestMapping(value = {"/register"}, method = RequestMethod.GET)
     public String newUser(ModelMap model) {
-        User user = new User();
-        model.addAttribute("user", user);
         model.addAttribute("edit", false);
-        model.addAttribute("loggedinuser", getPrincipal());
         return "register/register";
     }
-
-    /**
-     * This method will be called on form submission, handling POST request for
-     * saving user in database. It also validates the user input
-     */
 
     /**
      * This method handles Access-Denied redirect.
@@ -90,7 +70,6 @@ public class AppController {
         } else {
             return "redirect:/userList";
         }
-        //        return "login/login";
     }
 
     /**

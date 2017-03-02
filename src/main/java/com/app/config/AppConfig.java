@@ -59,10 +59,4 @@ public class AppConfig extends WebMvcConfigurerAdapter {
         registry.addMapping("/**").allowedMethods("GET", "POST", "PUT", "DELETE");
     }
 
-//    @Bean(name = "multipartResolver")
-//    public CommonsMultipartResolver createMultipartResolver() {
-//        CommonsMultipartResolver resolver = new CommonsMultipartResolver();
-//        resolver.setDefaultEncoding("utf-8");
-//        return resolver;
-//    }
 }

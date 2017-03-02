@@ -1,8 +1,9 @@
 'use strict';
 app.controller('CategoryCtrl', function ($scope, $http, $mdDialog, $location, Factory) {
 
-    if ($location.search().name != undefined) {
-        Factory.getData('category-' + $location.search().name).then(function (result) {
+    var name = getParameterByName('name');
+    if (name != undefined) {
+        Factory.getData('category-' + name).then(function (result) {
             $scope.category = result.data;
         });
     }
@@ -29,7 +30,7 @@ app.controller('CategoryCtrl', function ($scope, $http, $mdDialog, $location, Fa
 
     var editCategory = function (data) {
         var postConfig = {
-            url: 'edit-category-' + $scope.data.name,
+            url: 'edit-category',
             data: data
         };
         Factory.postData(postConfig);
@@ -48,7 +49,7 @@ app.controller('CategoryListCtrl', function ($scope, $http, $location, $mdDialog
             name: 'action',
             displayName: '',
             enableSorting: false,
-            cellTemplate: '<md-button ng-href="edit-category-{{row.entity.name}}#?name={{row.entity.name}}"><span class="glyphicon glyphicon-pencil"></span></md-button><md-button ng-click="grid.appScope.showConfirm($event, row.entity)"><span class="glyphicon glyphicon-trash"></md-button>'
+            cellTemplate: '<md-button ng-href="edit-category?name={{row.entity.name}}"><span class="glyphicon glyphicon-pencil"></span></md-button><md-button ng-click="grid.appScope.showConfirm($event, row.entity)"><span class="glyphicon glyphicon-trash"></md-button>'
         }
     ];
 
@@ -62,10 +63,10 @@ app.controller('CategoryListCtrl', function ($scope, $http, $location, $mdDialog
             textContent: "Czy na pewno chcesz usunąć kategorię: " + name,
             thenFn: function () {
                 var postConfig = {
-                    url: 'delete-category-' + name,
+                    url: 'delete-category',
                     data: data,
                     finallyFn: function () {
-                        refreshData();
+                        loadStore();
                     }
                 };
                 Factory.postData(postConfig);

@@ -54,6 +54,20 @@ app.factory('Factory', function ($http, $mdDialog, $rootScope) {
             });
         };
 
+        factory.getData2 = function (config) {
+            $http({
+                method: 'GET',
+                url: config.url,
+                params: config.params
+            }).success(function (response, status) {
+                return response;
+            }).error(function () {
+                alert("Failed to access");
+            }).finally(function () {
+                factory.disableMask();
+            });
+        };
+
         factory.showAlert = function (title, text, thenFn) {
             var alert = $mdDialog.alert()
                 .parent(angular.element(document.body))
@@ -95,7 +109,7 @@ app.factory('Factory', function ($http, $mdDialog, $rootScope) {
                 // }).success(function (data, status, headers, config) {
             }).success(function (data, status) {
                 if (data.success == true) {
-                    factory.showAlert('Informacja', 'Poprawnie usunięto użyytkownika', config.successFn);
+                    factory.showAlert('Informacja', data.info, config.successFn);
                 }
                 else {
                     factory.showAlert('Błąd', data.error);
@@ -118,3 +132,15 @@ app.factory('Factory', function ($http, $mdDialog, $rootScope) {
         return factory;
     }
 );
+
+function getParameterByName(name, url) {
+    if (!url) {
+        url = window.location.href;
+    }
+    name = name.replace(/[\[\]]/g, "\\$&");
+    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+        results = regex.exec(url);
+    if (!results) return null;
+    if (!results[2]) return '';
+    return decodeURIComponent(results[2].replace(/\+/g, " "));
+}

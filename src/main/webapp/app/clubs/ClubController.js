@@ -22,7 +22,7 @@ app.controller('ClubListCtrl', function ($scope, $http, $location, $mdDialog, $m
             displayName: '',
             enableSorting: false,
             width: 100,
-            cellTemplate: '<md-button ng-href="edit-advert-{{row.entity.id}}#?id={{row.entity.id}}"><span class="glyphicon glyphicon-pencil"></span></md-button><md-button ng-click="grid.appScope.showConfirm($event, row.entity)"><span class="glyphicon glyphicon-trash"></md-button>'
+            cellTemplate: '<md-button ng-href="edit-advert?id={{row.entity.id}}"><span class="glyphicon glyphicon-pencil"></span></md-button><md-button ng-click="grid.appScope.showConfirm($event, row.entity)"><span class="glyphicon glyphicon-trash"></md-button>'
         }
     ];
 
@@ -56,12 +56,12 @@ app.controller('ClubListCtrl', function ($scope, $http, $location, $mdDialog, $m
 
 app.controller('ClubCtrl', function ($scope, $http, $mdDialog, $location, Factory) {
 
-    if ($location.search().id != undefined) {
-        Factory.getData('club-' + $location.search().id).then(function (result) {
-            $scope.grid.data = result.data;
+    var id = getParameterByName("id");
+    if (id != undefined) {
+        Factory.getData('club-' + id).then(function (result) {
+            $scope.advert = result.data;
         });
     }
-
     Factory.getData('listCategory').then(function (result) {
         $scope.categories = result.data;
     });
@@ -88,7 +88,7 @@ app.controller('ClubCtrl', function ($scope, $http, $mdDialog, $location, Factor
 
     var editClub = function (data) {
         var postConfig = {
-            url: 'edit-advert-' + data.title,
+            url: 'edit-advert',
             data: data,
             successFn: function () {
                 location.href = 'myClubs';
@@ -144,7 +144,7 @@ app.controller('ClubListViewCtrl', function ($scope, $http, Factory) {
             $scope.grid.columnDefs = [
                 {
                     name: 'Tytuł',
-                    cellTemplate: '<a ng-href="view-advert-{{row.entity.id}}#?id={{row.entity.id}}"><span >{{row.entity.title}}</span></a>'
+                    cellTemplate: '<a ng-href="view-advert?id={{row.entity.id}}"><span >{{row.entity.title}}</span></a>'
                 },
                 {name: 'Opis', field: "description"},
                 {name: 'Strona www', field: "website"},
