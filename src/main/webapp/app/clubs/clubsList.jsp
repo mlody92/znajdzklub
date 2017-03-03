@@ -44,6 +44,7 @@
         ]);
 
         Ext.onReady(function () {
+
             Ext.define('Klub', {
                 extend: 'Ext.data.Model',
                 fields: [
@@ -72,17 +73,18 @@
                 }
             });
 
+
             // create the grid
             var columns = [
-                {text: "Tytuł", dataIndex: 'title', sortable: true},
-                {text: "Opis", dataIndex: 'description', sortable: true},
-                {text: "Strona www", dataIndex: 'website', sortable: true},
-                {text: "Adres", dataIndex: 'address', sortable: true},
-                {text: "Email", dataIndex: 'email', sortable: true},
-                {text: "Tel.", dataIndex: 'phone', sortable: true},
+                {text: "Tytuł", dataIndex: 'title', sortable: true, locked: true},
+                {text: "Opis", dataIndex: 'description', hidden: true},
+                {text: "Strona www", dataIndex: 'website', sortable: true, hidden: true},
+                {text: "Adres", dataIndex: 'address', sortable: true, hidden: true},
+                {text: "Email", dataIndex: 'email', sortable: true, hidden: true},
+                {text: "Tel.", dataIndex: 'phone', sortable: true, hidden: true},
                 {text: "Status", dataIndex: 'status', sortable: true},
-                {text: "Data", dataIndex: 'date', sortable: true},
-                {text: "Kod pocztowy", dataIndex: 'postalCode', sortable: true},
+                {text: "Data", dataIndex: 'date', sortable: true, hidden: true},
+                {text: "Kod pocztowy", dataIndex: 'postalCode', sortable: true, hidden: true},
                 {text: "Kategoria", dataIndex: 'categoryId', sortable: true},
                 {text: "Użytkownik", dataIndex: 'userId', sortable: true},
                 createActionColumn({
@@ -90,12 +92,84 @@
                 })
             ];
 
-            var grid = createGrid({
+
+            var grid = Ext.create('Ext.grid.Panel', {
                 store: store,
                 renderTo: 'test',
                 title: "Kluby",
-                columns: columns
+                columns: columns,
+                enableLocking: true,
+                lockedViewConfig: {
+                    listeners: {
+                        render: function (view) {
+                            view.tip = Ext.create('Ext.tip.ToolTip', {
+                                // The overall target element.
+                                id: 'tool',
+                                minWidth: 200,
+                                target: view.el,
+                                // Each grid row's name cell causes its own separate show and hide.
+                                delegate: view.itemSelector,
+                                // Moving within the cell should not hide the tip.
+                                trackMouse: true,
+                                renderTo: 'test',
+                                dismissDelay: 10000,
+                                layout: {
+                                    type: 'vbox',
+                                    align: 'left'
+                                },
+                                listeners: {
+                                    // Change content dynamically depending on which element triggered the show.
+                                    beforeshow: function updateTipBody(tip) {
+                                        // Fetch grid view here, to avoid creating a closure.
+                                        var tipGridView = tip.target.component;
+                                        var record = tipGridView.getRecord(tip.triggerElement);
+                                        tip.add(items = [{
+                                            xtype: 'label',
+                                            text: record.get('title')
+                                        }, {
+                                            xtype: 'label',
+                                            text: record.get('description')
+                                        }, {
+                                            xtype: 'label',
+                                            text: record.get('website')
+                                        }, {
+                                            xtype: 'label',
+                                            text: record.get('address')
+                                        }, {
+                                            xtype: 'label',
+                                            text: record.get('email')
+                                        }, {
+                                            xtype: 'label',
+                                            text: record.get('phone')
+                                        }, {
+                                            xtype: 'label',
+                                            text: record.get('status')
+                                        }, {
+                                            xtype: 'label',
+                                            text: record.get('date')
+                                        }, {
+                                            xtype: 'label',
+                                            text: record.get('postalCode')
+                                        }, {
+                                            xtype: 'label',
+                                            text: record.get('userId')
+                                        }]);
+                                    },
+                                    beforeHide: function (tip) {
+                                        tip.removeAll();
+                                    }
+                                }
+                            });
+                        },
+                        destroy: function (view) {
+                            delete view.tip; // Clean up this property on destroy.
+                        }
+                    }
+                }
+
+
             });
+
         });
 
     </script>
