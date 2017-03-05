@@ -2,10 +2,10 @@
 
 <link href="<c:url value='/css/ui-grid.min.css' />" rel="stylesheet"/>
 <link href="<c:url value='/css/reset.css' />" rel="stylesheet"/>
-<link href="<c:url value='/css/main.css' />" rel="stylesheet"/>
 <link href="<c:url value='/css/angular-material.css' />" rel="stylesheet"/>
 <link href="<c:url value='/css/bootstrap/bootstrap.min.css' />" rel="stylesheet"/>
 <link href="<c:url value='/css/ext/theme-crisp-all-debug_1.css' />" rel="stylesheet"/>
+<link href="<c:url value='/css/main.css' />" rel="stylesheet"/>
 
 <script src="<c:url value='/scripts/ext/ext-all-debug.js' />"></script>
 <script src="<c:url value='/scripts/ext/my-ext.js' />"></script>
@@ -21,6 +21,7 @@
 <script src="<c:url value='/scripts/angular/angular-aria.min.js' />"></script>
 <script src="<c:url value='/scripts/angular/angular-material.min.js' />"></script>
 <script src="<c:url value='/scripts/ngStorage.min.js' />"></script>
+<script src="<c:url value='/scripts/ui-bootstrap-tpls-0.12.1.min.js' />"></script>
 <script src="<c:url value='/app/main.js' />"></script>
 <script src="<c:url value='/scripts/angular/my-angular.js' />"></script>
 <script src="<c:url value='/app/AppController.js' />"></script>

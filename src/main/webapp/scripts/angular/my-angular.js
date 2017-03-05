@@ -1,5 +1,5 @@
 'use strict';
-var app = angular.module('app', ['ngTouch', 'ui.grid', 'ui.grid.autoResize', 'ngMaterial', 'ui.grid.resizeColumns', 'ngRoute']);
+var app = angular.module('app', ['ngTouch', 'ui.grid', 'ui.bootstrap', 'ui.grid.autoResize', 'ngMaterial', 'ui.grid.resizeColumns', 'ngRoute']);
 
 var compareTo = function () {
     return {
