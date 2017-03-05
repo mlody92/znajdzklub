@@ -54,28 +54,3 @@ function createError(response) {
         icon: Ext.MessageBox.ERROR
     })
 }
-
-function createActionColumn(config) {
-    return {
-        xtype: 'actioncolumn',
-        items: [{
-            iconCls: 'glyphicon glyphicon-pencil',
-            tooltip: 'Edit',
-            handler: function (grid, rowIndex, colIndex) {
-                var rec = grid.getStore().getAt(rowIndex);
-                alert("Terminate " + rec.get('title'));
-            }
-        }, {
-            iconCls: 'glyphicon glyphicon-trash',
-            tooltip: 'Delete',
-            handler: function (grid, rowIndex, colIndex) {
-                var rec = grid.getStore().getAt(rowIndex);
-                createConfirmMessageBox(
-                    {
-                        url: config.deleteUrl,
-                        rec: rec
-                    });
-            }
-        }]
-    }
-}

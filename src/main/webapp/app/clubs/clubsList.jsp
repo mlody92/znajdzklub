@@ -17,9 +17,11 @@
                 <div id="mainWrapper" ng-app="app">
                     <div class="panel panel-default">
                         <!-- Default panel contents -->
-                        <div ng-controller="ClubListCtrl">
-                            <div ui-grid="grid" class="table table-hover"></div>
-                        </div>
+
+                            <%--ANGULAR LISTA KLUBÓW--%>
+                            <%--<div ng-controller="ClubListCtrl">--%>
+                            <%--<div ui-grid="grid" class="table table-hover"></div>--%>
+                            <%--</div>--%>
 
 
                         <div id="test">
@@ -76,20 +78,33 @@
 
             // create the grid
             var columns = [
-                {text: "Tytuł", dataIndex: 'title', sortable: true, locked: true},
-                {text: "Opis", dataIndex: 'description', hidden: true},
-                {text: "Strona www", dataIndex: 'website', sortable: true, hidden: true},
-                {text: "Adres", dataIndex: 'address', sortable: true, hidden: true},
-                {text: "Email", dataIndex: 'email', sortable: true, hidden: true},
-                {text: "Tel.", dataIndex: 'phone', sortable: true, hidden: true},
+                {text: "Tytuł", dataIndex: 'title', sortable: true},
                 {text: "Status", dataIndex: 'status', sortable: true},
-                {text: "Data", dataIndex: 'date', sortable: true, hidden: true},
-                {text: "Kod pocztowy", dataIndex: 'postalCode', sortable: true, hidden: true},
                 {text: "Kategoria", dataIndex: 'categoryId', sortable: true},
                 {text: "Użytkownik", dataIndex: 'userId', sortable: true},
-                createActionColumn({
-                    deleteUrl: 'delete-advert'
-                })
+                {
+                    xtype: 'actioncolumn',
+                    maxWidth: 50,
+                    items: [{
+                        iconCls: 'glyphicon glyphicon-pencil',
+                        tooltip: 'Edit',
+                        handler: function (grid, rowIndex, colIndex) {
+                            var rec = grid.getStore().getAt(rowIndex);
+                            location.href = 'edit-advert?id=' + rec.id;
+                        }
+                    }, {
+                        iconCls: 'glyphicon glyphicon-trash',
+                        tooltip: 'Delete',
+                        handler: function (grid, rowIndex, colIndex) {
+                            var rec = grid.getStore().getAt(rowIndex);
+                            createConfirmMessageBox(
+                                    {
+                                        url: 'delete-advert',
+                                        rec: rec
+                                    });
+                        }
+                    }]
+                }
             ];
 
 
@@ -97,14 +112,15 @@
                 store: store,
                 renderTo: 'test',
                 title: "Kluby",
-                columns: columns,
-                enableLocking: true,
-                lockedViewConfig: {
+                columns: {items: columns, defaults: {minWidth: 100}},
+                autoScroll: true,
+                autoFit: true,
+                forceFit: true,
+                viewConfig: {
                     listeners: {
                         render: function (view) {
                             view.tip = Ext.create('Ext.tip.ToolTip', {
                                 // The overall target element.
-                                id: 'tool',
                                 minWidth: 200,
                                 target: view.el,
                                 // Each grid row's name cell causes its own separate show and hide.
@@ -121,6 +137,7 @@
                                     // Change content dynamically depending on which element triggered the show.
                                     beforeshow: function updateTipBody(tip) {
                                         // Fetch grid view here, to avoid creating a closure.
+
                                         var tipGridView = tip.target.component;
                                         var record = tipGridView.getRecord(tip.triggerElement);
                                         tip.add(items = [{
@@ -163,14 +180,21 @@
                         },
                         destroy: function (view) {
                             delete view.tip; // Clean up this property on destroy.
+                        },
+                        refresh: function (dataview) {
+                            Ext.each(dataview.panel.columns, function (column) {
+                                if (column.autoSizeColumn === true)
+                                    column.autoSize();
+                            })
                         }
                     }
                 }
+            });
 
-
+            Ext.on('resize', function () {
+                grid.updateLayout();
             });
 
         });
-
     </script>
 </t:wrapper>
