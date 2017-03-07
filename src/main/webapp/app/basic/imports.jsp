@@ -30,9 +30,11 @@
 <script src="<c:url value='/app/clubs/ClubController.js' />"></script>
 <script src="<c:url value='/app/category/CategoryController.js' />"></script>
 <script src="<c:url value='/app/register/RegisterController.js' />"></script>
+<script src="<c:url value='/scripts/ext/my-ext.js' />"></script>
 <%--<script src="http://ui-grid.info/docs/grunt-scripts/csv.js"></script>--%>
 <%--<script src="http://ui-grid.info/docs/grunt-scripts/pdfmake.js"></script>--%>
 <%--<script src="http://ui-grid.info/docs/grunt-scripts/vfs_fonts.js"></script>--%>
+
 
 
 

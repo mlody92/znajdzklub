@@ -16,7 +16,7 @@ app.controller('UserListCtrl', function ($scope, $http, $location, $mdDialog, $m
         // {name: 'Imię', field: "firstName", cellTemplate: template},
         // {name: 'Nazwisko', field: "lastName"},
         {name: 'Login', field: "login", cellTemplate: template, minWidth:100},
-        {name: 'Email', field: "email", minWidth:100},
+        {name: 'Email', field: "email", cellTemplate: template,minWidth:100},
         // {name: 'Rola', field: "role"},
         {
             name: 'action',
