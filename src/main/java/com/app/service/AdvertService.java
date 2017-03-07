@@ -23,5 +23,13 @@ public interface AdvertService {
 
     List<Advert> findAll();
 
+    List<Advert> findAktywne();
+
+    List<Advert> findDoZatwierdzenia();
+
+    List<Advert> findOdrzucone();
+
+    List<Advert> findNieaktywne();
+
     boolean isUnique(Advert advert);
 }

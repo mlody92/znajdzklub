@@ -61,6 +61,22 @@ public class AdvertServiceImpl implements AdvertService {
         return dao.findAll();
     }
 
+    public List<Advert> findAktywne() {
+        return dao.findAktywne();
+    }
+
+    public List<Advert> findDoZatwierdzenia() {
+        return dao.findDoZatwierdzenia();
+    }
+
+    public List<Advert> findOdrzucone() {
+        return dao.findOdrzucone();
+    }
+
+    public List<Advert> findNieaktywne() {
+        return dao.findNieaktywne();
+    }
+
     public boolean isUnique(Advert newAdvert) {
         Advert advert = findByTitle(newAdvert.getTitle());
         return (advert == null || ((newAdvert.getId() != null) && (advert.getId() == newAdvert.getId())));

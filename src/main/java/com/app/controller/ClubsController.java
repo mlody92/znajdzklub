@@ -50,6 +50,30 @@ public class ClubsController {
         return advertService.findAll();
     }
 
+    @RequestMapping(value = "/listClubsAktywne", method = RequestMethod.GET)
+    @ResponseBody
+    public List<Advert> getListAktywne() {
+        return advertService.findAktywne();
+    }
+
+    @RequestMapping(value = "/listClubsDoZatwierdzenia", method = RequestMethod.GET)
+    @ResponseBody
+    public List<Advert> getListDoZatwierdzenia() {
+        return advertService.findDoZatwierdzenia();
+    }
+
+    @RequestMapping(value = "/listClubsOdrzucone", method = RequestMethod.GET)
+    @ResponseBody
+    public List<Advert> getListOdrzucone() {
+        return advertService.findOdrzucone();
+    }
+
+    @RequestMapping(value = "/listClubsNieaktywne", method = RequestMethod.GET)
+    @ResponseBody
+    public List<Advert> getListNieaktywne() {
+        return advertService.findNieaktywne();
+    }
+
     @RequestMapping(value = "/club-{id}", method = RequestMethod.GET)
     @ResponseBody
     public Advert get(@PathVariable Integer id) {
@@ -205,6 +229,20 @@ public class ClubsController {
         model.addAttribute("edit", authorized);
         model.addAttribute("loggedinuser", getPrincipal());
         return "clubs/taniec";
+    }
+
+    @RequestMapping(value = {"/club-status"}, method = RequestMethod.POST, produces = {"application/json; charset=UTF-8"})
+    public ResponseEntity advertStatus(@RequestBody @Valid Advert advert, BindingResult result) {
+        JSONObject json = new JSONObject();
+        if (result.hasErrors()) {
+            json.put("success", false);
+            json.put("error", result);
+            return new ResponseEntity(json.toString(), HttpStatus.OK);
+        }
+        advertService.update(advert);
+        json.put("success", true);
+        json.put("info", "Poprawnie zmieniono status ogłoszenia.");
+        return new ResponseEntity(json.toString(), HttpStatus.OK);
     }
 
     /**

@@ -19,5 +19,13 @@ public interface AdvertDao {
 
     List<Advert> findAll();
 
+    List<Advert> findAktywne();
+
+    List<Advert> findDoZatwierdzenia();
+
+    List<Advert> findOdrzucone();
+
+    List<Advert> findNieaktywne();
+
     List<Advert> findByKodPocztowy(List<String> kody, int catId);
 }

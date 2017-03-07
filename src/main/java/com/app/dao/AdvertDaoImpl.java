@@ -1,7 +1,6 @@
 package com.app.dao;
 
 import com.app.model.Advert;
-import java.util.LinkedList;
 import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Order;
@@ -43,6 +42,42 @@ public class AdvertDaoImpl extends AbstractDao<Integer, Advert> implements Adver
     @SuppressWarnings("unchecked")
     public List<Advert> findAll() {
         Criteria criteria = createEntityCriteria().addOrder(Order.asc("title"));
+        criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);//To avoid duplicates.
+        List<Advert> adverts = (List<Advert>) criteria.list();
+        return adverts;
+    }
+
+    @SuppressWarnings("unchecked")
+    public List<Advert> findAktywne() {
+        Criteria criteria = createEntityCriteria().addOrder(Order.asc("title"));
+        criteria.add(Restrictions.eq("status", "aktywne"));
+        criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);//To avoid duplicates.
+        List<Advert> adverts = (List<Advert>) criteria.list();
+        return adverts;
+    }
+
+    @SuppressWarnings("unchecked")
+    public List<Advert> findDoZatwierdzenia() {
+        Criteria criteria = createEntityCriteria().addOrder(Order.asc("title"));
+        criteria.add(Restrictions.eq("status", "do zatwierdzenia"));
+        criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);//To avoid duplicates.
+        List<Advert> adverts = (List<Advert>) criteria.list();
+        return adverts;
+    }
+
+    @SuppressWarnings("unchecked")
+    public List<Advert> findOdrzucone() {
+        Criteria criteria = createEntityCriteria().addOrder(Order.asc("title"));
+        criteria.add(Restrictions.eq("status", "odrzucone"));
+        criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);//To avoid duplicates.
+        List<Advert> adverts = (List<Advert>) criteria.list();
+        return adverts;
+    }
+
+    @SuppressWarnings("unchecked")
+    public List<Advert> findNieaktywne() {
+        Criteria criteria = createEntityCriteria().addOrder(Order.asc("title"));
+        criteria.add(Restrictions.eq("status", "nieaktywne"));
         criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);//To avoid duplicates.
         List<Advert> adverts = (List<Advert>) criteria.list();
         return adverts;

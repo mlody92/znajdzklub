@@ -989,3 +989,13 @@ right: 5px;
 border-width: 0 5px 5px;
 border-bottom-color: #000;
 }
+
+.iconActive {
+    color: #5CB85C;
+    margin-left: 10px;
+}
+
+.iconDisactive {
+    color: #ac2925;
+    margin-left: 10px;
+}
