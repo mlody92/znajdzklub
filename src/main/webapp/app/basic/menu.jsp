@@ -14,7 +14,10 @@
             <li><a href="clubsList">Lista klubów</a></li>
         </sec:authorize>
         <sec:authorize access="isAuthenticated()">
-            <li><a href="addAdvert">Dodaj klub</a></li>
+            <li>
+                <%--<div id="dodajButton"></div>--%>
+                <a onclick="App.clubs.addNew()" style="cursor:pointer;">Dodaj klub</a></li>
+                <%--<a href="addAdvert">Dodaj klub</a></li>--%>
             <li><a href="myClubs">Moje kluby</a></li>
             <li>
                 <%@include file="../login/authheader.jsp" %>

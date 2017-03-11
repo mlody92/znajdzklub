@@ -136,6 +136,7 @@ public class ClubsController {
         String userName = getPrincipal();
         User user = userService.findByLogin(userName);
         advert.setUserId(user.getId());
+        advert.setStatus("do zatwierdzenia");
         advertService.save(advert);
         json.put("success", true);
         json.put("info", "Klub został prawidłowo dodany.");

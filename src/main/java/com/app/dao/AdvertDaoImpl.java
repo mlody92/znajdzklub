@@ -23,6 +23,7 @@ public class AdvertDaoImpl extends AbstractDao<Integer, Advert> implements Adver
     public List<Advert> findByCategoryId(int id) {
         Criteria criteria = getSession().createCriteria(Advert.class, "advert");
         criteria.add(Restrictions.eq("categoryId", id));
+        criteria.add(Restrictions.eq("status", "aktywne"));
         criteria.addOrder(Order.asc("title"));
         criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);//To avoid duplicates.
         List<Advert> adverts = (List<Advert>) criteria.list();
