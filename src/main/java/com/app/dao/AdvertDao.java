@@ -2,6 +2,7 @@ package com.app.dao;
 
 import com.app.model.Advert;
 import java.util.List;
+import javax.persistence.Tuple;
 
 public interface AdvertDao {
 
@@ -19,13 +20,8 @@ public interface AdvertDao {
 
     List<Advert> findAll();
 
-    List<Advert> findAktywne();
-
-    List<Advert> findDoZatwierdzenia();
-
-    List<Advert> findOdrzucone();
-
-    List<Advert> findNieaktywne();
+    List<AdvertDaoImpl.AdvertDetails> findAdvertLists(String status);
 
     List<Advert> findByKodPocztowy(List<String> kody, int catId);
+
 }

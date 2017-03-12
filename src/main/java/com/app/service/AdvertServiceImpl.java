@@ -1,6 +1,7 @@
 package com.app.service;
 
 import com.app.dao.AdvertDao;
+import com.app.dao.AdvertDaoImpl;
 import com.app.model.Advert;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,20 +62,8 @@ public class AdvertServiceImpl implements AdvertService {
         return dao.findAll();
     }
 
-    public List<Advert> findAktywne() {
-        return dao.findAktywne();
-    }
-
-    public List<Advert> findDoZatwierdzenia() {
-        return dao.findDoZatwierdzenia();
-    }
-
-    public List<Advert> findOdrzucone() {
-        return dao.findOdrzucone();
-    }
-
-    public List<Advert> findNieaktywne() {
-        return dao.findNieaktywne();
+    public List<AdvertDaoImpl.AdvertDetails> findAdvertLists(String status) {
+        return dao.findAdvertLists(status);
     }
 
     public boolean isUnique(Advert newAdvert) {
@@ -85,4 +74,5 @@ public class AdvertServiceImpl implements AdvertService {
     public Advert findByTitle(String title) {
         return dao.findByTitle(title);
     }
+
 }

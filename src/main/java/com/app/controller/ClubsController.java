@@ -1,12 +1,12 @@
 package com.app.controller;
 
+import com.app.dao.AdvertDaoImpl;
 import com.app.model.Advert;
 import com.app.model.User;
 import com.app.service.AdvertService;
 import com.app.service.CoordinatesService;
 import com.app.service.UserService;
 import java.util.Collection;
-import java.util.LinkedList;
 import java.util.List;
 import javax.validation.Valid;
 import org.json.JSONObject;
@@ -20,7 +20,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -52,26 +51,26 @@ public class ClubsController {
 
     @RequestMapping(value = "/listClubsAktywne", method = RequestMethod.GET)
     @ResponseBody
-    public List<Advert> getListAktywne() {
-        return advertService.findAktywne();
+    public List<AdvertDaoImpl.AdvertDetails> getListAktywne() {
+        return advertService.findAdvertLists("aktywne");
     }
 
     @RequestMapping(value = "/listClubsDoZatwierdzenia", method = RequestMethod.GET)
     @ResponseBody
-    public List<Advert> getListDoZatwierdzenia() {
-        return advertService.findDoZatwierdzenia();
+    public List<AdvertDaoImpl.AdvertDetails> getListDoZatwierdzenia() {
+        return advertService.findAdvertLists("do zatwierdzenia");
     }
 
     @RequestMapping(value = "/listClubsOdrzucone", method = RequestMethod.GET)
     @ResponseBody
-    public List<Advert> getListOdrzucone() {
-        return advertService.findOdrzucone();
+    public List<AdvertDaoImpl.AdvertDetails> getListOdrzucone() {
+        return advertService.findAdvertLists("odrzucone");
     }
 
     @RequestMapping(value = "/listClubsNieaktywne", method = RequestMethod.GET)
     @ResponseBody
-    public List<Advert> getListNieaktywne() {
-        return advertService.findNieaktywne();
+    public List<AdvertDaoImpl.AdvertDetails> getListNieaktywne() {
+        return advertService.findAdvertLists("nieaktywne");
     }
 
     @RequestMapping(value = "/club-{id}", method = RequestMethod.GET)

@@ -2,6 +2,10 @@ package com.app.dao;
 
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+import javax.persistence.criteria.CriteriaBuilder;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -43,5 +47,4 @@ public abstract class AbstractDao<PK extends Serializable, T> {
     protected Criteria createEntityCriteria(){
         return getSession().createCriteria(persistentClass);
     }
-
 }

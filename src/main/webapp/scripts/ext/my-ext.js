@@ -112,17 +112,20 @@ App.clubs.createClubList = function () {
     Ext.define('Klub', {
         extend: 'Ext.data.Model',
         fields: [
-            {name: 'title'},
-            {name: 'description'},
-            {name: 'website'},
-            {name: 'address'},
-            {name: 'email'},
-            {name: 'phone'},
-            {name: 'status'},
-            {name: 'date'},
-            {name: 'postalCode'},
-            {name: 'categoryId'},
-            {name: 'userId'}
+            {name: 'title', mapping: 'advert.title'},
+            {name: 'description', mapping: 'advert.description'},
+            {name: 'website', mapping: 'advert.website'},
+            {name: 'address', mapping: 'advert.address'},
+            {name: 'email', mapping: 'advert.email'},
+            {name: 'phone', mapping: 'advert.phone'},
+            {name: 'status', mapping: 'advert.status'},
+            {name: 'date', mapping: 'advert.date'},
+            {name: 'postalCode', mapping: 'advert.postalCode'},
+            // {name: 'categoryId', mapping: 'advert.categoryId'},
+            // {name: 'userId', mapping: 'advert.userId'},
+            {name: 'user', mapping: 'user.login'},
+            {name: 'category', mapping: 'category.name'}
+
         ]
     });
 
@@ -143,9 +146,9 @@ App.clubs.createClubList = function () {
 
     var loadColumns = function () {
         return [{text: "Tytuł", dataIndex: 'title', sortable: true},
-            {text: "Status", dataIndex: 'status', sortable: true},
-            {text: "Kategoria", dataIndex: 'categoryId', sortable: true},
-            {text: "Użytkownik", dataIndex: 'userId', sortable: true},
+            // {text: "Status", dataIndex: 'status', sortable: true},
+            {text: "Kategoria", dataIndex: 'category', sortable: true},
+            {text: "Użytkownik", dataIndex: 'user', sortable: true},
             {
                 xtype: 'actioncolumn',
                 width: 80,
@@ -319,34 +322,37 @@ App.clubs.createClubList = function () {
                                     var record = tipGridView.getRecord(tip.triggerElement);
                                     tip.add(items = [{
                                         xtype: 'label',
-                                        text: record.get('title')
+                                        text: 'Tytuł: ' + record.get('title')
                                     }, {
                                         xtype: 'label',
-                                        text: record.get('description')
+                                        text: 'Opis: ' + record.get('description')
                                     }, {
                                         xtype: 'label',
-                                        text: record.get('website')
+                                        text: 'Strona www: ' + record.get('website')
                                     }, {
                                         xtype: 'label',
-                                        text: record.get('address')
+                                        text: 'Adres: ' + record.get('address')
                                     }, {
                                         xtype: 'label',
-                                        text: record.get('email')
+                                        text: 'E-mail: ' + record.get('email')
                                     }, {
                                         xtype: 'label',
-                                        text: record.get('phone')
+                                        text: 'Nr telefonu: ' + record.get('phone')
                                     }, {
                                         xtype: 'label',
-                                        text: record.get('status')
+                                        text: 'Status: ' + record.get('status')
                                     }, {
                                         xtype: 'label',
-                                        text: record.get('date')
+                                        text: 'Data: ' + record.get('date')
                                     }, {
                                         xtype: 'label',
-                                        text: record.get('postalCode')
+                                        text: 'Kod pocztowy: ' + record.get('postalCode')
                                     }, {
                                         xtype: 'label',
-                                        text: record.get('userId')
+                                        text: 'Nazwa użytkownika: ' + record.get('user')
+                                    }, {
+                                        xtype: 'label',
+                                        text: 'Kategoria: ' + record.get('category')
                                     }]);
                                 },
                                 beforeHide: function (tip) {
@@ -375,6 +381,7 @@ App.clubs.createClubList = function () {
     var storeOdrzuocne = createStore({url: 'listClubsOdrzucone'});
     var storeNieaktywne = createStore({url: 'listClubsNieaktywne'});
 
+    console.log(storeAktywne);
     var tabPanel = Ext.create('Ext.TabPanel', {
         fullscreen: true,
         tabBarPosition: 'bottom',
@@ -503,7 +510,7 @@ App.clubs.addNew = function () {
             vtype: 'email',  // requires value to be a valid email address format
             allowBlank: false
         }, {
-            xtype:'numberfield',
+            xtype: 'numberfield',
             name: 'phone',
             fieldLabel: 'Numer telefonu'
         }]
