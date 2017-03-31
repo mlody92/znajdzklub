@@ -112,19 +112,19 @@ App.clubs.createClubList = function () {
     Ext.define('Klub', {
         extend: 'Ext.data.Model',
         fields: [
-            {name: 'title', mapping: 'advert.title'},
-            {name: 'description', mapping: 'advert.description'},
-            {name: 'website', mapping: 'advert.website'},
-            {name: 'address', mapping: 'advert.address'},
-            {name: 'email', mapping: 'advert.email'},
-            {name: 'phone', mapping: 'advert.phone'},
-            {name: 'status', mapping: 'advert.status'},
-            {name: 'date', mapping: 'advert.date'},
-            {name: 'postalCode', mapping: 'advert.postalCode'},
+            {name: 'title', mapping: 'title'},
+            {name: 'description', mapping: 'description'},
+            {name: 'website', mapping: 'website'},
+            {name: 'address', mapping: 'address'},
+            {name: 'email', mapping: 'email'},
+            {name: 'phone', mapping: 'phone'},
+            {name: 'status', mapping: 'status'},
+            {name: 'date', mapping: 'date'},
+            {name: 'postalCode', mapping: 'postalCode'},
             // {name: 'categoryId', mapping: 'advert.categoryId'},
             // {name: 'userId', mapping: 'advert.userId'},
-            {name: 'user', mapping: 'user.login'},
-            {name: 'category', mapping: 'category.name'}
+            {name: 'user', mapping: 'login'},
+            {name: 'category', mapping: 'categoryName'}
 
         ]
     });
@@ -578,6 +578,9 @@ App.clubs.addNew = function () {
             listeners: {
                 beforeShow: function () {
                     Ext.getBody().mask('Proszę czekać ...');
+                },
+                beforeHide: function(){
+                    Ext.getBody().unmask();
                 }
             }
         }).show();

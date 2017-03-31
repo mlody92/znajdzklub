@@ -3,6 +3,7 @@ package com.app.dao;
 import com.app.model.Advert;
 import com.app.model.Category;
 import com.app.model.User;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import org.hibernate.Criteria;
@@ -61,7 +62,7 @@ public class AdvertDaoImpl extends AbstractDao<Integer, Advert> implements Adver
         //        return adverts;
         List<AdvertDetails> advertDetailsList = new LinkedList<>();
         Session s = getSession();
-        List<Object[]> result = s.createQuery("from Advert a, Category c , User u where a.categoryId=c.id and a.userId=u.id and a.status='"+status+"'").list();
+        List<Object[]> result = s.createQuery("from Advert a, Category c , User u where a.categoryId=c.id and a.userId=u.id and a.status='" + status + "'").list();
         for (Object[] obj : result) {
             AdvertDetails tmp = new AdvertDetails((Advert) obj[0], (Category) obj[1], (User) obj[2]);
             advertDetailsList.add(tmp);
@@ -100,26 +101,95 @@ public class AdvertDaoImpl extends AbstractDao<Integer, Advert> implements Adver
 
     public class AdvertDetails {
 
-        private Advert advert;
-        private Category category;
-        private User user;
-
+        private Integer id;
+        private String title;
+        private String description;
+        private String website;
+        private String address;
+        private String email;
+        private String phone;
+        private String status;
+        private int categoryId;
+        private int userId;
+        private Date date;
+        private String postalCode;
+        private String categoryName;
+        private String login;
         public AdvertDetails(Advert advert, Category category, User user) {
-            this.advert = advert;
-            this.category = category;
-            this.user = user;
+            this.id = advert.getId();
+            this.title = advert.getTitle();
+            this.description = advert.getDescription();
+            this.website = advert.getWebsite();
+            this.address = advert.getAddress();
+            this.email = advert.getEmail();
+            this.phone = advert.getPhone();
+            this.status = advert.getStatus();
+            this.postalCode = advert.getPostalCode();
+            this.categoryName = category.getName();
+            this.login = user.getLogin();
+            this.date = advert.getDate();
+            this.categoryId = advert.getCategoryId();
+            this.userId = advert.getUserId();
+            //            this.advert = advert;
+            //            this.category = category;
+            //            this.user = user;
         }
 
-        public Advert getAdvert() {
-            return advert;
+        public int getUserId() {
+            return userId;
         }
 
-        public Category getCategory() {
-            return category;
+        public int getCategoryId() {
+            return categoryId;
         }
 
-        public User getUser() {
-            return user;
+        public Date getDate() {
+            return date;
         }
+
+        public Integer getId() {
+            return id;
+        }
+
+        public String getTitle() {
+            return title;
+        }
+
+        public String getDescription() {
+            return description;
+        }
+
+        public String getWebsite() {
+            return website;
+        }
+
+        public String getAddress() {
+            return address;
+        }
+
+        public String getEmail() {
+            return email;
+        }
+
+        public String getPhone() {
+            return phone;
+        }
+
+        public String getStatus() {
+            return status;
+        }
+
+        public String getPostalCode() {
+            return postalCode;
+        }
+
+        public String getCategoryName() {
+            return categoryName;
+        }
+
+        public String getLogin() {
+            return login;
+        }
+
     }
 }

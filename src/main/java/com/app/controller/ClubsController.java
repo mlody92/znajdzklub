@@ -237,7 +237,7 @@ public class ClubsController {
         if (result.hasErrors()) {
             json.put("success", false);
             json.put("error", result);
-            return new ResponseEntity(json.toString(), HttpStatus.OK);
+            return new ResponseEntity("Błąd podczas zmiany statusu.", HttpStatus.OK);
         }
         advertService.update(advert);
         json.put("success", true);
