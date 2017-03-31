@@ -14,7 +14,15 @@
 
 
                     </div><!-- end work_nav -->
-                    <h1 class="title_kluby_ciemne">Rejestracja</h1>
+                    <c:choose>
+                        <c:when test="${edit}">
+                            <h1 class="title_kluby_ciemne">Edycja</h1>
+                        </c:when>
+
+                        <c:otherwise>
+                            <h1 class="title_kluby_ciemne">Rejestracja</h1>
+                        </c:otherwise>
+                    </c:choose>
                 </div>
             </section>
             <!-- end top -->
@@ -79,7 +87,7 @@
                                                 <label>Hasło *</label>
                                                 <c:choose>
                                                     <c:when test="${edit}">
-                                                        <input type="password" name="password" class="form-control" ng-model="user.password"  ng-minlength="5" ng-maxlength="30">
+                                                        <input type="password" name="password" class="form-control" ng-model="user.password" ng-minlength="5" ng-maxlength="30">
                                                     </c:when>
                                                     <c:otherwise>
                                                         <input type="password" name="password" class="form-control" ng-model="user.password" required ng-minlength="5" ng-maxlength="30">
@@ -104,7 +112,6 @@
                                     </c:choose>
 
 
-
                                     <sec:authorize access="hasRole('ADMIN')">
                                         <div class="form-group">
                                             <label>Uprawnienie</label>
@@ -116,7 +123,8 @@
                                     </sec:authorize>
                                     <c:choose>
                                         <c:when test="${edit}">
-                                            <input type="submit" value="Zapisz" class="btn btn-primary btn-sm" ng-disabled="userForm.$invalid"/> or <input action="action" type="button" value="Powrót" onclick="history.go(-1);" />
+                                            <input type="submit" value="Zapisz" class="btn btn-primary btn-sm" ng-disabled="userForm.$invalid"/> or <input action="action" type="button" value="Powrót"
+                                                                                                                                                           onclick="history.go(-1);"/>
                                         </c:when>
                                         <c:otherwise>
                                             <input type="submit" value="Zarejestruj" class="btn btn-primary btn-sm" ng-disabled="userForm.$invalid"/>

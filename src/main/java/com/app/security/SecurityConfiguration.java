@@ -46,6 +46,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .antMatchers("/edit-category-*").access("hasRole('ADMIN')")
             .antMatchers("/delete-category-*").access("hasRole('ADMIN')")
             .antMatchers("/addAdvert").access("isAuthenticated()")
+            .antMatchers("/edit-profile").access("isAuthenticated()")
             .antMatchers("/edit-advert-*").access("isAuthenticated()")
             .antMatchers("/delete-advert").access("isAuthenticated()")
             .antMatchers("/listUser").access("hasRole('ADMIN')")

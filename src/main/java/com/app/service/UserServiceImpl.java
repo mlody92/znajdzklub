@@ -47,6 +47,9 @@ public class UserServiceImpl implements UserService {
             entity.setEmail(user.getEmail());
             entity.setRole(user.getRole());
             entity.setStatus(user.getStatus());
+            if (!user.getPassword().equals("")) {
+                entity.setPassword(user.getPassword());
+            }
         }
     }
 

@@ -41,3 +41,20 @@ app.controller('RegisterCtrl', function ($scope, $http, $mdDialog, $location, Fa
 });
 
 
+app.controller('MyProfileCtrl', function ($scope, $http, $mdDialog, $location, Factory) {
+
+    Factory.getData('my-profile').then(function (result) {
+        $scope.user = result.data;
+    });
+
+    $scope.submitForm = function (data, edit) {
+        Factory.loadMask();
+        var postConfig = {
+            url: 'edit-my-profile',
+            data: data
+        };
+        Factory.postData(postConfig);
+    };
+
+
+});
