@@ -55,6 +55,9 @@ function changeStatus(config) {
             } else {
                 createError(response);
             }
+            config.storeFrom.reload();
+            config.storeTo.reload();
+
         }
     });
 }
@@ -192,11 +195,11 @@ App.clubs.createClubList = function () {
                 changeStatus(
                     {
                         url: 'club-status',
-                        rec: rec
+                        rec: rec,
+                        storeFrom: storeAktywne,
+                        storeTo: storeNieaktywne
                     }
                 );
-                storeAktywne.reload();
-                storeNieaktywne.reload();
             }
         }]
     });
@@ -216,11 +219,11 @@ App.clubs.createClubList = function () {
                 changeStatus(
                     {
                         url: 'club-status',
-                        rec: rec
+                        rec: rec,
+                        storeFrom: storeDoZatwierdzania,
+                        storeTo: storeAktywne
                     }
                 );
-                storeDoZatwierdzania.reload();
-                storeAktywne.reload();
             }
         }, {
             iconCls: 'glyphicon glyphicon-remove iconDisactive',
@@ -231,11 +234,11 @@ App.clubs.createClubList = function () {
                 changeStatus(
                     {
                         url: 'club-status',
-                        rec: rec
+                        rec: rec,
+                        storeFrom: storeDoZatwierdzania,
+                        storeTo: storeOdrzuocne
                     }
                 );
-                storeDoZatwierdzania.reload();
-                storeOdrzuocne.reload();
             }
         }]
     });
@@ -256,11 +259,11 @@ App.clubs.createClubList = function () {
                 changeStatus(
                     {
                         url: 'club-status',
-                        rec: rec
+                        rec: rec,
+                        storeFrom: storeOdrzuocne,
+                        storeTo: storeDoZatwierdzania
                     }
                 );
-                storeOdrzuocne.reload();
-                storeDoZatwierdzania.reload();
             }
         }]
     });
@@ -280,11 +283,11 @@ App.clubs.createClubList = function () {
                 changeStatus(
                     {
                         url: 'club-status',
-                        rec: rec
+                        rec: rec ,
+                        storeFrom: storeNieaktywne,
+                        storeTo: storeDoZatwierdzania
                     }
                 );
-                storeNieaktywne.reload();
-                storeDoZatwierdzania.reload();
             }
         }]
     });
