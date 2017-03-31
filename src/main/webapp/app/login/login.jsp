@@ -23,7 +23,7 @@
                         <form action="${loginUrl}" method="post" class="form-horizontal">
                             <c:if test="${param.error != null}">
                                 <div class="alert alert-danger">
-                                    <p>Niepoprawna nazwa użytkownika lub hasło.</p>
+                                    <p>Niepoprawna nazwa użytkownika, hasło lub użytkownik nie jest aktywny.</p>
                                 </div>
                             </c:if>
                             <div class="input-group input-sm">

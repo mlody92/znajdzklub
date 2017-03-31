@@ -10,12 +10,9 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -33,10 +30,30 @@ public class UsersController {
     @Autowired
     UserService userService;
 
-    @RequestMapping(value = "/listUser", method = RequestMethod.GET)
+    @RequestMapping(value = "/listUser-aktywny", method = RequestMethod.GET)
     @ResponseBody
-    public List<User> get() {
-        List<User> listUser = userService.findAllUsers();
+    public List<User> listUserAktywny() {
+        List<User> listUser = userService.findAllUsers("aktywny");
+        for (User user : listUser) {
+            user.setPassword("");
+        }
+        return listUser;
+    }
+
+    @RequestMapping(value = "/listUser-nieaktywny", method = RequestMethod.GET)
+    @ResponseBody
+    public List<User> listUserNieaktywni() {
+        List<User> listUser = userService.findAllUsers("nieaktywny");
+        for (User user : listUser) {
+            user.setPassword("");
+        }
+        return listUser;
+    }
+
+    @RequestMapping(value = "/listUser-zablokowany", method = RequestMethod.GET)
+    @ResponseBody
+    public List<User> listUserZablokowany() {
+        List<User> listUser = userService.findAllUsers("zablokowany");
         for (User user : listUser) {
             user.setPassword("");
         }
@@ -120,7 +137,7 @@ public class UsersController {
      */
     @ModelAttribute("roles")
     public List<User> initializeProfiles() {
-        return userService.findAllUsers();
+        return userService.findAllUsers("aktywny");
     }
 
     @RequestMapping(value = {"/userList"}, method = RequestMethod.GET)
@@ -128,38 +145,52 @@ public class UsersController {
         return "user/userList";
     }
 
+    @RequestMapping(value = {"/user-status"}, method = RequestMethod.POST, produces = {"application/json; charset=UTF-8"})
+    public ResponseEntity advertStatus(@RequestBody @Valid User user, BindingResult result) {
+        JSONObject json = new JSONObject();
+        if (result.hasErrors()) {
+            json.put("success", false);
+            json.put("error", result);
+            return new ResponseEntity(json.toString(), HttpStatus.OK);
+        }
+        userService.updateUser(user);
+        json.put("success", true);
+        json.put("info", "Poprawnie zmieniono status użytkownika.");
+        return new ResponseEntity(json.toString(), HttpStatus.OK);
+    }
+
     //TODO
-//    @RequestMapping(value = {"/edit-profile"}, method = RequestMethod.GET)
-//    public String editProfile(ModelMap model) {
-//        User user = userService.findByLogin(getPrincipal());
-//        model.addAttribute("user", user);
-//        model.addAttribute("edit", true);
-//        model.addAttribute("loggedinuser", getPrincipal());
-//        return "register/register";
-//    }
-//
-//    @RequestMapping(value = {"/edit-profile"}, method = RequestMethod.POST, produces = {"application/json; charset=UTF-8"})
-//    public ResponseEntity updateProfile(@RequestBody @Valid User user, BindingResult result,
-//                                           ModelMap model) {
-//
-//        JSONObject json = new JSONObject();
-//        if (result.hasErrors()) {
-//            json.put("success", false);
-//            json.put("error", result);
-//            return new ResponseEntity(json.toString(), HttpStatus.OK);
-//        }
-//        if (user.getLogin() != getPrincipal()) {
-//            json.put("success", false);
-//            json.put("error", "Możesz edytować tylko swój profil");
-//            return new ResponseEntity(json.toString(), HttpStatus.OK);
-//        }
-//
-//        userService.updateUser(user);
-//        model.addAttribute("loggedinuser", getPrincipal());
-//        json.put("success", true);
-//        json.put("info", "Poprawnie przeedytowany użytkownika");
-//        return new ResponseEntity(json.toString(), HttpStatus.OK);
-//    }
+    //    @RequestMapping(value = {"/edit-profile"}, method = RequestMethod.GET)
+    //    public String editProfile(ModelMap model) {
+    //        User user = userService.findByLogin(getPrincipal());
+    //        model.addAttribute("user", user);
+    //        model.addAttribute("edit", true);
+    //        model.addAttribute("loggedinuser", getPrincipal());
+    //        return "register/register";
+    //    }
+    //
+    //    @RequestMapping(value = {"/edit-profile"}, method = RequestMethod.POST, produces = {"application/json; charset=UTF-8"})
+    //    public ResponseEntity updateProfile(@RequestBody @Valid User user, BindingResult result,
+    //                                           ModelMap model) {
+    //
+    //        JSONObject json = new JSONObject();
+    //        if (result.hasErrors()) {
+    //            json.put("success", false);
+    //            json.put("error", result);
+    //            return new ResponseEntity(json.toString(), HttpStatus.OK);
+    //        }
+    //        if (user.getLogin() != getPrincipal()) {
+    //            json.put("success", false);
+    //            json.put("error", "Możesz edytować tylko swój profil");
+    //            return new ResponseEntity(json.toString(), HttpStatus.OK);
+    //        }
+    //
+    //        userService.updateUser(user);
+    //        model.addAttribute("loggedinuser", getPrincipal());
+    //        json.put("success", true);
+    //        json.put("info", "Poprawnie przeedytowany użytkownika");
+    //        return new ResponseEntity(json.toString(), HttpStatus.OK);
+    //    }
 
     private String waliduj(User user) {
         String error = "";

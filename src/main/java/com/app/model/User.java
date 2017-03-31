@@ -40,6 +40,17 @@ public class User implements Serializable {
     @Column(name = "ROLE", nullable = false)
     private String role;
 
+    @Column(name = "STATUS", nullable = false)
+    private String status;
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
     public String getRole() {
         return role;
     }

@@ -381,7 +381,6 @@ App.clubs.createClubList = function () {
     var storeOdrzuocne = createStore({url: 'listClubsOdrzucone'});
     var storeNieaktywne = createStore({url: 'listClubsNieaktywne'});
 
-    console.log(storeAktywne);
     var tabPanel = Ext.create('Ext.TabPanel', {
         fullscreen: true,
         tabBarPosition: 'bottom',

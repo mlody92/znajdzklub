@@ -46,6 +46,7 @@ public class UserServiceImpl implements UserService {
             entity.setLastName(user.getLastName());
             entity.setEmail(user.getEmail());
             entity.setRole(user.getRole());
+            entity.setStatus(user.getStatus());
         }
     }
 
@@ -53,8 +54,8 @@ public class UserServiceImpl implements UserService {
         dao.deleteByLogin(login);
     }
 
-    public List<User> findAllUsers() {
-        return dao.findAllUsers();
+    public List<User> findAllUsers(String status) {
+        return dao.findAllUsers(status);
     }
 
     public boolean isUserLoginUnique(Integer id, String login) {

@@ -129,6 +129,38 @@ app.factory('Factory', function ($http, $mdDialog, $rootScope) {
                 factory.disableMask();
             });
         };
+
+    factory.onlyPostData = function (config) {
+        delete $http.defaults.headers.common["X-Requested-With"];
+        var token = $("meta[name='_csrf']").attr("content");
+        var header = $("meta[name='_csrf_header']").attr("content");
+        $http.defaults.headers.common['content-type'] = 'application/json';
+        $http.defaults.headers.common[header] = token;
+        $http({
+            method: 'POST',
+            url: config.url,
+            data: config.data,
+            headers: {'Content-Type': 'application/json; charset=utf-8'}
+            // }).success(function (data, status, headers, config) {
+        }).success(function (data, status) {
+            if (data.success == false) {
+                factory.showAlert('Błąd', data.error);
+                if (typeof config.failureFn == 'function') {
+                    config.failureFn();
+                }
+            }
+        }).error(function (data, status, headers, config) {
+            factory.showAlert('Błąd', "Błąd na serwerze");
+            if (typeof config.errorFn == 'function') {
+                config.errorFn();
+            }
+        }).finally(function () {
+            if (typeof config.finallyFn == 'function') {
+                config.finallyFn();
+            }
+            factory.disableMask();
+        });
+    };
         return factory;
     }
 );

@@ -16,31 +16,34 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service("customUserDetailsService")
-public class CustomUserDetailsService implements UserDetailsService{
+public class CustomUserDetailsService implements UserDetailsService {
 
     static final Logger logger = LoggerFactory.getLogger(CustomUserDetailsService.class);
 
     @Autowired
     private UserService userService;
 
-    @Transactional(readOnly=true)
+    @Transactional(readOnly = true)
     public UserDetails loadUserByUsername(String login)
         throws UsernameNotFoundException {
         User user = userService.findByLogin(login);
         logger.info("User : {}", user);
-        if(user==null){
+        if (user == null) {
             logger.info("User not found");
             throw new UsernameNotFoundException("Username not found");
         }
+        boolean status = false;
+        if (user.getStatus().equals("aktywny")) {
+            status = true;
+        }
         return new org.springframework.security.core.userdetails.User(user.getLogin(), user.getPassword(),
-                                                                         true, true, true, true, getGrantedAuthorities(user));
+                                                                         status, true, true, true, getGrantedAuthorities(user));
     }
 
-
-    private List<GrantedAuthority> getGrantedAuthorities(User user){
+    private List<GrantedAuthority> getGrantedAuthorities(User user) {
         List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
 
-            authorities.add(new SimpleGrantedAuthority("ROLE_"+user.getRole()));
+        authorities.add(new SimpleGrantedAuthority("ROLE_" + user.getRole()));
         logger.info("authorities : {}", authorities);
         return authorities;
     }

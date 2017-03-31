@@ -999,3 +999,8 @@ border-bottom-color: #000;
     color: #ac2925;
     margin-left: 10px;
 }
+
+.app md-content .ext-content {
+    padding: 50px;
+    margin: 20px;
+    background-color: #FFF2E0; }

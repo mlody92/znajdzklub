@@ -15,7 +15,7 @@ public interface UserService
 
     void deleteUserByLogin(String login);
 
-    List<User> findAllUsers();
+    List<User> findAllUsers(String status);
 
     boolean isUserLoginUnique(Integer id, String login);
 }

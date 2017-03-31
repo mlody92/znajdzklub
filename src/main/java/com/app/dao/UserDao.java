@@ -13,6 +13,6 @@ public interface UserDao
 
     void deleteByLogin(String login);
 
-    List<User> findAllUsers();
+    List<User> findAllUsers(String status);
 
 }
