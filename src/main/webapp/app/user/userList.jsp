@@ -15,6 +15,7 @@
                 <div class="content ">
                     <div id="mainWrapper" ng-app="app">
                         <div class="panel panel-default">
+                            <a href="userListDragAndDrop">Przełącz widok: Drag And Drop</a>
                             <div ng-controller="UserListCtrl" ng-cloak>
                                 <md-content class="md-padding">
                                     <md-nav-bar
@@ -56,5 +57,8 @@
             </section>
         </section>
     </div>
+
+
+
 </t:wrapper>
 

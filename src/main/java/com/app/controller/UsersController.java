@@ -160,6 +160,11 @@ public class UsersController {
         return "user/userList";
     }
 
+    @RequestMapping(value = {"/userListDragAndDrop"}, method = RequestMethod.GET)
+    public String userListDragAndDrop() {
+        return "user/userListDragAndDrop";
+    }
+
     @RequestMapping(value = {"/user-status"}, method = RequestMethod.POST, produces = {"application/json; charset=UTF-8"})
     public ResponseEntity advertStatus(@RequestBody @Valid User user, BindingResult result) {
         JSONObject json = new JSONObject();

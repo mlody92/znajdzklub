@@ -100,3 +100,66 @@ app.controller('UserListCtrl', function ($scope, $http, $location, $mdDialog, $m
 );
 
 
+// ========== initialize documentation app module ========== //
+
+// ========== controllers ========== //
+app.controller('draggableCtrl', function ($scope, $http, $location, $mdDialog, $mdMedia, Factory, uiGridConstants) {
+
+    $scope.models = {};
+
+    function loadStore(status) {
+        Factory.getData('listUser-' + status).then(function (result) {
+            $scope.models[status] = result.data;
+        });
+    }
+
+    loadStore("aktywny");
+    loadStore("nieaktywny");
+    loadStore("zablokowany");
+
+    $scope.currentDropElement = null;
+
+    $scope.remove = function (l, o) {
+        var index = l.indexOf(o);
+        if (index > -1) {
+            l.splice(index, 1);
+        }
+    };
+
+    $scope.onDragStart = function () {
+    };
+
+    $scope.onDragEnd = function () {
+
+    };
+
+    $scope.onDragOver = function (data, dragElement, dropElement) {
+        $scope.currentDropElement = dropElement;
+        console.log(dragElement);
+    };
+
+    $scope.onDragLeave = function () {
+        $scope.currentDropElement = null;
+    };
+
+    $scope.onDrop = function (data, status) {
+        if (data && $scope.currentDropElement) {
+            var statusBeforeDrop = data.status;
+            data.status = status;
+            changeStatus(data, statusBeforeDrop);
+        }
+    };
+
+    changeStatus = function (data, removeStatusFrom) {
+        var postConfig = {
+            url: 'user-status',
+            data: data,
+            finallyFn: function () {
+                $scope.models[data.status].push(data);
+                $scope.remove($scope.models[removeStatusFrom], data);
+            }
+
+        };
+        Factory.onlyPostData(postConfig);
+    };
+})
