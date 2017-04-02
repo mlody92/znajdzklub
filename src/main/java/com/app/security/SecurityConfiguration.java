@@ -43,6 +43,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .authorizeRequests()
             .antMatchers("/userList").access("hasRole('ADMIN')")
             .antMatchers("/addCategory").access("hasRole('ADMIN')")
+            .antMatchers("/categoryList").access("hasRole('ADMIN')")
             .antMatchers("/edit-category-*").access("hasRole('ADMIN')")
             .antMatchers("/delete-category-*").access("hasRole('ADMIN')")
             .antMatchers("/addAdvert").access("isAuthenticated()")

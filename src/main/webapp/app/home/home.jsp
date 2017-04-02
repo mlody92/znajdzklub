@@ -8,7 +8,7 @@
         <img src="<c:url value='/img/sztuki_walki_home.jpg' />" class="media" alt=""/>
         <div class="caption">
             <div class="work_title">
-                <h1>Sztuki walki2 ${x}</h1>
+                <h1>Sztuki walki</h1>
             </div>
         </div>
         </a>

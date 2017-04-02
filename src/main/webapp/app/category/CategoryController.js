@@ -37,7 +37,7 @@ app.controller('CategoryCtrl', function ($scope, $http, $mdDialog, $location, Fa
     };
 });
 
-app.controller('CategoryListCtrl', function ($scope, $http, $location, $mdDialog, $mdMedia, Factory) {
+app.controller('CategoryListCtrl', function ($scope, $http, $location, $mdDialog, $mdMedia, Factory, $modal) {
     $scope.grid = {
         enableColumnResizing: true,
         resizable: true
@@ -80,4 +80,34 @@ app.controller('CategoryListCtrl', function ($scope, $http, $location, $mdDialog
             $scope.grid.data = result.data;
         });
     }
+
+
+    //window form
+    $scope.open = function () {
+        $modal.open({
+            templateUrl: 'myModalContent.html',
+            backdrop: true,
+            windowClass: 'modal',
+            controller: function ($scope, $modalInstance) {
+                $scope.submit = function () {
+
+
+                    var postConfig = {
+                        url: 'addCategory',
+                        data: $scope.category,
+                        finallyFn: function (){
+                            loadStore();
+                        }
+                    };
+                    Factory.postData(postConfig);
+                    $modalInstance.dismiss('cancel');
+                }
+
+                $scope.cancel = function () {
+                    $modalInstance.dismiss('cancel');
+                };
+
+            }
+        });
+    };
 });
