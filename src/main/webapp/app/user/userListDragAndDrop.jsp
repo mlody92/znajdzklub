@@ -18,7 +18,6 @@
                         <div class="panel panel-default">
                             <a href="userList">Przełącz widok: Grid</a>
                             <div ng-cloak>
-                                <p>( Drag car from the <strong>list of cars</strong> to the <strong>basket</strong>. )</p>
                                 <div class="rows">
 
                                     <div class="col-md-3">
@@ -45,7 +44,7 @@
                                                 ad-drop-over="onDragOver($data, $dragElement, $dropElement, $event);"
                                                 ad-drop-leave="onDragLeave($data, $dragElement, $dropElement, $event)"
                                                 ad-drop-end="onDrop($data, 'aktywny',$dragElement, $dropElement, $event);"
-                                                ng-hide="models.aktywny.length">
+                                                ng-if="!models.aktywny.length">
                                                 <span> Dodaj</span>
                                             </li>
                                         </ul>
@@ -72,12 +71,12 @@
           </span>
                                             </li>
                                             <li class="list-group-item"
-
-                                                ng-hide="models.nieaktywny.length">
-                                                <span  ad-drop="true"
-                                                       ad-drop-over="onDragOver($data, 'nieaktywny', $dropElement, $event);"
-                                                       ad-drop-leave="onDragLeave($data, $dragElement, $dropElement, $event)"
-                                                       ad-drop-end="onDrop($data, 'nieaktywny',$dragElement, $dropElement, $event);"> Dodaj</span>
+                                                ad-drop="true"
+                                                ad-drop-over="onDragOver($data, 'nieaktywny', $dropElement, $event);"
+                                                ad-drop-leave="onDragLeave($data, $dragElement, $dropElement, $event)"
+                                                ad-drop-end="onDrop($data, 'nieaktywny',$dragElement, $dropElement, $event);"
+                                                ng-if="!models.nieaktywny.length">
+                                                <span> Dodaj</span>
                                             </li>
                                         </ul>
                                     </div>
@@ -107,8 +106,8 @@
                                                 ad-drop-over="onDragOver($data, 'zablokowany', $dropElement, $event);"
                                                 ad-drop-leave="onDragLeave($data, $dragElement, $dropElement, $event)"
                                                 ad-drop-end="onDrop($data, 'zablokowany',$dragElement, $dropElement, $event);"
-                                                ng-hide="models.zablokowany.length">
-                                                <span> Dodaj2</span>
+                                                ng-if="!models.zablokowany.length">
+                                                <span> Dodaj</span>
                                             </li>
                                         </ul>
                                     </div>

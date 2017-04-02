@@ -135,7 +135,6 @@ app.controller('draggableCtrl', function ($scope, $http, $location, $mdDialog, $
 
     $scope.onDragOver = function (data, dragElement, dropElement) {
         $scope.currentDropElement = dropElement;
-        console.log(dragElement);
     };
 
     $scope.onDragLeave = function () {
@@ -143,8 +142,8 @@ app.controller('draggableCtrl', function ($scope, $http, $location, $mdDialog, $
     };
 
     $scope.onDrop = function (data, status) {
-        if (data && $scope.currentDropElement) {
-            var statusBeforeDrop = data.status;
+        var statusBeforeDrop = data.status;
+        if (data && $scope.currentDropElement && statusBeforeDrop!=status) {
             data.status = status;
             changeStatus(data, statusBeforeDrop);
         }
