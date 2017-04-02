@@ -19,6 +19,7 @@
                 <a onclick="App.clubs.addNew()" style="cursor:pointer;">Dodaj klub</a></li>
                 <%--<a href="addAdvert">Dodaj klub</a></li>--%>
             <li><a href="myClubs">Moje kluby</a></li>
+            <li><a href="edit-profile">Mój profil</a></li>
             <li>
                 <%@include file="../login/authheader.jsp" %>
             </li>

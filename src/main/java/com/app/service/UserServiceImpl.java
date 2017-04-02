@@ -48,7 +48,7 @@ public class UserServiceImpl implements UserService {
             entity.setRole(user.getRole());
             entity.setStatus(user.getStatus());
             if (!user.getPassword().equals("")) {
-                entity.setPassword(user.getPassword());
+                entity.setPassword(passwordEncoder.encode(user.getPassword()));
             }
         }
     }

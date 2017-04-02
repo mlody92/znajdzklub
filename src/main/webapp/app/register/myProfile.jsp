@@ -68,8 +68,8 @@
                                     <!-- Password -->
                                     <div class="form-group" ng-class="{ 'has-error' : userForm.password.$invalid && !userForm.password.$pristine }">
                                         <label>Hasło *</label>
-                                        <input type="password" name="password" class="form-control" ng-model="user.password" ng-maxlength="30">
-
+                                        <input type="password" name="password" class="form-control" ng-model="user.password" ng-maxlength="30" ng-minlength="5">
+                                        <p ng-show="userForm.password.$error.minlength" class="help-block">Hasło jest zbyt krótkie.</p>
                                         <p ng-show="userForm.password.$error.maxlength" class="help-block">Hasło jest zbyt długie.</p>
                                     </div>
                                     <div class="form-group" ng-class="{ 'has-error' : userForm.confirmPassword.$invalid && !userForm.confirmPassword.$pristine }">
