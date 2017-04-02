@@ -24,8 +24,8 @@
                             <%--</div>--%>
 
 
-                        <div id="test">
-                        </div>
+                        <div id="test"></div>
+                        <div id="test2"></div>
                     </div>
                     <div class="col-md-6 col-md-offset-3">
                     </div>

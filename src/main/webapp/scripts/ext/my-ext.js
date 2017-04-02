@@ -55,9 +55,13 @@ function changeStatus(config) {
             } else {
                 createError(response);
             }
-            config.storeFrom.reload();
-            config.storeTo.reload();
 
+            if (typeof config.storeFrom !== 'undefined') {
+                config.storeFrom.reload();
+            }
+            if (typeof config.storeTo !== 'undefined') {
+                config.storeTo.reload();
+            }
         }
     });
 }
@@ -283,7 +287,7 @@ App.clubs.createClubList = function () {
                 changeStatus(
                     {
                         url: 'club-status',
-                        rec: rec ,
+                        rec: rec,
                         storeFrom: storeNieaktywne,
                         storeTo: storeDoZatwierdzania
                     }
@@ -300,7 +304,15 @@ App.clubs.createClubList = function () {
             autoScroll: true,
             autoFit: true,
             forceFit: true,
+            enableDragDrop: true,
+            stripeRows: true,
+            selModel: Ext.create('Ext.selection.RowModel', {singleSelect: true}),
             viewConfig: {
+                plugins: {
+                    ddGroup: 'GridExample',
+                    ptype: 'gridviewdragdrop',
+                    enableDrop: false
+                },
                 listeners: {
                     render: function (view) {
                         view.tip = Ext.create('Ext.tip.ToolTip', {
@@ -384,13 +396,22 @@ App.clubs.createClubList = function () {
     var storeOdrzuocne = createStore({url: 'listClubsOdrzucone'});
     var storeNieaktywne = createStore({url: 'listClubsNieaktywne'});
 
+
     var tabPanel = Ext.create('Ext.TabPanel', {
         fullscreen: true,
         tabBarPosition: 'bottom',
-        renderTo: 'test',
+        // renderTo: 'test',
         defaults: {
             styleHtmlContent: true
         },
+        // viewConfig: {
+        //     plugins: {
+        //         ddGroup: 'GridExample',
+        //         ptype: 'gridviewdragdrop',
+        //         enableDrop: true
+        //     }
+        // },
+        enableDragDrop: true,
         items: [
             createGrid({
                 title: 'Aktywne',
@@ -415,6 +436,65 @@ App.clubs.createClubList = function () {
         ]
     });
 
+    var panel = Ext.create('Ext.Panel', {
+        id: 'panel',
+        layout: 'fit',
+        renderTo: 'test',
+        items: tabPanel
+    });
+    var formPanelDropTargetEl = Ext.ComponentQuery.query('tabbar', panel)[0].body.dom;
+
+    var formPanelDropTarget = Ext.create('Ext.dd.DropTarget', formPanelDropTargetEl, {
+        ddGroup: 'GridExample',
+        notifyEnter: function (ddSource, e, data) {
+            //Add some flare to invite drop.
+            // Reference the record (single selection) for readability
+            tabPanel.body.stopAnimation();
+            tabPanel.body.highlight();
+        },
+        notifyDrop: function (ddSource, e, data) {
+
+            // Reference the record (single selection) for readability
+            var dropTab = e.event.target.innerText.toLowerCase();
+            var tagName = e.event.target.tagName;
+
+            if (tagName == 'SPAN') {
+                var rec = ddSource.dragData.records[0];
+                rec.data.status = dropTab;
+                var storeToReload;
+                console.log("asd");
+                switch (dropTab) {
+                    case 'aktywne' :
+                        storeToReload = storeAktywne;
+                        break;
+                    case 'do zatwierdzenia' :
+                        storeToReload = storeDoZatwierdzania;
+                        break;
+                    case 'odrzucone' :
+                        storeToReload = storeOdrzuocne;
+                        break;
+                    case 'nieaktywne' :
+                        storeToReload = storeNieaktywne;
+                        break;
+                }
+
+                changeStatus(
+                    {
+                        url: 'club-status',
+                        rec: rec,
+                        storeTo: storeToReload
+                    }
+                );
+
+                // Delete record from the source store.  not really required.
+                ddSource.view.store.remove(rec);
+
+            }
+
+            return true;
+        }
+    });
+
     // tabPanel.on('tabchange', function (tab, item) {
     //     item.getStore().reload();
     // });
@@ -425,7 +505,6 @@ App.clubs.createClubList = function () {
         // gridOdrzucone.updateLayout();
         // gridNieaktywne.updateLayout();
     });
-
 };
 
 App.clubs.addNew = function () {
@@ -582,7 +661,7 @@ App.clubs.addNew = function () {
                 beforeShow: function () {
                     Ext.getBody().mask('Proszę czekać ...');
                 },
-                beforeHide: function(){
+                beforeHide: function () {
                     Ext.getBody().unmask();
                 }
             }
