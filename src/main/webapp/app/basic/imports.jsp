@@ -6,6 +6,7 @@
 <link href="<c:url value='/css/bootstrap/bootstrap.min.css' />" rel="stylesheet"/>
 <link href="<c:url value='/css/ext/theme-crisp-all-debug_1.css' />" rel="stylesheet"/>
 <link href="<c:url value='/css/main.css' />" rel="stylesheet"/>
+<link href="<c:url value='/css/adapt-strap.css' />" rel="stylesheet"/>
 
 
 
@@ -14,9 +15,8 @@
 <script src="<c:url value='/scripts/ext/my-ext.js' />"></script>
 <script src="<c:url value='/scripts/js/jquery-2.0.3.min.js' />"></script>
 <script src="<c:url value='/scripts/angular/angular.min.js' />"></script>
-<link href="http://adaptv.github.io/adapt-strap/dist/adapt-strap.css" rel="stylesheet"/>
-<script src="http://adaptv.github.io/adapt-strap/dist/adapt-strap.js"></script>
-<script src="http://adaptv.github.io/adapt-strap/dist/adapt-strap.tpl.js"></script>
+<script src="<c:url value='/scripts/adapt-strap.js' />"></script>
+<script src="<c:url value='/scripts/adapt-strap.tpl.js' />"></script>
 <script src="<c:url value='/scripts/ui-grid.min.js' />"></script>
 <script src="<c:url value='/scripts/angular/angular-route.min.js' />"></script>
 <script src="<c:url value='/scripts/angular/angular-cookies.min.js' />"></script>
