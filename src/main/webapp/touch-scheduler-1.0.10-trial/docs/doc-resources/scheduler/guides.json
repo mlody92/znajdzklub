@@ -1,0 +1,12 @@
+[
+    {
+        "title": "Bryntum Touch Scheduler Guides",
+        "items": [
+            {
+                "name"          : "scheduler_getting_started",
+                "title"         : "Getting Started with the Bryntum Touch Scheduler",
+                "description"   : "This guide shows you how to get up and running in no time."
+            }
+        ]
+    }
+]

@@ -8,6 +8,10 @@ app.controller('CategoryCtrl', function ($scope, $http, $mdDialog, $location, Fa
         });
     }
 
+    $scope.showAlert = function(title, text){
+        Factory.showAlert(title, text);
+    };
+
     $scope.submitForm = function (data, edit) {
         Factory.loadMask();
         if ($scope.form.$valid && !edit) {

@@ -66,6 +66,17 @@ function changeStatus(config) {
     });
 }
 
+function getData(config){
+    Ext.Ajax.request({
+        url: config.url,
+        headers: {'Content-Type': 'application/json'},
+        method: 'GET',
+        callback: function (options, success, response) {
+            console.log(response);
+        }
+    });
+}
+
 function post(config) {
     Ext.getBody().mask('Proszę czekać ...');
     var token = $("meta[name='_csrf']").attr("content");
@@ -106,13 +117,6 @@ function createError(response) {
 }
 
 Ext.namespace('App.clubs');
-
-// Ext.require([
-//     'Ext.grid.*',
-//     'Ext.data.*',
-//     'Ext.panel.*',
-//     'Ext.layout.container.Border'
-// ]);
 
 App.clubs.createClubList = function () {
 
@@ -668,3 +672,93 @@ App.clubs.addNew = function () {
         }).show();
     }
 };
+
+
+//Przykład metody abstrakcyjnej
+Ext.ns('Abstrakcyjna'); //
+
+Abstrakcyjna.PrzykladForm = Ext.extend(Ext.form.Panel, {
+    defaultType: 'textfield' //domyślny typ podrzędnych komponentów
+    , width: 300 // szerokość
+    , height: 200 //wysokość
+    , submitUrl: null //adres url akcji po naciśnięciu przycisku zatwierdzającego
+    , submitText: 'Zapisz' //text przycisku zatwierdzajacego
+    , cancelText: 'Anuluj' //text przycisku anulującego formularz
+    , initComponent: function () {
+        // obiekt o nazwie config
+        var config = {
+            defaults: {anchor: '-10'}
+        };
+        // wywołujemy funkcje dodającą obiekty do komponentu
+        this.buildItems(config);
+
+        // wywołujemy funkcje dodającą przyciski do komponentu
+        this.buildButtons(config);
+
+        // zastosowujemy określone parametry komponentu
+        Ext.apply(this, Ext.apply(this.initialConfig, config));
+
+        // wywołujemy tworzony obiekt z nowymymi parametrami
+        Abstrakcyjna.PrzykladForm.superclass.initComponent.call(this);
+    }
+
+    , buildItems: function (config) {
+        config.items = undefined; //brak komponentów
+    }
+
+    , buildButtons: function (config) {
+        //dodajemy przyciski do formularza
+        config.buttons = [{
+            text: this.submitText //tekst przycisku zatwierdzającego
+            , scope: this //zakres
+            , handler: this.onSubmit //akcja po naciśnięciu
+            , iconCls: 'icon-disk' //klasa css przycisku
+        }, {
+            text: this.cancelText
+            , scope: this
+            , handler: this.onCancel
+            , iconCls: 'icon-undo'
+        }];
+    }
+    //funkcja po naciśnięciu przycisku 'Zapisz'
+    , onSubmit: function () {
+        //wyświetlenie okienka z adresem akcji
+        Ext.MessageBox.alert('Zapisz', this.submitUrl);
+    }
+    //funkcja po naciśnięciu przycisku 'Anuluj'
+    , onCancel: function () {
+        this.el.mask('Anulowano'); //tworzenie maski z tekstem
+    } // eo function onCancel
+});
+
+Abstrakcyjna.Formularz = Ext.extend(Abstrakcyjna.PrzykladForm, {
+    title: 'Tytuł formularza'
+    , submitUrl: 'adres_akcji'
+    //dodanie komponentów do formularza
+    , buildItems: function (config) {
+        config.items = [
+            //dodanie pola tekstowego
+            {
+                name: 'textField'
+                , fieldLabel: 'TextField'
+            },
+            //dodanie combobox'a
+            {
+                xtype: 'combo'
+                , name: 'combo'
+                , fieldLabel: 'Combo'
+                , store: ['Option1', 'Option2', 'Option3']
+            }];
+    }
+});
+
+Ext.namespace('App.example');
+App.example.getData = function (config) {
+     getData(config);
+};
+
+
+
+
+
+

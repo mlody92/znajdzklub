@@ -25,7 +25,7 @@
 
 
                         <div id="test"></div>
-                        <div id="test2"></div>
+                        <%--<div id="test2"></div>--%>
                     </div>
                     <div class="col-md-6 col-md-offset-3">
                     </div>
@@ -40,6 +40,10 @@
     <script>
         Ext.onReady(function () {
             App.clubs.createClubList();
+//            Ext.create('Abstrakcyjna.Formularz',{
+//                renderTo: 'test2'
+//            });
+            App.example.getData({url:'listCategory'});
         });
     </script>
 </t:wrapper>

@@ -1,0 +1,98 @@
+.sch-event
+{
+    box-shadow:1px 1px 1px #EEE;
+}
+
+.air-delayed
+{
+    background: url("images/circle.png") no-repeat scroll 3px 6px limegreen;
+    border-radius: 10px;
+    opacity: 0.8;
+    color: white;
+}
+
+.air-ontime
+{
+    text-shadow: 1px 1px 1px #fff;
+}
+
+.air-cancelled
+{
+    background: url("images/graytexture.png") repeat scroll left center lightsalmon;
+    font-weight: bold;
+}
+
+.sch-event-inner
+{
+    background: transparent url(images/departing.png) no-repeat 0 0;
+    padding-left: 25px;
+    font-size: 13px;
+    height: 100%;
+    padding-top: 2px;
+}
+
+.air-cancelled .sch-event-inner
+{
+    background: transparent url(images/error.png) no-repeat 1px 1px;
+}
+
+td.Gate
+{
+    padding-left: 45px;
+    font-size: 11px;
+    background: transparent url(images/bullet_blue.png) no-repeat 25px center;
+}
+
+td.Terminal
+{
+    padding-left: 26px;
+    background: transparent url(images/building.png) no-repeat 5px center;
+    font-size: 13px;
+    font-weight: bold;
+    color: navy;
+}
+
+tr.Terminal
+{
+    background-color: #ddd !important;
+    height: 30px;
+}
+
+tr.Terminal td
+{
+    border-color: transparent;
+    border-bottom: 1px solid #ccc;
+}
+
+.gatename
+{
+    text-align: center;
+    font-size: 11px;
+}
+
+.sch-event .outside
+{
+    left: -100px;
+}
+
+
+.departure-time
+{
+    color: #555;
+    font-size: 80%;
+    font-weight: bold;
+    margin-left: -23px;
+    margin-top: -1px;
+    display: block;
+}
+
+.dayShift div
+{
+    background: url(images/sun.png) no-repeat 5px center;
+}
+
+.nightShift div
+{
+    background: url(images/bluemoon.png) no-repeat 5px center;
+}
+

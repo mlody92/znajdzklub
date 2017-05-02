@@ -1,0 +1,109 @@
+/*
+ * Icons by Tomas Gajar.
+ * http://www.smashingmagazine.com/2011/12/29/freebie-free-vector-web-icons-91-icons/
+ */
+
+div.sch-event
+{
+    background-color: #7FBF4D;
+    background-image: -webkit-linear-gradient(top, #7FBF4D, #63A62F);
+    background-image: -moz-linear-gradient(top, #7FBF4D, #63A62F);
+    background-image: -ms-linear-gradient(top, #7FBF4D, #63A62F);
+    background-image: linear-gradient(top, #7FBF4D, #63A62F);
+    border-color:#63A62F;
+    border-radius: 10px;
+    box-shadow: inset 0 1px 0 0 #96CA6D;
+    color: white;
+    text-shadow: 0 -1px 0 #4C9021;
+    width: 150px;
+}
+
+.sch-event-inner
+{
+   height:inherit;
+   margin-top:0;
+   line-height:65px;
+   padding-left:50px;
+    margin-left: 5px;
+}
+
+div.eventprio-high
+{
+    box-shadow: 1px 1px 10px 0px red;
+}
+
+div.downtime
+{
+    background-color: #D7E5F5;
+    background-image: -webkit-linear-gradient(top, #D7E5F5, #CBE0F5);
+    background-image: -moz-linear-gradient(top, #D7E5F5, #CBE0F5);
+    background-image: -ms-linear-gradient(top, #D7E5F5, #CBE0F5);
+    background-image: linear-gradient(top, #D7E5F5, #CBE0F5);
+    border-top-color:#ABBBCC;
+    border-left-color: #A7B6C7;
+    border-bottom-color:#A1AFBF;
+    border-right-color:#A7B6C7;
+    -webkit-box-shadow: inset 0 1px 0 0 white;
+    box-shadow: inset 0 1px 0 0 white;
+    color: #1A3E66;
+    text-shadow: 0 1px 1px white;
+}
+
+div.os_upgrade
+{
+    background-color: #A5B8DA;
+    background-image: -webkit-linear-gradient(top, #A5B8DA, #7089B3);
+    background-image: -moz-linear-gradient(top, #A5B8DA, #7089B3);
+    background-image: -ms-linear-gradient(top, #A5B8DA, #7089B3);
+    background-image: linear-gradient(top, #A5B8DA, #7089B3);
+    border-top-color:#758FBA;
+    border-right-color:#6C84AB;
+    border-bottom-color:#5C6F91;
+    border-left-color:#6C84AB;
+    -webkit-box-shadow: inset 0 1px 0 0 #AEC3E5;
+    box-shadow: inset 0 1px 0 0 #AEC3E5;
+    text-shadow: 0 -1px 1px #64799E;
+}
+
+
+.downtime .sch-event-inner
+{
+    background: url("images/pause.png") no-repeat scroll left center;
+}
+
+.server_maintenance .sch-event-inner
+{
+    background: url("images/user.png") no-repeat scroll left center;
+}
+
+.reboot .sch-event-inner 
+{
+    background: url("images/locked.png") no-repeat scroll left center;
+}
+
+.os_upgrade .sch-event-inner
+{
+    background: url("images/engine.png") no-repeat scroll left center;
+}
+
+.sliderlabel
+{
+    border-bottom: 1px solid #DDD;
+    line-height : 62px;
+    font-size:25px;
+    color:#555;
+}
+
+.sch-schedulerpanel .server
+{
+    background: url("images/display.png") no-repeat scroll 8px center;
+    padding-left:50px;
+}
+
+.custom-editor .delete-task
+{
+    background-image: -webkit-linear-gradient(top,#F91F1F,#E00606 3%,#AE0404);
+    background-image: -moz-linear-gradient(top,#F91F1F,#E00606 3%,#AE0404);
+    background-image: -ms-linear-gradient(top,#F91F1F,#E00606 3%,#AE0404);
+    background-image: linear-gradient(top,#F91F1F,#E00606 3%,#AE0404);
+}
