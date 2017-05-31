@@ -18,7 +18,7 @@
 
 .air-cancelled
 {
-    background: url("images/graytexture.png") repeat scroll left center lightsalmon;
+    background:  repeat scroll left center lightsalmon;
     font-weight: bold;
 }
 
@@ -33,7 +33,7 @@
 
 .air-cancelled .sch-event-inner
 {
-    background: transparent url(images/error.png) no-repeat 1px 1px;
+    /*background: transparent url(images/error.png) no-repeat 1px 1px;*/
 }
 
 td.Gate

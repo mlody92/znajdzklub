@@ -32,4 +32,10 @@ public class ActivitiesDaoImpl extends AbstractDao<Integer, Activities> implemen
         Activities activities = (Activities) crit.uniqueResult();
         delete(activities);
     }
+
+    @SuppressWarnings("unchecked")
+    public Activities findById(int id) {
+        Activities activities = getByKey(id);
+        return activities;
+    }
 }

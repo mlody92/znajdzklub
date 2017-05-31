@@ -29,4 +29,15 @@ public class ActivitiesServiceImpl implements ActivitiesService {
     public void delete(int id) {
         dao.delete(id);
     }
+
+    public void update(Activities activities) {
+        Activities entity = dao.findById(activities.getId());
+        if (entity != null) {
+            entity.setName(activities.getName());
+            entity.setStatus(activities.getStatus());
+            entity.setStartDate(activities.getStartDate());
+            entity.setEndDate(activities.getEndDate());
+            entity.setClubId(activities.getClubId());
+        }
+    }
 }

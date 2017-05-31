@@ -13,4 +13,6 @@ public interface ActivitiesDao {
     void save(Activities activities);
 
     void delete(int id);
+
+    Activities findById(int id);
 }

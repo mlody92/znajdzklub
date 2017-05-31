@@ -108,6 +108,22 @@ public class ActivitiesController {
         return new ResponseEntity(json.toString(), HttpStatus.OK);
     }
 
+    @RequestMapping(value = {"/edit-activity"}, method = RequestMethod.POST, produces = {"application/json; charset=UTF-8"})
+    public ResponseEntity editCategory(@RequestBody @Valid Activities activities, BindingResult result) {
+        JSONObject json = new JSONObject();
+        Collection<? extends GrantedAuthority> authorities = SecurityContextHolder.getContext().getAuthentication().getAuthorities();
+        boolean authorized = authorities.contains(new SimpleGrantedAuthority("ROLE_ADMIN"));
+        if(!authorized){
+            json.put("success", false);
+            json.put("error", result);
+            return new ResponseEntity(json.toString(), HttpStatus.OK);
+        }
+        activitiesService.update(activities);
+        json.put("success", true);
+        json.put("info", "Zajęcia zostały poprawnie przeedytowane");
+        return new ResponseEntity(json.toString(), HttpStatus.OK);
+    }
+
     @RequestMapping(value = {"/delete-activity"}, method = RequestMethod.POST, produces = {"application/json; charset=UTF-8"})
     public ResponseEntity deleteActivity(@RequestBody @Valid Activities activities, BindingResult result) {
 

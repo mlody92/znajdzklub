@@ -9,9 +9,7 @@ function post(config) {
         method: 'POST',
         callback: function (options, success, response) {
             var response = Ext.decode(response.responseText);
-            if (response.success) {
-                Ext.Msg.alert(response.info);
-            } else {
+            if (!response.success) {
                 Ext.Msg.alert(response.error);
             }
         }
@@ -60,16 +58,17 @@ Ext.define('CustomEditor', {
     showForRecord : function(eventRecord) {
         this.eventRecord = eventRecord;
         var el = this.scheduler.getSchedulingView().getElementFromEventRecord(eventRecord);
-
+        var startDate=eventRecord.get('StartDate');
+        var endDate = eventRecord.get('EndDate');
+        var duration = (new Date(endDate).getTime() - new Date(startDate).getTime())/3600000;
+        var durat =  parseFloat(duration.toFixed(1));
         this.setRecord(eventRecord);
-        this.down('[cls=sliderlabel]').setHtml(eventRecord.get('Duration'));
-
+        this.down('[cls=sliderlabel]').setHtml(durat);
         this.showBy(el, this.align);
     },
 
     init : function(scheduler) {
         this.scheduler = scheduler;
-
         scheduler.on(this.getTriggerEvent(), this.onTrigger, this);
     },
 
@@ -196,7 +195,6 @@ Ext.define('CustomEditor', {
                                     // Call the updateRecord method of formpanel with the event record instance. This will update the event record
                                     // with the latest values.
                                     form.updateRecord(form.eventRecord, true);
-
                                     var startDate = form.eventRecord.data.StartDate;
                                     var finalDate = new Date(startDate.getTime() + form.eventRecord.data.Duration*3600000);
                                     form.eventRecord.data.EndDate = finalDate;
@@ -208,9 +206,17 @@ Ext.define('CustomEditor', {
                                         clubId: form.eventRecord.data.ResourceId,
                                         status: (form.eventRecord.data.status) ? 'aktywne' : 'nieaktywne'
                                     };
-                                    post({
-                                        url: 'add-activity', data: data
-                                    });
+                                    if(!form.eventRecord.data.id){
+                                        post({
+                                            url: 'add-activity', data: data
+                                        });
+                                    } else {
+                                        data.id= form.eventRecord.data.id;
+                                        post({
+                                            url: 'edit-activity', data: data
+                                        });
+                                    }
+                                    form.updateRecord(form.eventRecord, true);
                                 }
 
                                 // Unmask and hide the formpanel
@@ -230,7 +236,6 @@ Ext.define('CustomEditor', {
                         handler: function() {
                             var form = this.up('formpanel');
                             var record = form.eventRecord;
-                            console.log(record);
                             var data = {
                                 name: form.eventRecord.data.Name,
                                 clubId: form.eventRecord.data.ResourceId
@@ -283,18 +288,23 @@ Ext.define('Activities', {
             {name: 'ResourceId', mapping: 'clubId'},
             {name: 'StartDate', mapping: 'startDate', type: 'date', format: 'Y-m-d H:i'},
             {name: 'EndDate', mapping: 'endDate', type: 'date', format: 'Y-m-d H:i'},
-            {name : 'Duration', type : 'float', convert: function (newValue, model) {
-                var startDate=model.get('StartDate');
-                var endDate = model.get('EndDate');
-                var duration = new Date(endDate).getHours() - new Date(startDate).getHours();
-                return duration.toFixed(1);
-            } },
+            {name: 'Duration', type : 'float'
+                // , convert: function (newValue, model) {
+                // var startDate=model.get('StartDate');
+                // var endDate = model.get('EndDate');
+                // var duration = new Date(endDate).getHours() - new Date(startDate).getHours();
+                // return parseFloat(duration.toFixed(1));
+                // }
+            },
             {name : 'status', mapping: 'status', type : 'string' },
             {
                 name: 'Cls', type: 'string',
                 convert: function (newValue, model) {
-                    if (isInArray(model.get('id'), myActivities)) {
+                    if (isInArray(model.get('Id'), myActivities)) {
                         return 'air-delayed';
+                    }
+                    if(model.get('status')=='nieaktywne'){
+                        return 'air-cancelled';
                     }
                     return 'air-ontime';
                 }
@@ -302,6 +312,14 @@ Ext.define('Activities', {
         ]
     }  ,
     getEndDate : function() {
+        if(this.get('EndDate')!=undefined){
+            var startDate=this.getStartDate();
+            var endDate = this.get('EndDate');
+            var duration = (new Date(endDate).getTime() - new Date(startDate).getTime())/3600000;
+            var durat =  parseFloat(duration.toFixed(1));
+            // this.data.Duration =  durat;
+            return D.add(this.getStartDate(), D.MINUTE, durat*60);
+        }
         return D.add(this.getStartDate(), D.MINUTE, this.get('Duration') * 60);
     }
 });
@@ -370,7 +388,6 @@ Ext.setup({
         var editor = new CustomEditor();
         var clubsStore = createStore({url: 'listClubs'});
         var clubsActivitiesStore = createStoreActivities({url: 'allActivities'});
-        console.log(clubsActivitiesStore);
         var date = new Date();
         date.setHours(0);
         date.setMinutes(0);
@@ -473,14 +490,12 @@ Ext.setup({
 
         scheduler.on({
             eventsingletap: function (event, record) {
-                clubsActivitiesStore.on('addrecords', function(s, rs) {
-                    editor.showForRecord(record);
-                });
+                // clubsActivitiesStore.on('addrecords', function(s, rs) {
+                //     editor.showForRecord(record);
+                // });
                 editor.showForRecord(record);
             },
             eventdoubletap: function (event, record) {
-                // Ext.Msg.alert('You double tapped', record.get('Name'));
-
                 Ext.Msg.confirm('Zapisy', record.get('Name') + ' ' + new Date(record.get('StartDate')).getHours() + ':'
                     + ((new Date(record.get('StartDate')).getMinutes()) < 10 ? '0' : '')
                     + new Date(record.get('StartDate')).getMinutes(), function (value) {
@@ -493,6 +508,19 @@ Ext.setup({
                         scheduler.refresh();
                     }
                 });
+            },
+            eventdrop: function(panel, record){
+                   var data = {
+                        id: record[0].data.Id,
+                        name: record[0].data.Name,
+                        endDate: record[0].data.EndDate,
+                        startDate: record[0].data.StartDate,
+                        clubId: record[0].data.ResourceId,
+                        status: (record[0].data.status) ? 'aktywne' : 'nieaktywne'
+                    };
+                    post({
+                       url: 'edit-activity', data: data
+                    });
             }
         });
     }

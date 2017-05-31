@@ -10,4 +10,6 @@ public interface ActivitiesService {
     String save(Activities activities);
 
     void delete(int id);
+
+    void update(Activities activities);
 }
