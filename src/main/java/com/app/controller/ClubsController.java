@@ -1,8 +1,10 @@
 package com.app.controller;
 
 import com.app.dao.AdvertDaoImpl;
+import com.app.model.Activities;
 import com.app.model.Advert;
 import com.app.model.User;
+import com.app.service.ActivitiesService;
 import com.app.service.AdvertService;
 import com.app.service.CoordinatesService;
 import com.app.service.UserService;
@@ -38,10 +40,24 @@ public class ClubsController {
     AdvertService advertService;
 
     @Autowired
+    ActivitiesService activitiesService;
+
+    @Autowired
     UserService userService;
 
     @Autowired
     CoordinatesService coordinatesService;
+
+//    @RequestMapping(value = {"/scheduler"}, method = RequestMethod.GET)
+//    public String scheduler(ModelMap model) {
+//        return "../scheduler/scheduler";
+//    }
+//
+//    @RequestMapping(value = "/allActivities", method = RequestMethod.GET)
+//    @ResponseBody
+//    public List<Activities> getActivities() {
+//        return activitiesService.findAll();
+//    }
 
     @RequestMapping(value = "/listClubs", method = RequestMethod.GET)
     @ResponseBody

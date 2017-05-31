@@ -81,6 +81,7 @@ app.controller('CategoryListCtrl', function ($scope, $http, $location, $mdDialog
 
     function loadStore() {
         Factory.getData('listCategory').then(function (result) {
+            console.log(result);
             $scope.grid.data = result.data;
         });
     }

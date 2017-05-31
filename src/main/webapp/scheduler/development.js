@@ -18,7 +18,7 @@
     }
 
     var xhr = new XMLHttpRequest();
-    xhr.open('GET', 'app.json', false);
+    xhr.open('GET', 'scheduler/app.json', false);
     xhr.send(null);
 
     var options = eval("(" + xhr.responseText + ")"),
@@ -48,6 +48,9 @@
     addMeta('viewport', 'width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no');
     addMeta('apple-mobile-web-app-capable', 'yes');
     addMeta('apple-touch-fullscreen', 'yes');
+    // addMeta('_csrf',"${_csrf.token}");
+    // addMeta('_csrf_header','${_csrf.headerName}');
+
 
     if (!window.Ext) {
         window.Ext = {};

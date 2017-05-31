@@ -7,6 +7,7 @@
         <sec:authorize access="isAnonymous()">
             <li><a href="register">Zarejestruj</a></li>
             <li><a href="login">Zaloguj</a></li>
+            <li><a href="scheduler">Scheduler</a></li>
         </sec:authorize>
         <sec:authorize access="hasRole('ADMIN')">
             <li><a href="userList">Lista użytkowników</a></li>

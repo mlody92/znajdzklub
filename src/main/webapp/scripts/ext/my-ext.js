@@ -466,7 +466,6 @@ App.clubs.createClubList = function () {
                 var rec = ddSource.dragData.records[0];
                 rec.data.status = dropTab;
                 var storeToReload;
-                console.log("asd");
                 switch (dropTab) {
                     case 'aktywne' :
                         storeToReload = storeAktywne;
@@ -540,7 +539,7 @@ App.clubs.addNew = function () {
     var firstPage = Ext.create('Ext.form.Panel', {
         // bodyPadding: 10,
 
-        xtype: 'form',
+        // xtype: 'form',
         defaultType: 'textfield',
         items: [{
             name: 'title',
@@ -756,6 +755,8 @@ Ext.namespace('App.example');
 App.example.getData = function (config) {
      getData(config);
 };
+
+
 
 
 

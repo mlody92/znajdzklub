@@ -22,7 +22,7 @@
 
                     <div class="container">
                         <div class="row">
-
+                            <button type="button" class="btn btn-warning" ng-click="showAlert('Informacja','Testowy tekst okienka')">Wyswietl</button>
                             <div class="col-sm-6">
                                 <!-- FORM ============ -->
                                 <form name="form" ng-submit="submitForm(category, ${edit})" method="post" novalidate modelAttribute="category" enctype="text/plain">

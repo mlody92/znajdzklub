@@ -12,7 +12,7 @@
 
 
 <script src="<c:url value='/scripts/ext/ext-all-debug.js' />"></script>
-<script src="<c:url value='/touch-scheduler-1.0.10-trial/touch-scheduler-all-debug.js' />"></script>
+<%--<script src="<c:url value='/touch-scheduler-1.0.10-trial/touch-scheduler-all-debug.js' />"></script>--%>
 <script src="<c:url value='/scripts/ext/my-ext.js' />"></script>
 <script src="<c:url value='/scripts/js/jquery-2.0.3.min.js' />"></script>
 <script src="<c:url value='/scripts/angular/angular.min.js' />"></script>
@@ -39,7 +39,7 @@
 <script src="<c:url value='/app/category/CategoryController.js' />"></script>
 <script src="<c:url value='/app/register/RegisterController.js' />"></script>
 <script src="<c:url value='/scripts/ext/my-ext.js' />"></script>
-<script src="<c:url value='/scripts/ext/scheduler.js' />"></script>
+<%--<script src="<c:url value='/scripts/ext/scheduler.js' />"></script>--%>
 <%--<script src="http://ui-grid.info/docs/grunt-scripts/csv.js"></script>--%>
 <%--<script src="http://ui-grid.info/docs/grunt-scripts/pdfmake.js"></script>--%>
 <%--<script src="http://ui-grid.info/docs/grunt-scripts/vfs_fonts.js"></script>--%>

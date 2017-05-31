@@ -5,7 +5,7 @@
 
 .air-delayed
 {
-    background: url("images/circle.png") no-repeat scroll 3px 6px limegreen;
+    background:  no-repeat scroll 3px 6px limegreen;
     border-radius: 10px;
     opacity: 0.8;
     color: white;
@@ -24,8 +24,8 @@
 
 .sch-event-inner
 {
-    background: transparent url(images/departing.png) no-repeat 0 0;
-    padding-left: 25px;
+    /*background: transparent url(images/departing.png) no-repeat 0 0;*/
+    /*padding-left: 25px;*/
     font-size: 13px;
     height: 100%;
     padding-top: 2px;
@@ -81,7 +81,7 @@ tr.Terminal td
     color: #555;
     font-size: 80%;
     font-weight: bold;
-    margin-left: -23px;
+    /*margin-left: -23px;*/
     margin-top: -1px;
     display: block;
 }

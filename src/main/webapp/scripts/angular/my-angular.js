@@ -33,6 +33,9 @@ app.run(function ($rootScope) {
     };
 });
 
+
+
+
 app.factory('Factory', function ($http, $mdDialog, $rootScope) {
         var factory = this;
 

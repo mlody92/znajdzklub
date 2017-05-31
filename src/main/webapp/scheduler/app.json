@@ -2,19 +2,19 @@
     "name": "Basic",
     "js": [
         {
-            "path": "http://cdn.sencha.io/touch/sencha-touch-2.3.0/sencha-touch-all-debug.js"
+            "path": "scheduler/sencha-touch-all-debug.js"
         },
         {
-            "path": "touch-scheduler-all-debug.js"
+            "path": "scheduler/touch-scheduler-all-debug.js"
         },
         {
-            "path": "zooming.js",
+            "path": "scheduler/zooming.js",
             "update": "delta"
         }
     ],
     "css": [
         {
-            "path": "http://cdn.sencha.io/touch/sencha-touch-2.3.0/resources/css/sencha-touch.css",
+            "path": "scheduler/sencha-touch.css",
             "update": "delta"
         },
         {
@@ -22,7 +22,7 @@
             "update": "delta"
         },
         {
-            "path": "zooming.css",
+            "path": "scheduler/zooming.css",
             "update": "delta"
         }
     ],

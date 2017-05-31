@@ -43,7 +43,7 @@
 //            Ext.create('Abstrakcyjna.Formularz',{
 //                renderTo: 'test2'
 //            });
-            App.example.getData({url:'listCategory'});
+//            App.example.getData({url:'listCategory'});
         });
     </script>
 </t:wrapper>
