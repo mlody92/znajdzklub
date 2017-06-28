@@ -89,7 +89,7 @@
                                     <%--</div>--%>
                                     <c:choose>
                                         <c:when test="${edit}">
-                                            <input type="submit" value="Zapisz" class="btn btn-primary btn-sm" ng-disabled="form.$invalid"/> or <input action="action" type="button" value="Powrót" onclick="history.go(-1);" />
+                                            <input type="submit" value="Zapisz" class="btn btn-primary btn-sm" ng-disabled="form.$invalid"/> lub <input action="action" type="button" value="Powrót" onclick="history.go(-1);" />
                                         </c:when>
                                         <c:otherwise>
                                             <input type="submit" value="Dodaj" class="btn btn-primary btn-sm" ng-disabled="form.$invalid"/>

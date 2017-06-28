@@ -124,13 +124,13 @@ app.controller('ClubListViewCtrl', function ($scope, $http, Factory) {
         if ($scope.edit) {
             $scope.grid.columnDefs = [
                 {name: 'Tytuł', field: "title"},
-                {name: 'Opis', field: "description"},
+                // {name: 'Opis', field: "description"},
                 {name: 'Strona www', field: "website"},
                 {name: 'Adres', field: "address"},
                 {name: 'Email', field: "email"},
                 {name: 'Kontakt', field: "phone"},
-                {name: 'Status', field: "status"},
-                {name: 'Data dodania', field: "date"},
+                // {name: 'Status', field: "status"},
+                // {name: 'Data dodania', field: "date"},
                 {name: 'Kod pocztowy', field: "postalCode"},
                 {
                     name: 'action',
@@ -146,13 +146,13 @@ app.controller('ClubListViewCtrl', function ($scope, $http, Factory) {
                     name: 'Tytuł',
                     cellTemplate: '<a ng-href="view-advert?id={{row.entity.id}}"><span >{{row.entity.title}}</span></a>'
                 },
-                {name: 'Opis', field: "description"},
+                // {name: 'Opis', field: "description"},
                 {name: 'Strona www', field: "website"},
                 {name: 'Adres', field: "address"},
                 {name: 'Email', field: "email"},
                 {name: 'Kontakt', field: "phone"},
-                {name: 'Status', field: "status"},
-                {name: 'Data dodania', field: "date"},
+                // {name: 'Status', field: "status"},
+                // {name: 'Data dodania', field: "date"},
                 {name: 'Kod pocztowy', field: "postalCode"}
             ];
         }

@@ -10,12 +10,12 @@
     <%@ include file="/app/basic/menu.jsp" %>
 
     <div class="footer clearfix">
-        <ul class="social clearfix">
-            <li><a href="#" class="fb" data-title="Facebook"></a></li>
-            <li><a href="#" class="google" data-title="Google +"></a></li>
-            <li><a href="#" class="behance" data-title="Behance"></a></li>
-            <li><a href="#" class="rss" data-title="RSS"></a></li>
-        </ul>
+        <%--<ul class="social clearfix">--%>
+            <%--<li><a href="#" class="fb" data-title="Facebook"></a></li>--%>
+            <%--<li><a href="#" class="google" data-title="Google +"></a></li>--%>
+            <%--<li><a href="#" class="behance" data-title="Behance"></a></li>--%>
+            <%--<li><a href="#" class="rss" data-title="RSS"></a></li>--%>
+        <%--</ul>--%>
 
         <div class="rights">
             <p>Copyright © 2016 ZnajdźKlub</p>

@@ -81,11 +81,9 @@ app.controller('CategoryListCtrl', function ($scope, $http, $location, $mdDialog
 
     function loadStore() {
         Factory.getData('listCategory').then(function (result) {
-            console.log(result);
             $scope.grid.data = result.data;
         });
     }
-
 
     //window form
     $scope.open = function () {
@@ -94,24 +92,30 @@ app.controller('CategoryListCtrl', function ($scope, $http, $location, $mdDialog
             backdrop: true,
             windowClass: 'modal',
             controller: function ($scope, $modalInstance) {
-                $scope.submit = function () {
+                $scope.category={}
+                $scope.submit1 = function ($category) {
+                    $scope.currentPage = $scope.currentPage+1;
+                };
 
-
+                $scope.submit2 = function ($category) {
                     var postConfig = {
                         url: 'addCategory',
-                        data: $scope.category,
+                        data: $category,
                         finallyFn: function (){
                             loadStore();
                         }
                     };
                     Factory.postData(postConfig);
                     $modalInstance.dismiss('cancel');
-                }
+                };
 
                 $scope.cancel = function () {
                     $modalInstance.dismiss('cancel');
                 };
 
+                $scope.wroc = function(){
+                    $scope.currentPage = $scope.currentPage-1;
+                };
             }
         });
     };

@@ -83,6 +83,7 @@ public class UsersController {
     public @ResponseBody ResponseEntity saveUser(@RequestBody @Valid User user) {
         JSONObject json = new JSONObject();
         user.setRole("USER");
+        user.setStatus("nieaktywny");
         if (!userService.isUserLoginUnique(user.getId(), user.getLogin())) {
             json.put("success", false);
             json.put("error", "Podany login już istnieje");

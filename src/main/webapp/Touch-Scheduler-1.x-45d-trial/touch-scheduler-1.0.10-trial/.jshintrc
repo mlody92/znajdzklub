@@ -1,0 +1,14 @@
+{
+    "onecase"   : true,
+    "undef"     : true,
+    "browser"   : true,
+    "predef"    : ["Ext", "Sch", "UberGrid"],
+    "debug"     : false,
+    "asi"       : true,
+    "supernew"  : false,
+    "expr"      : true,         // allow fn && fn()
+    "loopfunc"  : true,
+    "laxbreak"  : true,
+    "eqeqeq"    : false,
+    "eqnull"    : true
+}

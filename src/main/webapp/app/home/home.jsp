@@ -26,10 +26,10 @@
 
     <div class="work">
         <a >
-            <img src="<c:url value='/img/work2.jpg' />" class="media" alt=""/>
+            <img src="<c:url value='/img/dodaj.jpg' />" class="media" alt=""/>
             <div class="caption">
                 <div class="work_title">
-                    <h1>Test</h1>
+                    <h1>Klub</h1>
                 </div>
             </div>
         </a>
@@ -37,10 +37,10 @@
 
     <div class="work">
         <a >
-            <img src="<c:url value='/img/work2.jpg' />" class="media" alt=""/>
+            <img src="<c:url value='/img/dodaj.jpg' />" class="media" alt=""/>
             <div class="caption">
                 <div class="work_title">
-                    <h1>Test</h1>
+                    <h1>Klub</h1>
                 </div>
             </div>
         </a>
@@ -48,10 +48,10 @@
 
     <div class="work">
         <a >
-            <img src="<c:url value='/img/work2.jpg' />" class="media" alt=""/>
+            <img src="<c:url value='/img/dodaj.jpg' />" class="media" alt=""/>
             <div class="caption">
                 <div class="work_title">
-                    <h1>Test</h1>
+                    <h1>Klub</h1>
                 </div>
             </div>
         </a>
@@ -59,10 +59,10 @@
 
     <div class="work">
         <a >
-            <img src="<c:url value='/img/work2.jpg' />" class="media" alt=""/>
+            <img src="<c:url value='/img/dodaj.jpg' />" class="media" alt=""/>
             <div class="caption">
                 <div class="work_title">
-                    <h1>Test</h1>
+                    <h1>Klub</h1>
                 </div>
             </div>
         </a>

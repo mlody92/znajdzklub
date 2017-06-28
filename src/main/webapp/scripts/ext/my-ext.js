@@ -30,6 +30,9 @@ function createConfirmMessageBox(config) {
                         } else {
                             createError(response);
                         }
+                        if (typeof config.store !== 'undefined') {
+                            config.store.reload();
+                        }
                     }
                 });
             }
@@ -66,7 +69,7 @@ function changeStatus(config) {
     });
 }
 
-function getData(config){
+function getData(config) {
     Ext.Ajax.request({
         url: config.url,
         headers: {'Content-Type': 'application/json'},
@@ -91,6 +94,9 @@ function post(config) {
             Ext.getBody().unmask();
             if (response.success) {
                 createInfo(response);
+                if (typeof config.store !== 'undefined') {
+                    config.store.reload();
+                }
             } else {
                 createError(response);
             }
@@ -110,7 +116,7 @@ function createInfo(response) {
 function createError(response) {
     Ext.MessageBox.show({
         title: 'Błąd',
-        msg: response.info,
+        msg: response.error,
         buttons: Ext.MessageBox.OK,
         icon: Ext.MessageBox.ERROR
     })
@@ -130,7 +136,7 @@ App.clubs.createClubList = function () {
             {name: 'email', mapping: 'email'},
             {name: 'phone', mapping: 'phone'},
             {name: 'status', mapping: 'status'},
-            {name: 'date', mapping: 'date'},
+            // {name: 'date', mapping: 'date'},
             {name: 'postalCode', mapping: 'postalCode'},
             // {name: 'categoryId', mapping: 'advert.categoryId'},
             // {name: 'userId', mapping: 'advert.userId'},
@@ -179,9 +185,9 @@ App.clubs.createClubList = function () {
                         createConfirmMessageBox(
                             {
                                 url: 'delete-advert',
-                                rec: rec
+                                rec: rec,
+                                store: Ext.ComponentQuery.query('grid[hidden=false]')[0].getStore()
                             });
-                        grid.getStore().reload();
                     }
                 }]
             }]
@@ -360,10 +366,12 @@ App.clubs.createClubList = function () {
                                     }, {
                                         xtype: 'label',
                                         text: 'Status: ' + record.get('status')
-                                    }, {
-                                        xtype: 'label',
-                                        text: 'Data: ' + record.get('date')
-                                    }, {
+                                    },
+                                    //     {
+                                    //     xtype: 'label',
+                                    //     text: 'Data: ' + record.get('date')
+                                    // },
+                                        {
                                         xtype: 'label',
                                         text: 'Kod pocztowy: ' + record.get('postalCode')
                                     }, {
@@ -640,7 +648,8 @@ App.clubs.addNew = function () {
                         post({
                             url: 'addAdvert',
                             data: data
-                        });
+                        })
+                        Ext.getCmp('dodajWindowId').destroy();
                     } else {
                         Ext.MessageBox.alert('Błąd', 'Wypełnij formularz poprawnie');
                     }
@@ -659,6 +668,16 @@ App.clubs.addNew = function () {
             height: 400,
             width: 500,
             layout: 'fit',
+            align: 'center',
+            plugins: 'responsive',
+            responsiveConfig: {
+                landscape: {
+                    title: 'Dodaj klub - poziomo'
+                },
+                portrait: {
+                    title: 'Dodaj klub - pionowo'
+                }
+            },
             items: panel,
             listeners: {
                 beforeShow: function () {
@@ -753,7 +772,7 @@ Abstrakcyjna.Formularz = Ext.extend(Abstrakcyjna.PrzykladForm, {
 
 Ext.namespace('App.example');
 App.example.getData = function (config) {
-     getData(config);
+    getData(config);
 };
 
 
